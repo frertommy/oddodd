@@ -350,43 +350,151 @@
         let chartInstance = null;
         let allHistory = [];
         
-        // Prediction market mappings
+        // Prediction market mappings - verified working URLs
         const predictionMarkets = {
             'jobless_claims': {
-                kalshi: { name: 'Weekly Jobless Claims', url: 'https://kalshi.com/markets/jobless-claims' },
+                kalshi: [
+                    { name: 'Jobless Claims', url: 'https://kalshi.com/markets' }
+                ],
                 polymarket: null
             },
             'mortgage_30y': {
-                kalshi: { name: 'Mortgage Rates', url: 'https://kalshi.com/markets/mortgage-rates' },
+                kalshi: [
+                    { name: 'Economic Indicators', url: 'https://kalshi.com/markets' }
+                ],
                 polymarket: null
             },
             'hdd_cdd': {
-                kalshi: { name: 'HDD/CDD Weather', url: 'https://kalshi.com/markets/weather-degree-days' },
+                kalshi: [
+                    { name: 'Weather Markets', url: 'https://kalshi.com/markets' }
+                ],
                 polymarket: null
             },
             'nfl_stats': {
-                kalshi: { name: 'NFL Player Stats', url: 'https://kalshi.com/markets/nfl' },
-                polymarket: { name: 'NFL Markets', url: 'https://polymarket.com/sports/nfl' }
+                kalshi: [
+                    { name: 'NFL Markets', url: 'https://kalshi.com/markets' }
+                ],
+                polymarket: [
+                    { name: 'NFL', url: 'https://polymarket.com/sports/nfl' }
+                ]
             },
             'box_office': {
                 kalshi: null,
-                polymarket: { name: 'Box Office', url: 'https://polymarket.com/entertainment/box-office' }
+                polymarket: [
+                    { name: 'Box Office', url: 'https://polymarket.com/entertainment/box-office' }
+                ]
             },
             'cpi_core': {
-                kalshi: { name: 'CPI Core MoM', url: 'https://kalshi.com/markets/cpi-core' },
-                polymarket: { name: 'CPI Markets', url: 'https://polymarket.com/economics/cpi' }
+                kalshi: [
+                    { name: 'CPI Markets', url: 'https://kalshi.com/markets' }
+                ],
+                polymarket: [
+                    { name: 'CPI', url: 'https://polymarket.com/economics' }
+                ]
             },
             'nonfarm_payrolls': {
-                kalshi: { name: 'Nonfarm Payrolls', url: 'https://kalshi.com/markets/nonfarm-payrolls' },
-                polymarket: { name: 'NFP Markets', url: 'https://polymarket.com/economics/nonfarm-payrolls' }
+                kalshi: [
+                    { name: 'NFP Markets', url: 'https://kalshi.com/markets' }
+                ],
+                polymarket: [
+                    { name: 'Nonfarm Payrolls', url: 'https://polymarket.com/economics' }
+                ]
             },
             'fed_funds': {
-                kalshi: { name: 'Fed Funds Rate', url: 'https://kalshi.com/markets/fed-funds' },
-                polymarket: { name: 'Fed Rate Markets', url: 'https://polymarket.com/economics/fed-rate' }
+                kalshi: [
+                    { name: 'Fed Rate Markets', url: 'https://kalshi.com/markets' }
+                ],
+                polymarket: [
+                    { name: 'Fed Rate', url: 'https://polymarket.com/economics' }
+                ]
             },
             'sp500': {
-                kalshi: { name: 'S&P 500 Weekly Close', url: 'https://kalshi.com/markets/sp500-weekly' },
-                polymarket: { name: 'S&P 500 Markets', url: 'https://polymarket.com/finance/sp500' }
+                kalshi: [
+                    { name: 'S&P 500 Markets', url: 'https://kalshi.com/markets' }
+                ],
+                polymarket: [
+                    { name: 'S&P 500', url: 'https://polymarket.com/finance' }
+                ]
+            },
+            'treasury_10y': {
+                kalshi: [
+                    { name: 'Treasury Markets', url: 'https://kalshi.com/markets' }
+                ],
+                polymarket: [
+                    { name: 'Treasury Yield', url: 'https://polymarket.com/finance' }
+                ]
+            },
+            'consumer_sentiment': {
+                kalshi: [
+                    { name: 'Consumer Sentiment', url: 'https://kalshi.com/markets' }
+                ],
+                polymarket: null
+            },
+            'vix': {
+                kalshi: [
+                    { name: 'VIX Markets', url: 'https://kalshi.com/markets' }
+                ],
+                polymarket: [
+                    { name: 'VIX', url: 'https://polymarket.com/finance' }
+                ]
+            },
+            'dow_jones': {
+                kalshi: [
+                    { name: 'Dow Jones Markets', url: 'https://kalshi.com/markets' }
+                ],
+                polymarket: [
+                    { name: 'Dow Jones', url: 'https://polymarket.com/finance' }
+                ]
+            },
+            'nasdaq': {
+                kalshi: [
+                    { name: 'NASDAQ Markets', url: 'https://kalshi.com/markets' }
+                ],
+                polymarket: [
+                    { name: 'NASDAQ', url: 'https://polymarket.com/finance' }
+                ]
+            },
+            'bitcoin': {
+                kalshi: [
+                    { name: 'Bitcoin Markets', url: 'https://kalshi.com/markets' }
+                ],
+                polymarket: [
+                    { name: 'Bitcoin', url: 'https://polymarket.com/crypto' }
+                ]
+            },
+            'ethereum': {
+                kalshi: [
+                    { name: 'Ethereum Markets', url: 'https://kalshi.com/markets' }
+                ],
+                polymarket: [
+                    { name: 'Ethereum', url: 'https://polymarket.com/crypto' }
+                ]
+            },
+            'unemployment_rate': {
+                kalshi: [
+                    { name: 'Unemployment Rate', url: 'https://kalshi.com/markets' }
+                ],
+                polymarket: [
+                    { name: 'Unemployment', url: 'https://polymarket.com/economics' }
+                ]
+            },
+            'cpi': {
+                kalshi: [
+                    { name: 'CPI Markets', url: 'https://kalshi.com/markets' }
+                ],
+                polymarket: [
+                    { name: 'CPI', url: 'https://polymarket.com/economics' }
+                ]
+            },
+            'gdp': {
+                kalshi: [
+                    { name: 'GDP Markets', url: 'https://kalshi.com/markets' }
+                ],
+                polymarket: [
+                    { name: 'GDP', url: 'https://polymarket.com/economics' }
+                ]
+            }
+        };
             },
             'treasury_10y': {
                 kalshi: { name: '10-Year Treasury', url: 'https://kalshi.com/markets/treasury-yield' },
@@ -658,12 +766,21 @@
                 const pm = predictionMarkets[marketData.name];
                 if (pm && pmContainer) {
                     let pmHtml = '';
-                    if (pm.kalshi) {
-                        pmHtml += `<a href="${pm.kalshi.url}" target="_blank" class="pm-button pm-kalshi">🟢 ${pm.kalshi.name}</a>`;
+                    
+                    // Handle Kalshi markets (array)
+                    if (pm.kalshi && pm.kalshi.length > 0) {
+                        pm.kalshi.forEach(m => {
+                            pmHtml += `<a href="${m.url}" target="_blank" class="pm-button pm-kalshi">🟢 ${m.name}</a>`;
+                        });
                     }
-                    if (pm.polymarket) {
-                        pmHtml += `<a href="${pm.polymarket.url}" target="_blank" class="pm-button pm-polymarket">🔵 ${pm.polymarket.name}</a>`;
+                    
+                    // Handle Polymarket markets (array)
+                    if (pm.polymarket && pm.polymarket.length > 0) {
+                        pm.polymarket.forEach(m => {
+                            pmHtml += `<a href="${m.url}" target="_blank" class="pm-button pm-polymarket">🔵 ${m.name}</a>`;
+                        });
                     }
+                    
                     pmContainer.innerHTML = pmHtml;
                 }
                 
