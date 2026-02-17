@@ -71,14 +71,14 @@ jobs:
         ]
         
         def fetch_fred_data(series_id, api_key):
-            """Fetch latest data from FRED API - 180 days (6 months)"""
+            """Fetch latest data from FRED API - 365 days (1 year)"""
             url = f"https://api.stlouisfed.org/fred/series/observations"
             params = {
                 'series_id': series_id,
                 'api_key': api_key,
                 'file_type': 'json',
                 'sort_order': 'desc',
-                'limit': 180  # 6 months of daily data
+                'limit': 365  # 1 year of daily data
             }
             try:
                 response = requests.get(url, params=params, timeout=30)
