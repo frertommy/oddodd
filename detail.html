@@ -767,17 +767,23 @@
         
         // Load market data
         async function loadMarketData() {
+            console.log('loadMarketData starting, marketName:', marketName);
             try {
                 const response = await fetch('data/latest.json');
+                console.log('Fetch response:', response.status);
                 if (!response.ok) throw new Error('Failed to load data');
                 
                 const data = await response.json();
+                console.log('Data loaded, markets:', data.markets.length);
                 marketData = data.markets.find(m => m.name === marketName);
                 
                 if (!marketData) {
+                    console.error('Market not found:', marketName);
                     document.getElementById('market-name').textContent = 'Market not found';
                     return;
                 }
+                
+                console.log('Found market:', marketData.display_name, 'history length:', marketData.history.length);
                 
                 // Update header
                 document.getElementById('market-name').textContent = marketData.display_name;
@@ -825,8 +831,8 @@
                 setRangePreset('30D');
                 
             } catch (error) {
-                console.error(error);
-                document.getElementById('market-name').textContent = 'Error loading data';
+                console.error('Error in loadMarketData:', error);
+                document.getElementById('market-name').textContent = 'Error loading data: ' + error.message;
             }
         }
         
