@@ -1,6 +1,1079 @@
 {
-  "markets": [],
-  "exported_at": "2026-02-17T07:27:39.236551",
+  "markets": [
+    {
+      "name": "brent_crude",
+      "display_name": "Brent Crude Oil",
+      "category": "commodity",
+      "unit": "USD/bbl",
+      "data_source": "fred",
+      "latest_value": 71.19,
+      "latest_timestamp": "2026-02-09",
+      "previous_value": 70.45,
+      "change_percent": 1.0503903477643646,
+      "change_absolute": 0.7399999999999949,
+      "history": [
+        {
+          "value": 71.19,
+          "timestamp": "2026-02-09"
+        },
+        {
+          "value": 70.45,
+          "timestamp": "2026-02-06"
+        },
+        {
+          "value": 69.87,
+          "timestamp": "2026-02-05"
+        },
+        {
+          "value": 71.15,
+          "timestamp": "2026-02-04"
+        },
+        {
+          "value": 70.01,
+          "timestamp": "2026-02-03"
+        },
+        {
+          "value": 67.72,
+          "timestamp": "2026-02-02"
+        },
+        {
+          "value": 72.25,
+          "timestamp": "2026-01-30"
+        },
+        {
+          "value": 71.0,
+          "timestamp": "2026-01-29"
+        },
+        {
+          "value": 70.9,
+          "timestamp": "2026-01-28"
+        },
+        {
+          "value": 70.28,
+          "timestamp": "2026-01-27"
+        }
+      ]
+    },
+    {
+      "name": "wti_crude",
+      "display_name": "WTI Crude Oil",
+      "category": "commodity",
+      "unit": "USD/bbl",
+      "data_source": "eia",
+      "latest_value": 64.53,
+      "latest_timestamp": "2026-02-09",
+      "previous_value": 63.77,
+      "change_percent": 1.1917829700486091,
+      "change_absolute": 0.759999999999998,
+      "history": [
+        {
+          "value": 64.53,
+          "timestamp": "2026-02-09"
+        },
+        {
+          "value": 63.77,
+          "timestamp": "2026-02-06"
+        },
+        {
+          "value": 62.9,
+          "timestamp": "2026-02-05"
+        },
+        {
+          "value": 64.56,
+          "timestamp": "2026-02-04"
+        },
+        {
+          "value": 62.62,
+          "timestamp": "2026-02-03"
+        },
+        {
+          "value": 61.6,
+          "timestamp": "2026-02-02"
+        },
+        {
+          "value": 64.5,
+          "timestamp": "2026-01-30"
+        },
+        {
+          "value": 64.77,
+          "timestamp": "2026-01-29"
+        },
+        {
+          "value": 62.75,
+          "timestamp": "2026-01-28"
+        },
+        {
+          "value": 62.04,
+          "timestamp": "2026-01-27"
+        }
+      ]
+    },
+    {
+      "name": "natural_gas",
+      "display_name": "Natural Gas Spot",
+      "category": "commodity",
+      "unit": "USD/mmbtu",
+      "data_source": "eia",
+      "latest_value": 3.25,
+      "latest_timestamp": "2026-02-09",
+      "previous_value": 4.37,
+      "change_percent": -25.62929061784897,
+      "change_absolute": -1.12,
+      "history": [
+        {
+          "value": 3.25,
+          "timestamp": "2026-02-09"
+        },
+        {
+          "value": 4.37,
+          "timestamp": "2026-02-06"
+        },
+        {
+          "value": 5.28,
+          "timestamp": "2026-02-05"
+        },
+        {
+          "value": 6.88,
+          "timestamp": "2026-02-04"
+        },
+        {
+          "value": 4.11,
+          "timestamp": "2026-02-03"
+        },
+        {
+          "value": 4.4,
+          "timestamp": "2026-02-02"
+        },
+        {
+          "value": 7.18,
+          "timestamp": "2026-01-30"
+        },
+        {
+          "value": 10.25,
+          "timestamp": "2026-01-29"
+        },
+        {
+          "value": 9.34,
+          "timestamp": "2026-01-28"
+        },
+        {
+          "value": 17.19,
+          "timestamp": "2026-01-27"
+        }
+      ]
+    },
+    {
+      "name": "gasoline",
+      "display_name": "US Gasoline Price",
+      "category": "commodity",
+      "unit": "USD/gallon",
+      "data_source": "fred",
+      "latest_value": 2.902,
+      "latest_timestamp": "2026-02-09",
+      "previous_value": 2.867,
+      "change_percent": 1.220788280432513,
+      "change_absolute": 0.03500000000000014,
+      "history": [
+        {
+          "value": 2.902,
+          "timestamp": "2026-02-09"
+        },
+        {
+          "value": 2.867,
+          "timestamp": "2026-02-02"
+        },
+        {
+          "value": 2.853,
+          "timestamp": "2026-01-26"
+        },
+        {
+          "value": 2.806,
+          "timestamp": "2026-01-19"
+        },
+        {
+          "value": 2.779,
+          "timestamp": "2026-01-12"
+        },
+        {
+          "value": 2.796,
+          "timestamp": "2026-01-05"
+        },
+        {
+          "value": 2.811,
+          "timestamp": "2025-12-29"
+        },
+        {
+          "value": 2.841,
+          "timestamp": "2025-12-22"
+        },
+        {
+          "value": 2.895,
+          "timestamp": "2025-12-15"
+        },
+        {
+          "value": 2.94,
+          "timestamp": "2025-12-08"
+        }
+      ]
+    },
+    {
+      "name": "sp500",
+      "display_name": "S&P 500",
+      "category": "financial",
+      "unit": "index",
+      "data_source": "fred",
+      "latest_value": 6836.17,
+      "latest_timestamp": "2026-02-13",
+      "previous_value": 6832.76,
+      "change_percent": 0.04990662631205918,
+      "change_absolute": 3.4099999999998545,
+      "history": [
+        {
+          "value": 6836.17,
+          "timestamp": "2026-02-13"
+        },
+        {
+          "value": 6832.76,
+          "timestamp": "2026-02-12"
+        },
+        {
+          "value": 6941.47,
+          "timestamp": "2026-02-11"
+        },
+        {
+          "value": 6941.81,
+          "timestamp": "2026-02-10"
+        },
+        {
+          "value": 6964.82,
+          "timestamp": "2026-02-09"
+        },
+        {
+          "value": 6932.3,
+          "timestamp": "2026-02-06"
+        },
+        {
+          "value": 6798.4,
+          "timestamp": "2026-02-05"
+        },
+        {
+          "value": 6882.72,
+          "timestamp": "2026-02-04"
+        },
+        {
+          "value": 6917.81,
+          "timestamp": "2026-02-03"
+        },
+        {
+          "value": 6976.44,
+          "timestamp": "2026-02-02"
+        }
+      ]
+    },
+    {
+      "name": "dow_jones",
+      "display_name": "Dow Jones Industrial",
+      "category": "financial",
+      "unit": "index",
+      "data_source": "fred",
+      "latest_value": 49500.93,
+      "latest_timestamp": "2026-02-13",
+      "previous_value": 49451.98,
+      "change_percent": 0.09898491425418575,
+      "change_absolute": 48.94999999999709,
+      "history": [
+        {
+          "value": 49500.93,
+          "timestamp": "2026-02-13"
+        },
+        {
+          "value": 49451.98,
+          "timestamp": "2026-02-12"
+        },
+        {
+          "value": 50121.4,
+          "timestamp": "2026-02-11"
+        },
+        {
+          "value": 50188.14,
+          "timestamp": "2026-02-10"
+        },
+        {
+          "value": 50135.87,
+          "timestamp": "2026-02-09"
+        },
+        {
+          "value": 50115.67,
+          "timestamp": "2026-02-06"
+        },
+        {
+          "value": 48908.72,
+          "timestamp": "2026-02-05"
+        },
+        {
+          "value": 49501.3,
+          "timestamp": "2026-02-04"
+        },
+        {
+          "value": 49240.99,
+          "timestamp": "2026-02-03"
+        },
+        {
+          "value": 49407.66,
+          "timestamp": "2026-02-02"
+        }
+      ]
+    },
+    {
+      "name": "nasdaq",
+      "display_name": "NASDAQ Composite",
+      "category": "financial",
+      "unit": "index",
+      "data_source": "fred",
+      "latest_value": 22546.67,
+      "latest_timestamp": "2026-02-13",
+      "previous_value": 22597.15,
+      "change_percent": -0.2233910028477184,
+      "change_absolute": -50.4800000000032,
+      "history": [
+        {
+          "value": 22546.67,
+          "timestamp": "2026-02-13"
+        },
+        {
+          "value": 22597.15,
+          "timestamp": "2026-02-12"
+        },
+        {
+          "value": 23066.47,
+          "timestamp": "2026-02-11"
+        },
+        {
+          "value": 23102.47,
+          "timestamp": "2026-02-10"
+        },
+        {
+          "value": 23238.67,
+          "timestamp": "2026-02-09"
+        },
+        {
+          "value": 23031.21,
+          "timestamp": "2026-02-06"
+        },
+        {
+          "value": 22540.59,
+          "timestamp": "2026-02-05"
+        },
+        {
+          "value": 22904.58,
+          "timestamp": "2026-02-04"
+        },
+        {
+          "value": 23255.19,
+          "timestamp": "2026-02-03"
+        },
+        {
+          "value": 23592.11,
+          "timestamp": "2026-02-02"
+        }
+      ]
+    },
+    {
+      "name": "vix",
+      "display_name": "VIX Volatility Index",
+      "category": "financial",
+      "unit": "index",
+      "data_source": "fred",
+      "latest_value": 20.82,
+      "latest_timestamp": "2026-02-12",
+      "previous_value": 17.65,
+      "change_percent": 17.960339943342788,
+      "change_absolute": 3.1700000000000017,
+      "history": [
+        {
+          "value": 20.82,
+          "timestamp": "2026-02-12"
+        },
+        {
+          "value": 17.65,
+          "timestamp": "2026-02-11"
+        },
+        {
+          "value": 17.79,
+          "timestamp": "2026-02-10"
+        },
+        {
+          "value": 17.36,
+          "timestamp": "2026-02-09"
+        },
+        {
+          "value": 17.76,
+          "timestamp": "2026-02-06"
+        },
+        {
+          "value": 21.77,
+          "timestamp": "2026-02-05"
+        },
+        {
+          "value": 18.64,
+          "timestamp": "2026-02-04"
+        },
+        {
+          "value": 18.0,
+          "timestamp": "2026-02-03"
+        },
+        {
+          "value": 16.34,
+          "timestamp": "2026-02-02"
+        },
+        {
+          "value": 17.44,
+          "timestamp": "2026-01-30"
+        }
+      ]
+    },
+    {
+      "name": "treasury_10y",
+      "display_name": "10-Year Treasury Yield",
+      "category": "financial",
+      "unit": "percent",
+      "data_source": "fred",
+      "latest_value": 4.09,
+      "latest_timestamp": "2026-02-12",
+      "previous_value": 4.18,
+      "change_percent": -2.1531100478468868,
+      "change_absolute": -0.08999999999999986,
+      "history": [
+        {
+          "value": 4.09,
+          "timestamp": "2026-02-12"
+        },
+        {
+          "value": 4.18,
+          "timestamp": "2026-02-11"
+        },
+        {
+          "value": 4.16,
+          "timestamp": "2026-02-10"
+        },
+        {
+          "value": 4.22,
+          "timestamp": "2026-02-09"
+        },
+        {
+          "value": 4.22,
+          "timestamp": "2026-02-06"
+        },
+        {
+          "value": 4.21,
+          "timestamp": "2026-02-05"
+        },
+        {
+          "value": 4.29,
+          "timestamp": "2026-02-04"
+        },
+        {
+          "value": 4.28,
+          "timestamp": "2026-02-03"
+        },
+        {
+          "value": 4.29,
+          "timestamp": "2026-02-02"
+        },
+        {
+          "value": 4.26,
+          "timestamp": "2026-01-30"
+        }
+      ]
+    },
+    {
+      "name": "treasury_2y",
+      "display_name": "2-Year Treasury Yield",
+      "category": "financial",
+      "unit": "percent",
+      "data_source": "fred",
+      "latest_value": 3.47,
+      "latest_timestamp": "2026-02-12",
+      "previous_value": 3.52,
+      "change_percent": -1.4204545454545403,
+      "change_absolute": -0.04999999999999982,
+      "history": [
+        {
+          "value": 3.47,
+          "timestamp": "2026-02-12"
+        },
+        {
+          "value": 3.52,
+          "timestamp": "2026-02-11"
+        },
+        {
+          "value": 3.45,
+          "timestamp": "2026-02-10"
+        },
+        {
+          "value": 3.48,
+          "timestamp": "2026-02-09"
+        },
+        {
+          "value": 3.5,
+          "timestamp": "2026-02-06"
+        },
+        {
+          "value": 3.47,
+          "timestamp": "2026-02-05"
+        },
+        {
+          "value": 3.57,
+          "timestamp": "2026-02-04"
+        },
+        {
+          "value": 3.57,
+          "timestamp": "2026-02-03"
+        },
+        {
+          "value": 3.57,
+          "timestamp": "2026-02-02"
+        },
+        {
+          "value": 3.52,
+          "timestamp": "2026-01-30"
+        }
+      ]
+    },
+    {
+      "name": "fed_funds",
+      "display_name": "Fed Funds Rate",
+      "category": "financial",
+      "unit": "percent",
+      "data_source": "fred",
+      "latest_value": 3.64,
+      "latest_timestamp": "2026-02-12",
+      "previous_value": 3.64,
+      "change_percent": 0.0,
+      "change_absolute": 0.0,
+      "history": [
+        {
+          "value": 3.64,
+          "timestamp": "2026-02-12"
+        },
+        {
+          "value": 3.64,
+          "timestamp": "2026-02-11"
+        },
+        {
+          "value": 3.64,
+          "timestamp": "2026-02-10"
+        },
+        {
+          "value": 3.64,
+          "timestamp": "2026-02-09"
+        },
+        {
+          "value": 3.64,
+          "timestamp": "2026-02-08"
+        },
+        {
+          "value": 3.64,
+          "timestamp": "2026-02-07"
+        },
+        {
+          "value": 3.64,
+          "timestamp": "2026-02-06"
+        },
+        {
+          "value": 3.64,
+          "timestamp": "2026-02-05"
+        },
+        {
+          "value": 3.64,
+          "timestamp": "2026-02-04"
+        },
+        {
+          "value": 3.64,
+          "timestamp": "2026-02-03"
+        }
+      ]
+    },
+    {
+      "name": "mortgage_30y",
+      "display_name": "30-Year Mortgage Rate",
+      "category": "financial",
+      "unit": "percent",
+      "data_source": "fred",
+      "latest_value": 6.09,
+      "latest_timestamp": "2026-02-12",
+      "previous_value": 6.11,
+      "change_percent": -0.3273322422258668,
+      "change_absolute": -0.020000000000000462,
+      "history": [
+        {
+          "value": 6.09,
+          "timestamp": "2026-02-12"
+        },
+        {
+          "value": 6.11,
+          "timestamp": "2026-02-05"
+        },
+        {
+          "value": 6.1,
+          "timestamp": "2026-01-29"
+        },
+        {
+          "value": 6.09,
+          "timestamp": "2026-01-22"
+        },
+        {
+          "value": 6.06,
+          "timestamp": "2026-01-15"
+        },
+        {
+          "value": 6.16,
+          "timestamp": "2026-01-08"
+        },
+        {
+          "value": 6.15,
+          "timestamp": "2025-12-31"
+        },
+        {
+          "value": 6.18,
+          "timestamp": "2025-12-24"
+        },
+        {
+          "value": 6.21,
+          "timestamp": "2025-12-18"
+        },
+        {
+          "value": 6.22,
+          "timestamp": "2025-12-11"
+        }
+      ]
+    },
+    {
+      "name": "dollar_index",
+      "display_name": "US Dollar Index",
+      "category": "financial",
+      "unit": "index",
+      "data_source": "fred",
+      "latest_value": 118.2407,
+      "latest_timestamp": "2026-02-06",
+      "previous_value": 118.5034,
+      "change_percent": -0.22168140323399607,
+      "change_absolute": -0.26269999999999527,
+      "history": [
+        {
+          "value": 118.2407,
+          "timestamp": "2026-02-06"
+        },
+        {
+          "value": 118.5034,
+          "timestamp": "2026-02-05"
+        },
+        {
+          "value": 118.2602,
+          "timestamp": "2026-02-04"
+        },
+        {
+          "value": 117.9764,
+          "timestamp": "2026-02-03"
+        },
+        {
+          "value": 118.3609,
+          "timestamp": "2026-02-02"
+        },
+        {
+          "value": 117.8996,
+          "timestamp": "2026-01-30"
+        },
+        {
+          "value": 117.4396,
+          "timestamp": "2026-01-29"
+        },
+        {
+          "value": 117.5117,
+          "timestamp": "2026-01-28"
+        },
+        {
+          "value": 117.4523,
+          "timestamp": "2026-01-27"
+        },
+        {
+          "value": 118.0525,
+          "timestamp": "2026-01-26"
+        }
+      ]
+    },
+    {
+      "name": "cpi",
+      "display_name": "Consumer Price Index",
+      "category": "economic",
+      "unit": "index",
+      "data_source": "fred",
+      "latest_value": 326.588,
+      "latest_timestamp": "2026-01-01",
+      "previous_value": 326.031,
+      "change_percent": 0.1708426499320667,
+      "change_absolute": 0.5570000000000164,
+      "history": [
+        {
+          "value": 326.588,
+          "timestamp": "2026-01-01"
+        },
+        {
+          "value": 326.031,
+          "timestamp": "2025-12-01"
+        },
+        {
+          "value": 325.063,
+          "timestamp": "2025-11-01"
+        },
+        {
+          "value": 324.245,
+          "timestamp": "2025-09-01"
+        },
+        {
+          "value": 323.291,
+          "timestamp": "2025-08-01"
+        },
+        {
+          "value": 322.169,
+          "timestamp": "2025-07-01"
+        },
+        {
+          "value": 321.435,
+          "timestamp": "2025-06-01"
+        },
+        {
+          "value": 320.62,
+          "timestamp": "2025-05-01"
+        },
+        {
+          "value": 320.302,
+          "timestamp": "2025-04-01"
+        }
+      ]
+    },
+    {
+      "name": "ppi",
+      "display_name": "Producer Price Index",
+      "category": "economic",
+      "unit": "index",
+      "data_source": "fred",
+      "latest_value": 260.686,
+      "latest_timestamp": "2025-12-01",
+      "previous_value": 261.358,
+      "change_percent": -0.25711858829652257,
+      "change_absolute": -0.6720000000000255,
+      "history": [
+        {
+          "value": 260.686,
+          "timestamp": "2025-12-01"
+        },
+        {
+          "value": 261.358,
+          "timestamp": "2025-11-01"
+        },
+        {
+          "value": 260.724,
+          "timestamp": "2025-10-01"
+        },
+        {
+          "value": 262.094,
+          "timestamp": "2025-09-01"
+        },
+        {
+          "value": 262.11,
+          "timestamp": "2025-08-01"
+        },
+        {
+          "value": 262.358,
+          "timestamp": "2025-07-01"
+        },
+        {
+          "value": 260.491,
+          "timestamp": "2025-06-01"
+        },
+        {
+          "value": 258.678,
+          "timestamp": "2025-05-01"
+        },
+        {
+          "value": 258.392,
+          "timestamp": "2025-04-01"
+        },
+        {
+          "value": 258.525,
+          "timestamp": "2025-03-01"
+        }
+      ]
+    },
+    {
+      "name": "unemployment_rate",
+      "display_name": "Unemployment Rate",
+      "category": "economic",
+      "unit": "percent",
+      "data_source": "fred",
+      "latest_value": 4.3,
+      "latest_timestamp": "2026-01-01",
+      "previous_value": 4.4,
+      "change_percent": -2.2727272727272845,
+      "change_absolute": -0.10000000000000053,
+      "history": [
+        {
+          "value": 4.3,
+          "timestamp": "2026-01-01"
+        },
+        {
+          "value": 4.4,
+          "timestamp": "2025-12-01"
+        },
+        {
+          "value": 4.5,
+          "timestamp": "2025-11-01"
+        },
+        {
+          "value": 4.4,
+          "timestamp": "2025-09-01"
+        },
+        {
+          "value": 4.3,
+          "timestamp": "2025-08-01"
+        },
+        {
+          "value": 4.3,
+          "timestamp": "2025-07-01"
+        },
+        {
+          "value": 4.1,
+          "timestamp": "2025-06-01"
+        },
+        {
+          "value": 4.3,
+          "timestamp": "2025-05-01"
+        },
+        {
+          "value": 4.2,
+          "timestamp": "2025-04-01"
+        }
+      ]
+    },
+    {
+      "name": "gdp",
+      "display_name": "Gross Domestic Product",
+      "category": "economic",
+      "unit": "USD billions",
+      "data_source": "fred",
+      "latest_value": 31098.027,
+      "latest_timestamp": "2025-07-01",
+      "previous_value": 30485.729,
+      "change_percent": 2.0084741945977376,
+      "change_absolute": 612.2979999999989,
+      "history": [
+        {
+          "value": 31098.027,
+          "timestamp": "2025-07-01"
+        },
+        {
+          "value": 30485.729,
+          "timestamp": "2025-04-01"
+        },
+        {
+          "value": 30042.113,
+          "timestamp": "2025-01-01"
+        },
+        {
+          "value": 29825.182,
+          "timestamp": "2024-10-01"
+        },
+        {
+          "value": 29511.664,
+          "timestamp": "2024-07-01"
+        },
+        {
+          "value": 29147.044,
+          "timestamp": "2024-04-01"
+        },
+        {
+          "value": 28708.161,
+          "timestamp": "2024-01-01"
+        },
+        {
+          "value": 28424.722,
+          "timestamp": "2023-10-01"
+        },
+        {
+          "value": 28074.846,
+          "timestamp": "2023-07-01"
+        },
+        {
+          "value": 27530.055,
+          "timestamp": "2023-04-01"
+        }
+      ]
+    },
+    {
+      "name": "consumer_sentiment",
+      "display_name": "Consumer Sentiment",
+      "category": "economic",
+      "unit": "index",
+      "data_source": "fred",
+      "latest_value": 52.9,
+      "latest_timestamp": "2025-12-01",
+      "previous_value": 51.0,
+      "change_percent": 3.7254901960784284,
+      "change_absolute": 1.8999999999999986,
+      "history": [
+        {
+          "value": 52.9,
+          "timestamp": "2025-12-01"
+        },
+        {
+          "value": 51.0,
+          "timestamp": "2025-11-01"
+        },
+        {
+          "value": 53.6,
+          "timestamp": "2025-10-01"
+        },
+        {
+          "value": 55.1,
+          "timestamp": "2025-09-01"
+        },
+        {
+          "value": 58.2,
+          "timestamp": "2025-08-01"
+        },
+        {
+          "value": 61.7,
+          "timestamp": "2025-07-01"
+        },
+        {
+          "value": 60.7,
+          "timestamp": "2025-06-01"
+        },
+        {
+          "value": 52.2,
+          "timestamp": "2025-05-01"
+        },
+        {
+          "value": 52.2,
+          "timestamp": "2025-04-01"
+        },
+        {
+          "value": 57.0,
+          "timestamp": "2025-03-01"
+        }
+      ]
+    },
+    {
+      "name": "jobless_claims",
+      "display_name": "Weekly Jobless Claims",
+      "category": "government",
+      "unit": "count",
+      "data_source": "fred",
+      "latest_value": 227000.0,
+      "latest_timestamp": "2026-02-07",
+      "previous_value": 232000.0,
+      "change_percent": -2.1551724137931036,
+      "change_absolute": -5000.0,
+      "history": [
+        {
+          "value": 227000.0,
+          "timestamp": "2026-02-07"
+        },
+        {
+          "value": 232000.0,
+          "timestamp": "2026-01-31"
+        },
+        {
+          "value": 209000.0,
+          "timestamp": "2026-01-24"
+        },
+        {
+          "value": 210000.0,
+          "timestamp": "2026-01-17"
+        },
+        {
+          "value": 199000.0,
+          "timestamp": "2026-01-10"
+        },
+        {
+          "value": 207000.0,
+          "timestamp": "2026-01-03"
+        },
+        {
+          "value": 200000.0,
+          "timestamp": "2025-12-27"
+        },
+        {
+          "value": 215000.0,
+          "timestamp": "2025-12-20"
+        },
+        {
+          "value": 224000.0,
+          "timestamp": "2025-12-13"
+        },
+        {
+          "value": 237000.0,
+          "timestamp": "2025-12-06"
+        }
+      ]
+    },
+    {
+      "name": "nonfarm_payrolls",
+      "display_name": "Nonfarm Payrolls",
+      "category": "government",
+      "unit": "count",
+      "data_source": "fred",
+      "latest_value": 158627.0,
+      "latest_timestamp": "2026-01-01",
+      "previous_value": 158497.0,
+      "change_percent": 0.0820204798829,
+      "change_absolute": 130.0,
+      "history": [
+        {
+          "value": 158627.0,
+          "timestamp": "2026-01-01"
+        },
+        {
+          "value": 158497.0,
+          "timestamp": "2025-12-01"
+        },
+        {
+          "value": 158449.0,
+          "timestamp": "2025-11-01"
+        },
+        {
+          "value": 158408.0,
+          "timestamp": "2025-10-01"
+        },
+        {
+          "value": 158548.0,
+          "timestamp": "2025-09-01"
+        },
+        {
+          "value": 158472.0,
+          "timestamp": "2025-08-01"
+        },
+        {
+          "value": 158542.0,
+          "timestamp": "2025-07-01"
+        },
+        {
+          "value": 158478.0,
+          "timestamp": "2025-06-01"
+        },
+        {
+          "value": 158498.0,
+          "timestamp": "2025-05-01"
+        },
+        {
+          "value": 158485.0,
+          "timestamp": "2025-04-01"
+        }
+      ]
+    }
+  ],
+  "exported_at": "2026-02-17T07:28:59.552838",
   "total_markets": 20,
-  "markets_with_data": 0
+  "markets_with_data": 20
 }
