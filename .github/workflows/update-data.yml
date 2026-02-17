@@ -27,6 +27,8 @@ jobs:
         pip install requests pandas matplotlib
         
     - name: Fetch market data
+      env:
+        FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
       run: |
         python << 'EOF'
         import requests
@@ -147,6 +149,8 @@ jobs:
         EOF
         
     - name: Generate charts
+      env:
+        FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
       run: |
         python << 'EOF'
         import matplotlib
