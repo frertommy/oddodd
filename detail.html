@@ -210,6 +210,18 @@
             margin-left: auto;
         }
         
+        .band-info {
+            font-size: 0.8rem;
+            color: #64748b;
+            background: rgba(15, 23, 42, 0.5);
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid rgba(255,255,255,0.05);
+            font-family: 'SF Mono', Monaco, monospace;
+        }
+        
+        .band-info:empty { display: none; }
+        
         /* Chart Section */
         .chart-section {
             background: rgba(30, 41, 59, 0.8);
@@ -393,10 +405,12 @@
                     <option value="index100">Start = 100</option>
                     <option value="pct">% Change</option>
                     <option value="minmax">Min-Max (0-100)</option>
+                    <option value="band6m_price">Band 6M (Price 100-900)</option>
+                    <option value="band6m_pct">Band 6M (% Move)</option>
                 </select>
             </div>
             
-            <div class="chart-legend" id="chart-legend"></div>
+            <div class="band-info" id="band-info"></div>
         </div>
         
         <div class="fallback-notice" id="fallback-notice">
@@ -448,6 +462,8 @@
             endDate: null,
             normalize: 'raw'
         };
+        
+        let currentBandInfo = null;
         
         // Prediction market mappings
         const predictionMarkets = {
@@ -522,15 +538,32 @@
             // Filter by range
             series = ChartUtils.filterByRange(series, state.startDate, state.endDate);
             
+            // Determine "to" date for band calculation (use end of visible range or last data point)
+            const toDate = state.endDate || (series.length > 0 ? series[series.length - 1].t : null);
+            
             // Normalize
-            series = ChartUtils.normalize(series, state.normalize);
+            const normResult = ChartUtils.normalize(series, state.normalize, fullSeries, toDate);
+            series = normResult.series;
+            currentBandInfo = normResult.bandInfo;
+            
+            // Update band info display
+            const bandInfoEl = document.getElementById('band-info');
+            if (currentBandInfo) {
+                bandInfoEl.textContent = ChartUtils.formatBandInfo(currentBandInfo);
+                bandInfoEl.style.display = 'block';
+            } else {
+                bandInfoEl.textContent = '';
+                bandInfoEl.style.display = 'none';
+            }
             
             // Update legend
             const normLabel = {
                 'raw': 'Raw',
                 'index100': 'Start=100',
                 'pct': '% Change',
-                'minmax': 'Min-Max'
+                'minmax': 'Min-Max',
+                'band6m_price': 'Band 6M (Price)',
+                'band6m_pct': 'Band 6M (%)'
             }[state.normalize];
             
             const rangeLabel = state.rangePreset || 'Custom';
@@ -585,7 +618,19 @@
                                 borderWidth: 1,
                                 callbacks: {
                                     label: function(context) {
-                                        return ChartUtils.formatValue(context.parsed.y, marketData.unit);
+                                        const dataPoint = series[context.dataIndex];
+                                        let label = '';
+                                        
+                                        // Show raw value for band modes
+                                        if (currentBandInfo && dataPoint.raw !== undefined) {
+                                            label += `Raw: ${ChartUtils.formatValue(dataPoint.raw, marketData.unit)} | `;
+                                        }
+                                        
+                                        // Show normalized value
+                                        label += ChartUtils.formatValue(context.parsed.y, 
+                                            currentBandInfo ? 'index' : marketData.unit);
+                                        
+                                        return label;
                                     }
                                 }
                             }
@@ -600,7 +645,8 @@
                                 ticks: {
                                     color: '#64748b',
                                     callback: function(value) {
-                                        return ChartUtils.formatValue(value, marketData.unit);
+                                        return ChartUtils.formatValue(value, 
+                                            currentBandInfo ? 'index' : marketData.unit);
                                     }
                                 }
                             }
@@ -627,8 +673,13 @@
             let html = '';
             reversed.forEach((row, index) => {
                 const prevRow = reversed[index + 1];
-                const change = prevRow ? row.v - prevRow.v : null;
-                const changePercent = prevRow ? ((row.v - prevRow.v) / prevRow.v * 100) : null;
+                
+                // Use raw value if available (for band modes), otherwise use normalized value
+                const currentVal = row.raw !== undefined ? row.raw : row.v;
+                const prevVal = prevRow ? (prevRow.raw !== undefined ? prevRow.raw : prevRow.v) : null;
+                
+                const change = prevVal !== null ? currentVal - prevVal : null;
+                const changePercent = prevVal !== null ? ((currentVal - prevVal) / prevVal * 100) : null;
                 
                 let changeText = '-';
                 let changeClass = 'neutral';
@@ -646,10 +697,16 @@
                     day: 'numeric'
                 });
                 
+                // Show both raw and normalized for band modes
+                let valueDisplay = ChartUtils.formatValue(currentVal, marketData.unit);
+                if (currentBandInfo && row.v !== currentVal) {
+                    valueDisplay += ` (${ChartUtils.formatValue(row.v, 'index')})`;
+                }
+                
                 html += `
                     <tr>
                         <td>${dateStr}</td>
-                        <td class="cell-value">${ChartUtils.formatValue(row.v, marketData.unit)}</td>
+                        <td class="cell-value">${valueDisplay}</td>
                         <td class="cell-change ${changeClass}">${changeText}</td>
                         <td class="cell-change ${changeClass}">${changePctText}</td>
                     </tr>

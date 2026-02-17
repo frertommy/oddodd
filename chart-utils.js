@@ -40,12 +40,63 @@ function filterByRange(series, start, end) {
 }
 
 /**
- * Normalize series based on mode
- * Modes: raw, index100, pct, minmax
+ * Compute 6-month trailing band bounds (L, U) based on "to" date
+ * Returns: { L, U, min6, max6, r, source: '6m'|'full' }
  */
-function normalize(series, mode) {
-    if (!series || series.length === 0) return [];
-    if (mode === 'raw') return series;
+function computeBandBounds(series, toDate) {
+    if (!series || series.length === 0) {
+        return { L: 0, U: 100, min6: 0, max6: 100, r: 100, source: 'full' };
+    }
+    
+    const end = toDate ? new Date(toDate) : series[series.length - 1].t;
+    const start6M = new Date(end);
+    start6M.setMonth(start6M.getMonth() - 6);
+    
+    // Get 6-month trailing window
+    const window6M = series.filter(p => p.t >= start6M && p.t <= end);
+    
+    let min6, max6, source;
+    
+    if (window6M.length >= 10) {
+        // Use 6-month window
+        const values6M = window6M.map(p => p.v);
+        min6 = Math.min(...values6M);
+        max6 = Math.max(...values6M);
+        source = '6m';
+    } else {
+        // Fallback to full series
+        const allValues = series.map(p => p.v);
+        min6 = Math.min(...allValues);
+        max6 = Math.max(...allValues);
+        source = 'full';
+    }
+    
+    const r = max6 - min6;
+    
+    // Add 50% padding on each side
+    const L = min6 - 0.5 * r;
+    const U = max6 + 0.5 * r;
+    
+    return { L, U, min6, max6, r, source };
+}
+
+/**
+ * Clamp value between min and max
+ */
+function clamp(val, min, max) {
+    return Math.max(min, Math.min(max, val));
+}
+
+/**
+ * Normalize series based on mode
+ * Modes: raw, index100, pct, minmax, band6m_price, band6m_pct
+ * 
+ * For band modes: fullSeries is the complete unfiltered series (needed for 6M calculation)
+ * toDate is the end date of the visible range
+ */
+function normalize(series, mode, fullSeries = null, toDate = null) {
+    if (!series || series.length === 0) return { series: [], bandInfo: null };
+    if (mode === 'raw') return { series, bandInfo: null };
     
     const values = series.map(p => p.v);
     const first = values[0];
@@ -53,21 +104,66 @@ function normalize(series, mode) {
     const max = Math.max(...values);
     const range = max - min;
     
-    return series.map(p => {
-        let v = p.v;
-        switch (mode) {
-            case 'index100':
-                v = first !== 0 ? (p.v / first) * 100 : 100;
-                break;
-            case 'pct':
-                v = first !== 0 ? ((p.v / first) - 1) * 100 : 0;
-                break;
-            case 'minmax':
-                v = range !== 0 ? ((p.v - min) / range) * 100 : 50;
-                break;
-        }
-        return { t: p.t, v };
+    // Standard normalization modes
+    if (mode !== 'band6m_price' && mode !== 'band6m_pct') {
+        const normalized = series.map(p => {
+            let v = p.v;
+            switch (mode) {
+                case 'index100':
+                    v = first !== 0 ? (p.v / first) * 100 : 100;
+                    break;
+                case 'pct':
+                    v = first !== 0 ? ((p.v / first) - 1) * 100 : 0;
+                    break;
+                case 'minmax':
+                    v = range !== 0 ? ((p.v - min) / range) * 100 : 50;
+                    break;
+            }
+            return { t: p.t, v };
+        });
+        return { series: normalized, bandInfo: null };
+    }
+    
+    // Band 6M modes
+    const useFullSeries = fullSeries || series;
+    const band = computeBandBounds(useFullSeries, toDate);
+    
+    // Normalize to P (100-900 range)
+    const P_series = series.map(p => {
+        const z = band.r > 0 ? (p.v - band.L) / (band.U - band.L) : 0.5;
+        const z_clamped = clamp(z, 0, 1);
+        const P = 100 + 800 * z_clamped;
+        return { t: p.t, v: P, raw: p.v };
     });
+    
+    if (mode === 'band6m_price') {
+        return { 
+            series: P_series, 
+            bandInfo: { ...band, mode: 'price' }
+        };
+    }
+    
+    // Band 6M (% Move)
+    const P0 = P_series[0].v;
+    const pct_series = P_series.map(p => ({
+        t: p.t,
+        v: P0 !== 0 ? ((p.v / P0) - 1) * 100 : 0,
+        raw: p.raw
+    }));
+    
+    return { 
+        series: pct_series, 
+        bandInfo: { ...band, mode: 'pct', P0 }
+    };
+}
+
+/**
+ * Format band info for display
+ */
+function formatBandInfo(bandInfo) {
+    if (!bandInfo) return '';
+    const sourceLabel = bandInfo.source === '6m' ? 'last 6M' : 'full series';
+    return `Band: ${sourceLabel} + 50% padding (L=${bandInfo.L.toFixed(2)}, U=${bandInfo.U.toFixed(2)})`;
 }
 
 /**
@@ -133,6 +229,9 @@ if (typeof window !== 'undefined') {
         parseSeries,
         filterByRange,
         normalize,
+        computeBandBounds,
+        formatBandInfo,
+        clamp,
         getPresetRange,
         formatValue,
         debounce,
