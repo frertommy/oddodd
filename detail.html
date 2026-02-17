@@ -908,7 +908,11 @@
         
         // Update YES% chart
         function updateYesChart() {
-            if (!fullSeries || fullSeries.length === 0) return;
+            console.log('updateYesChart called, fullSeries length:', fullSeries ? fullSeries.length : 0);
+            if (!fullSeries || fullSeries.length === 0) {
+                console.log('No data for YES% chart');
+                return;
+            }
             
             // Use same filtered series as main chart
             let series = aggregateData(fullSeries, state.timeframe);
