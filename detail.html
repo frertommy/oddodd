@@ -764,12 +764,14 @@
                 // Render prediction market links if available
                 const pmContainer = document.getElementById('prediction-markets');
                 const pm = predictionMarkets[marketData.name];
+                console.log('Market:', marketData.name, 'PM data:', pm);
                 if (pm && pmContainer) {
                     let pmHtml = '';
                     
                     // Handle Kalshi markets (array)
                     if (pm.kalshi && pm.kalshi.length > 0) {
                         pm.kalshi.forEach(m => {
+                            console.log('Kalshi URL:', m.url);
                             pmHtml += `<a href="${m.url}" target="_blank" class="pm-button pm-kalshi">🟢 ${m.name}</a>`;
                         });
                     }
@@ -777,6 +779,7 @@
                     // Handle Polymarket markets (array)
                     if (pm.polymarket && pm.polymarket.length > 0) {
                         pm.polymarket.forEach(m => {
+                            console.log('Polymarket URL:', m.url);
                             pmHtml += `<a href="${m.url}" target="_blank" class="pm-button pm-polymarket">🔵 ${m.name}</a>`;
                         });
                     }
