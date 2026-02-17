@@ -69,14 +69,14 @@ jobs:
         ]
         
         def fetch_fred_data(series_id, api_key):
-            """Fetch latest data from FRED API"""
+            """Fetch latest data from FRED API - 180 days (6 months)"""
             url = f"https://api.stlouisfed.org/fred/series/observations"
             params = {
                 'series_id': series_id,
                 'api_key': api_key,
                 'file_type': 'json',
                 'sort_order': 'desc',
-                'limit': 30
+                'limit': 180  # 6 months of daily data
             }
             try:
                 response = requests.get(url, params=params, timeout=30)
@@ -206,15 +206,21 @@ jobs:
             plt.close()
             print(f"Created {filename}")
         
-        # Generate charts
+        # Generate charts with extended history
         charts_to_generate = [
             ('SP500', 'S&P 500', 'sp500', '#60a5fa'),
             ('DGS10', '10-Year Treasury Yield', 'treasury_10y', '#a78bfa'),
             ('MORTGAGE30US', '30-Year Mortgage Rate', 'mortgage_30y', '#f472b6'),
             ('DFF', 'Fed Funds Rate', 'fed_funds', '#4ade80'),
+            ('DJIA', 'Dow Jones', 'dow_jones', '#fbbf24'),
+            ('NASDAQCOM', 'NASDAQ', 'nasdaq', '#34d399'),
+            ('VIXCLS', 'VIX', 'vix', '#f87171'),
+            ('DCOILWTICO', 'WTI Crude Oil', 'oil_wti', '#fb923c'),
+            ('UNRATE', 'Unemployment Rate', 'unemployment', '#a78bfa'),
+            ('CPIAUCSL', 'Consumer Price Index', 'cpi', '#60a5fa'),
         ]
         
-        days_map = {'30d': 30, '90d': 90, '180d': 180, '365d': 365, '1825d': 1825, '3650d': 3650}
+        days_map = {'30d': 30, '90d': 90, '180d': 180, '365d': 365}
         
         for series_id, title, filename_base, color in charts_to_generate:
             for suffix, days in days_map.items():
