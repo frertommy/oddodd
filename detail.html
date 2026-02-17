@@ -718,16 +718,22 @@
         // Load market data
         async function loadMarketData() {
             try {
+                console.log('Loading market data for:', marketName);
                 const response = await fetch('data/latest.json');
+                console.log('Response status:', response.status);
                 if (!response.ok) throw new Error('Failed to load data');
                 
                 const data = await response.json();
+                console.log('Data loaded, markets:', data.markets.length);
                 marketData = data.markets.find(m => m.name === marketName);
                 
                 if (!marketData) {
+                    console.error('Market not found:', marketName);
                     document.getElementById('market-name').textContent = 'Market not found';
                     return;
                 }
+                
+                console.log('Found market:', marketData.name);
                 
                 // Update header
                 document.getElementById('market-name').textContent = marketData.display_name;
