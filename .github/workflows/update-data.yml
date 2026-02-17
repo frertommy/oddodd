@@ -113,7 +113,7 @@ jobs:
                         change_percent = ((latest_value - previous_value) / previous_value * 100) if previous_value else None
                         
                         history = [{'value': float(obs['value']), 'timestamp': obs['date']} 
-                                  for obs in observations[:10] if obs['value'] != '.']
+                                  for obs in observations if obs['value'] != '.']
                         
                         results.append({
                             'name': market['name'],
