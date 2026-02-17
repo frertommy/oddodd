@@ -6,6 +6,7 @@
     <title>OddOdd - Market Data Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+    <script src="chart-utils.js"></script>
     <style>
         * {
             margin: 0;
@@ -53,6 +54,121 @@
             margin-top: 10px;
         }
         
+        /* Interactive Chart Panel */
+        .chart-panel {
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 30px;
+            display: none;
+        }
+        
+        .chart-panel.active {
+            display: block;
+        }
+        
+        .chart-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .chart-panel-title {
+            font-size: 1.3rem;
+            color: #e2e8f0;
+        }
+        
+        .close-panel {
+            background: rgba(248, 113, 113, 0.2);
+            border: 1px solid rgba(248, 113, 113, 0.3);
+            color: #f87171;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+        
+        .close-panel:hover {
+            background: rgba(248, 113, 113, 0.3);
+        }
+        
+        /* Chart Controls */
+        .chart-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+        
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .control-label {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            font-weight: 500;
+        }
+        
+        .range-presets {
+            display: flex;
+            gap: 4px;
+        }
+        
+        .range-btn {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #94a3b8;
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: all 0.2s;
+        }
+        
+        .range-btn:hover { color: #e2e8f0; border-color: rgba(255,255,255,0.2); }
+        .range-btn.active {
+            background: rgba(96, 165, 250, 0.2);
+            color: #60a5fa;
+            border-color: rgba(96, 165, 250, 0.3);
+        }
+        
+        select {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #e2e8f0;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-family: inherit;
+            cursor: pointer;
+        }
+        
+        select:focus {
+            outline: none;
+            border-color: rgba(96, 165, 250, 0.5);
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 400px;
+        }
+        
+        .chart-legend {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        /* Market Cards */
         .category {
             margin-bottom: 40px;
         }
@@ -95,6 +211,11 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.3);
         }
         
+        .market-card.active {
+            border-color: #60a5fa;
+            box-shadow: 0 0 20px rgba(96, 165, 250, 0.3);
+        }
+        
         .market-header {
             display: flex;
             justify-content: space-between;
@@ -116,34 +237,6 @@
             border-radius: 20px;
         }
         
-        .market-badges {
-            display: flex;
-            gap: 6px;
-            margin-top: 8px;
-        }
-        
-        .badge {
-            font-size: 0.7rem;
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-        }
-        
-        .badge-kalshi {
-            background: rgba(74, 222, 128, 0.2);
-            color: #4ade80;
-            border: 1px solid rgba(74, 222, 128, 0.3);
-        }
-        
-        .badge-polymarket {
-            background: rgba(96, 165, 250, 0.2);
-            color: #60a5fa;
-            border: 1px solid rgba(96, 165, 250, 0.3);
-        }
-        
         .market-value {
             font-size: 2.2rem;
             font-weight: 700;
@@ -160,82 +253,55 @@
             gap: 6px;
         }
         
-        .market-change.positive {
-            color: #4ade80;
-        }
+        .market-change.positive { color: #4ade80; }
+        .market-change.negative { color: #f87171; }
+        .market-change.neutral { color: #94a3b8; }
         
-        .market-change.negative {
-            color: #f87171;
-        }
-        
-        .market-change.neutral {
-            color: #94a3b8;
-        }
-        
-        .sparkline {
-            height: 40px;
-            margin-top: 15px;
-            opacity: 0.7;
-        }
-        
-        .market-time {
-            font-size: 0.8rem;
-            color: #64748b;
-            margin-top: 12px;
+        .market-badges {
             display: flex;
-            align-items: center;
             gap: 6px;
+            margin-top: 8px;
         }
         
-        .status-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: #4ade80;
-            animation: pulse 2s infinite;
+        .badge {
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-weight: 600;
         }
         
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+        .badge-kalshi {
+            background: rgba(74, 222, 128, 0.2);
+            color: #4ade80;
+            border: 1px solid rgba(74, 222, 128, 0.3);
         }
         
-        .no-data {
-            color: #64748b;
-            font-style: italic;
-        }
-        
-        footer {
-            text-align: center;
-            padding: 40px 0;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            margin-top: 40px;
-            color: #64748b;
-        }
-        
-        .stats-summary {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-        
-        .stat-item {
-            text-align: center;
-        }
-        
-        .stat-number {
-            font-size: 2rem;
-            font-weight: 700;
+        .badge-polymarket {
+            background: rgba(96, 165, 250, 0.2);
             color: #60a5fa;
+            border: 1px solid rgba(96, 165, 250, 0.3);
         }
         
-        .stat-label {
-            font-size: 0.9rem;
-            color: #94a3b8;
+        .view-detail-btn {
+            display: block;
+            width: 100%;
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(96, 165, 250, 0.1);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            color: #60a5fa;
+            border-radius: 8px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.2s;
         }
         
+        .view-detail-btn:hover {
+            background: rgba(96, 165, 250, 0.2);
+        }
+        
+        /* Static Charts Section */
         .charts-section {
             margin-top: 50px;
             padding-top: 40px;
@@ -275,24 +341,20 @@
             border-radius: 8px;
         }
         
-        .loading {
+        footer {
             text-align: center;
-            padding: 60px;
+            padding: 40px 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 40px;
             color: #64748b;
         }
         
         @media (max-width: 768px) {
-            h1 {
-                font-size: 1.8rem;
-            }
-            
-            .markets-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .chart-grid {
-                grid-template-columns: 1fr;
-            }
+            h1 { font-size: 1.8rem; }
+            .markets-grid { grid-template-columns: 1fr; }
+            .chart-grid { grid-template-columns: 1fr; }
+            .chart-container { height: 300px; }
+            .chart-controls { flex-direction: column; align-items: stretch; }
         }
     </style>
 </head>
@@ -304,23 +366,47 @@
             <p class="last-updated">Last updated: <span id="last-updated">Loading...</span></p>
         </header>
         
-        <div class="stats-summary">
-            <div class="stat-item">
-                <div class="stat-number" id="total-markets">-</div>
-                <div class="stat-label">Markets Tracked</div>
+        <!-- Interactive Chart Panel -->
+        <div class="chart-panel" id="chart-panel">
+            <div class="chart-panel-header">
+                <h2 class="chart-panel-title" id="panel-title">Select a market</h2>
+                <button class="close-panel" onclick="closeChartPanel()">Close ✕</button>
             </div>
-            <div class="stat-item">
-                <div class="stat-number" id="data-sources">-</div>
-                <div class="stat-label">Data Sources</div>
+            
+            <div class="chart-controls">
+                <div class="control-group">
+                    <span class="control-label">Range</span>
+                    <div class="range-presets">
+                        <button class="range-btn" data-range="7D" onclick="setPanelRange('7D')">7D</button>
+                        <button class="range-btn active" data-range="30D" onclick="setPanelRange('30D')">30D</button>
+                        <button class="range-btn" data-range="90D" onclick="setPanelRange('90D')">90D</button>
+                        <button class="range-btn" data-range="1Y" onclick="setPanelRange('1Y')">1Y</button>
+                        <button class="range-btn" data-range="MAX" onclick="setPanelRange('MAX')">MAX</button>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <span class="control-label">Normalize</span>
+                    <select id="panel-normalize" onchange="updatePanelChart()">
+                        <option value="raw">Raw</option>
+                        <option value="index100">Start = 100</option>
+                        <option value="pct">% Change</option>
+                        <option value="minmax">Min-Max (0-100)</option>
+                    </select>
+                </div>
             </div>
-            <div class="stat-item">
-                <div class="stat-number" id="markets-with-data">-</div>
-                <div class="stat-label">Active Markets</div>
+            
+            <div class="chart-container">
+                <canvas id="panelChart"></canvas>
             </div>
+            
+            <p class="chart-legend" id="panel-legend"></p>
+            
+            <a href="#" class="view-detail-btn" id="panel-detail-link">View Full Details →</a>
         </div>
         
         <div id="dashboard-content">
-            <div class="loading">Loading market data...</div>
+            <div class="loading" style="text-align: center; padding: 60px; color: #64748b;">Loading market data...</div>
         </div>
         
         <div class="charts-section">
@@ -331,28 +417,12 @@
                     <img src="charts/sp500_30d.png" alt="S&P 500 30 Day Chart" onerror="this.style.display='none'">
                 </div>
                 <div class="chart-card">
-                    <h3>S&P 500 - 90 Days</h3>
-                    <img src="charts/sp500_90d.png" alt="S&P 500 90 Day Chart" onerror="this.style.display='none'">
-                </div>
-                <div class="chart-card">
-                    <h3>S&P 500 - 1 Year</h3>
-                    <img src="charts/sp500_365d.png" alt="S&P 500 1 Year Chart" onerror="this.style.display='none'">
-                </div>
-                <div class="chart-card">
                     <h3>10-Year Treasury - 30 Days</h3>
                     <img src="charts/treasury_10y_30d.png" alt="Treasury 10Y 30 Day Chart" onerror="this.style.display='none'">
                 </div>
                 <div class="chart-card">
-                    <h3>10-Year Treasury - 1 Year</h3>
-                    <img src="charts/treasury_10y_365d.png" alt="Treasury 10Y 1 Year Chart" onerror="this.style.display='none'">
-                </div>
-                <div class="chart-card">
                     <h3>30-Year Mortgage - 30 Days</h3>
                     <img src="charts/mortgage_30y_30d.png" alt="Mortgage 30Y 30 Day Chart" onerror="this.style.display='none'">
-                </div>
-                <div class="chart-card">
-                    <h3>30-Year Mortgage - 1 Year</h3>
-                    <img src="charts/mortgage_30y_365d.png" alt="Mortgage 30Y 1 Year Chart" onerror="this.style.display='none'">
                 </div>
                 <div class="chart-card">
                     <h3>Fed Funds Rate - 30 Days</h3>
@@ -379,22 +449,45 @@
             'crypto': '₿'
         };
         
-        // Format value based on unit
+        // Prediction markets
+        const predictionMarkets = {
+            'jobless_claims': { kalshi: [{ name: 'Jobless Claims', url: 'https://kalshi.com/markets' }], polymarket: null },
+            'mortgage_30y': { kalshi: [{ name: 'Economic Indicators', url: 'https://kalshi.com/markets' }], polymarket: null },
+            'nfl_stats': { kalshi: [{ name: 'NFL Markets', url: 'https://kalshi.com/markets' }], polymarket: [{ name: 'NFL', url: 'https://polymarket.com/sports/nfl' }] },
+            'box_office': { kalshi: null, polymarket: [{ name: 'Box Office', url: 'https://polymarket.com/entertainment/box-office' }] },
+            'cpi_core': { kalshi: [{ name: 'CPI Markets', url: 'https://kalshi.com/markets' }], polymarket: [{ name: 'CPI', url: 'https://polymarket.com/economics' }] },
+            'nonfarm_payrolls': { kalshi: [{ name: 'NFP Markets', url: 'https://kalshi.com/markets' }], polymarket: [{ name: 'Nonfarm Payrolls', url: 'https://polymarket.com/economics' }] },
+            'fed_funds': { kalshi: [{ name: 'Fed Rate Markets', url: 'https://kalshi.com/markets' }], polymarket: [{ name: 'Fed Rate', url: 'https://polymarket.com/economics' }] },
+            'sp500': { kalshi: [{ name: 'S&P 500 Markets', url: 'https://kalshi.com/markets' }], polymarket: [{ name: 'S&P 500', url: 'https://polymarket.com/finance' }] },
+            'treasury_10y': { kalshi: [{ name: 'Treasury Markets', url: 'https://kalshi.com/markets' }], polymarket: [{ name: 'Treasury Yield', url: 'https://polymarket.com/finance' }] },
+            'consumer_sentiment': { kalshi: [{ name: 'Consumer Sentiment', url: 'https://kalshi.com/markets' }], polymarket: null },
+            'vix': { kalshi: [{ name: 'VIX Markets', url: 'https://kalshi.com/markets' }], polymarket: [{ name: 'VIX', url: 'https://polymarket.com/finance' }] },
+            'dow_jones': { kalshi: [{ name: 'Dow Jones Markets', url: 'https://kalshi.com/markets' }], polymarket: [{ name: 'Dow Jones', url: 'https://polymarket.com/finance' }] },
+            'nasdaq': { kalshi: [{ name: 'NASDAQ Markets', url: 'https://kalshi.com/markets' }], polymarket: [{ name: 'NASDAQ', url: 'https://polymarket.com/finance' }] },
+            'bitcoin': { kalshi: [{ name: 'Bitcoin Markets', url: 'https://kalshi.com/markets' }], polymarket: [{ name: 'Bitcoin', url: 'https://polymarket.com/crypto' }] },
+            'ethereum': { kalshi: [{ name: 'Ethereum Markets', url: 'https://kalshi.com/markets' }], polymarket: [{ name: 'Ethereum', url: 'https://polymarket.com/crypto' }] },
+            'unemployment_rate': { kalshi: [{ name: 'Unemployment Rate', url: 'https://kalshi.com/markets' }], polymarket: [{ name: 'Unemployment', url: 'https://polymarket.com/economics' }] },
+            'cpi': { kalshi: [{ name: 'CPI Markets', url: 'https://kalshi.com/markets' }], polymarket: [{ name: 'CPI', url: 'https://polymarket.com/economics' }] },
+            'gdp': { kalshi: [{ name: 'GDP Markets', url: 'https://kalshi.com/markets' }], polymarket: [{ name: 'GDP', url: 'https://polymarket.com/economics' }] }
+        };
+        
+        let allMarkets = [];
+        let panelChart = null;
+        let panelSeries = [];
+        let panelMarket = null;
+        let panelState = { range: '30D', normalize: 'raw' };
+        
+        // Format value
         function formatValue(value, unit) {
             if (value === null || value === undefined) return 'N/A';
             
-            if (unit.includes('USD') && !unit.includes('USD/')) {
-                return '$' + value.toFixed(2);
-            } else if (unit.includes('USD/')) {
-                return '$' + value.toFixed(2) + unit.replace('USD', '');
-            } else if (unit.includes('percent') || unit.includes('rate') || unit.includes('yield')) {
+            if (unit?.includes('percent') || unit?.includes('rate') || unit?.includes('yield')) {
                 return value.toFixed(2) + '%';
-            } else if (unit.includes('count') || unit.includes('index')) {
-                if (value >= 1000000) {
-                    return (value / 1000000).toFixed(2) + 'M';
-                } else if (value >= 1000) {
-                    return (value / 1000).toFixed(1) + 'K';
-                }
+            } else if (unit?.includes('USD') && !unit?.includes('USD/')) {
+                return '$' + value.toFixed(2);
+            } else if (unit?.includes('count') || unit?.includes('index')) {
+                if (value >= 1000000) return (value / 1000000).toFixed(2) + 'M';
+                if (value >= 1000) return (value / 1000).toFixed(1) + 'K';
                 return value.toLocaleString();
             }
             return value.toFixed(2);
@@ -409,222 +502,204 @@
             const changeClass = change > 0 ? 'positive' : change < 0 ? 'negative' : 'neutral';
             
             if (percent !== null && percent !== undefined) {
-                return {
-                    text: `${arrow} ${sign}${percent.toFixed(2)}%`,
-                    class: changeClass
-                };
+                return { text: `${arrow} ${sign}${percent.toFixed(2)}%`, class: changeClass };
             }
-            return {
-                text: `${arrow} ${sign}${change.toFixed(2)}`,
-                class: changeClass
-            };
+            return { text: `${arrow} ${sign}${change.toFixed(2)}`, class: changeClass };
         }
         
-        // Prediction market mappings - verified working URLs
-        const predictionMarkets = {
-            'jobless_claims': {
-                kalshi: [{ name: 'Jobless Claims', url: 'https://kalshi.com/markets' }],
-                polymarket: null
-            },
-            'mortgage_30y': {
-                kalshi: [{ name: 'Economic Indicators', url: 'https://kalshi.com/markets' }],
-                polymarket: null
-            },
-            'hdd_cdd': {
-                kalshi: [{ name: 'Weather Markets', url: 'https://kalshi.com/markets' }],
-                polymarket: null
-            },
-            'nfl_stats': {
-                kalshi: [{ name: 'NFL Markets', url: 'https://kalshi.com/markets' }],
-                polymarket: [{ name: 'NFL', url: 'https://polymarket.com/sports/nfl' }]
-            },
-            'box_office': {
-                kalshi: null,
-                polymarket: [{ name: 'Box Office', url: 'https://polymarket.com/entertainment/box-office' }]
-            },
-            'cpi_core': {
-                kalshi: [{ name: 'CPI Markets', url: 'https://kalshi.com/markets' }],
-                polymarket: [{ name: 'CPI', url: 'https://polymarket.com/economics' }]
-            },
-            'nonfarm_payrolls': {
-                kalshi: [{ name: 'NFP Markets', url: 'https://kalshi.com/markets' }],
-                polymarket: [{ name: 'Nonfarm Payrolls', url: 'https://polymarket.com/economics' }]
-            },
-            'fed_funds': {
-                kalshi: [{ name: 'Fed Rate Markets', url: 'https://kalshi.com/markets' }],
-                polymarket: [{ name: 'Fed Rate', url: 'https://polymarket.com/economics' }]
-            },
-            'sp500': {
-                kalshi: [{ name: 'S&P 500 Markets', url: 'https://kalshi.com/markets' }],
-                polymarket: [{ name: 'S&P 500', url: 'https://polymarket.com/finance' }]
-            },
-            'treasury_10y': {
-                kalshi: [{ name: 'Treasury Markets', url: 'https://kalshi.com/markets' }],
-                polymarket: [{ name: 'Treasury Yield', url: 'https://polymarket.com/finance' }]
-            },
-            'consumer_sentiment': {
-                kalshi: [{ name: 'Consumer Sentiment', url: 'https://kalshi.com/markets' }],
-                polymarket: null
-            },
-            'vix': {
-                kalshi: [{ name: 'VIX Markets', url: 'https://kalshi.com/markets' }],
-                polymarket: [{ name: 'VIX', url: 'https://polymarket.com/finance' }]
-            },
-            'dow_jones': {
-                kalshi: [{ name: 'Dow Jones Markets', url: 'https://kalshi.com/markets' }],
-                polymarket: [{ name: 'Dow Jones', url: 'https://polymarket.com/finance' }]
-            },
-            'nasdaq': {
-                kalshi: [{ name: 'NASDAQ Markets', url: 'https://kalshi.com/markets' }],
-                polymarket: [{ name: 'NASDAQ', url: 'https://polymarket.com/finance' }]
-            },
-            'bitcoin': {
-                kalshi: [{ name: 'Bitcoin Markets', url: 'https://kalshi.com/markets' }],
-                polymarket: [{ name: 'Bitcoin', url: 'https://polymarket.com/crypto' }]
-            },
-            'ethereum': {
-                kalshi: [{ name: 'Ethereum Markets', url: 'https://kalshi.com/markets' }],
-                polymarket: [{ name: 'Ethereum', url: 'https://polymarket.com/crypto' }]
-            },
-            'unemployment_rate': {
-                kalshi: [{ name: 'Unemployment Rate', url: 'https://kalshi.com/markets' }],
-                polymarket: [{ name: 'Unemployment', url: 'https://polymarket.com/economics' }]
-            },
-            'cpi': {
-                kalshi: [{ name: 'CPI Markets', url: 'https://kalshi.com/markets' }],
-                polymarket: [{ name: 'CPI', url: 'https://polymarket.com/economics' }]
-            },
-            'gdp': {
-                kalshi: [{ name: 'GDP Markets', url: 'https://kalshi.com/markets' }],
-                polymarket: [{ name: 'GDP', url: 'https://polymarket.com/economics' }]
-            }
-        };
-
-        // Create sparkline SVG
-        function createSparkline(data) {
-            if (!data || data.length < 2) return '';
-            
-            const width = 200;
-            const height = 40;
-            const padding = 2;
-            
-            const values = data.map(d => d.value);
-            const min = Math.min(...values);
-            const max = Math.max(...values);
-            const range = max - min || 1;
-            
-            const points = data.map((d, i) => {
-                const x = (i / (data.length - 1)) * width;
-                const y = height - ((d.value - min) / range) * (height - 2 * padding) - padding;
-                return `${x},${y}`;
-            }).join(' ');
-            
-            const color = values[values.length - 1] >= values[0] ? '#4ade80' : '#f87171';
-            
-            return `
-                <svg class="sparkline" viewBox="0 0 ${width} ${height}">
-                    <polyline fill="none" stroke="${color}" stroke-width="2" points="${points}"></polyline>
-                </svg>
-            `;
-        }
-        
-        // Load and render data
-        async function loadDashboard() {
-            try {
-                const response = await fetch('data/latest.json');
-                
-                if (!response.ok) {
-                    showPlaceholder();
-                    return;
-                }
-                
-                const data = await response.json();
-                renderDashboard(data);
-            } catch (error) {
-                showPlaceholder();
-            }
-        }
-        
-        function showPlaceholder() {
-            document.getElementById('dashboard-content').innerHTML = `
-                <div style="text-align: center; padding: 60px; color: #64748b;">
-                    <p style="font-size: 1.2rem; margin-bottom: 20px;">🚀 Dashboard is being set up</p>
-                    <p>Data will appear here once collection begins.</p>
-                </div>
-            `;
-        }
-        
-        function renderDashboard(data) {
-            // Group by category
-            const categories = {};
-            data.markets.forEach(market => {
-                if (!categories[market.category]) {
-                    categories[market.category] = [];
-                }
-                categories[market.category].push(market);
-            });
-            
-            // Render
-            let html = '';
-            for (const [category, markets] of Object.entries(categories)) {
-                const icon = categoryIcons[category] || '📊';
-                html += `
-                    <div class="category">
-                        <h2><span class="category-icon">${icon}</span> ${category} Markets</h2>
-                        <div class="markets-grid">
-                            ${markets.map(m => renderMarketCard(m)).join('')}
-                        </div>
-                    </div>
-                `;
-            }
-            
-            document.getElementById('dashboard-content').innerHTML = html;
-            document.getElementById('last-updated').textContent = new Date(data.exported_at).toLocaleString();
-            document.getElementById('total-markets').textContent = data.total_markets;
-            document.getElementById('data-sources').textContent = new Set(data.markets.map(m => m.data_source)).size;
-            document.getElementById('markets-with-data').textContent = data.markets_with_data;
-        }
-        
+        // Render market card
         function renderMarketCard(market) {
             const change = formatChange(market.change_absolute, market.change_percent);
-            const sparkline = market.history && market.history.length > 1 ? createSparkline(market.history) : '';
-            
-            // Check for prediction markets
             const pm = predictionMarkets[market.name];
+            
             let badgesHtml = '';
             if (pm) {
                 badgesHtml = '<div class="market-badges">';
-                if (pm.kalshi && pm.kalshi.length > 0) {
-                    badgesHtml += `<span class="badge badge-kalshi">🟢 Kalshi</span>`;
-                }
-                if (pm.polymarket && pm.polymarket.length > 0) {
-                    badgesHtml += `<span class="badge badge-polymarket">🔵 Polymarket</span>`;
-                }
+                if (pm.kalshi?.length) badgesHtml += '<span class="badge badge-kalshi">🟢 Kalshi</span>';
+                if (pm.polymarket?.length) badgesHtml += '<span class="badge badge-polymarket">🔵 Polymarket</span>';
                 badgesHtml += '</div>';
             }
             
             return `
-                <div class="market-card" onclick="window.location.href='detail.html?market=${market.name}'">
+                <div class="market-card" data-market="${market.name}" onclick="openChartPanel('${market.name}')">
                     <div class="market-header">
                         <span class="market-name">${market.display_name}</span>
                         <span class="market-unit">${market.unit}</span>
                     </div>
-                    
                     <div class="market-value">${formatValue(market.latest_value, market.unit)}</div>
-                    
-                    <div class="market-change ${change.class}">
-                        ${change.text}
-                    </div>
-                    
+                    <div class="market-change ${change.class}">${change.text}</div>
                     ${badgesHtml}
-                    ${sparkline}
-                    
-                    <div class="market-time">
-                        <span class="status-dot"></span>
-                        ${market.latest_timestamp ? new Date(market.latest_timestamp).toLocaleDateString() : 'No data'}
-                    </div>
+                    <a href="detail.html?market=${market.name}" class="view-detail-btn" onclick="event.stopPropagation()">View Details →</a>
                 </div>
             `;
+        }
+        
+        // Open chart panel
+        function openChartPanel(marketName) {
+            const market = allMarkets.find(m => m.name === marketName);
+            if (!market) return;
+            
+            panelMarket = market;
+            panelSeries = ChartUtils.parseSeries(market.history);
+            
+            document.getElementById('panel-title').textContent = market.display_name;
+            document.getElementById('panel-detail-link').href = `detail.html?market=${market.name}`;
+            document.getElementById('chart-panel').classList.add('active');
+            
+            // Highlight active card
+            document.querySelectorAll('.market-card').forEach(card => card.classList.remove('active'));
+            document.querySelector(`[data-market="${marketName}"]`)?.classList.add('active');
+            
+            // Scroll to panel
+            document.getElementById('chart-panel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            
+            updatePanelChart();
+        }
+        
+        // Close chart panel
+        function closeChartPanel() {
+            document.getElementById('chart-panel').classList.remove('active');
+            document.querySelectorAll('.market-card').forEach(card => card.classList.remove('active'));
+        }
+        
+        // Set panel range
+        function setPanelRange(range) {
+            panelState.range = range;
+            
+            document.querySelectorAll('#chart-panel .range-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.range === range);
+            });
+            
+            updatePanelChart();
+        }
+        
+        // Update panel chart
+        function updatePanelChart() {
+            if (!panelSeries || panelSeries.length === 0 || !panelMarket) return;
+            
+            panelState.normalize = document.getElementById('panel-normalize').value;
+            
+            // Apply range
+            let series = [...panelSeries];
+            if (panelState.range !== 'MAX') {
+                const range = ChartUtils.getPresetRange(panelState.range, series);
+                series = ChartUtils.filterByRange(series, range.start, range.end);
+            }
+            
+            // Apply normalization
+            series = ChartUtils.normalize(series, panelState.normalize);
+            
+            // Update legend
+            const normLabel = {
+                'raw': 'Raw',
+                'index100': 'Start=100',
+                'pct': '% Change',
+                'minmax': 'Min-Max'
+            }[panelState.normalize];
+            document.getElementById('panel-legend').textContent = 
+                `${panelMarket.display_name} (${normLabel}, ${panelState.range})`;
+            
+            // Render chart
+            const ctx = document.getElementById('panelChart').getContext('2d');
+            const labels = series.map(p => p.t.toISOString().split('T')[0]);
+            const values = series.map(p => p.v);
+            const color = values.length > 1 && values[values.length - 1] >= values[0] ? '#4ade80' : '#f87171';
+            
+            if (panelChart) {
+                panelChart.data.labels = labels;
+                panelChart.data.datasets[0].data = values;
+                panelChart.data.datasets[0].borderColor = color;
+                panelChart.data.datasets[0].backgroundColor = color + '20';
+                panelChart.update('none');
+            } else {
+                panelChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: panelMarket.display_name,
+                            data: values,
+                            borderColor: color,
+                            backgroundColor: color + '20',
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 0,
+                            pointHoverRadius: 6,
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        interaction: { intersect: false, mode: 'index' },
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                backgroundColor: '#1e293b',
+                                titleColor: '#e2e8f0',
+                                bodyColor: '#e2e8f0',
+                                borderColor: 'rgba(255,255,255,0.1)',
+                                borderWidth: 1,
+                                callbacks: {
+                                    label: (ctx) => formatValue(ctx.parsed.y, panelMarket.unit)
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: { color: 'rgba(255,255,255,0.05)' },
+                                ticks: { color: '#64748b', maxTicksLimit: 6 }
+                            },
+                            y: {
+                                grid: { color: 'rgba(255,255,255,0.05)' },
+                                ticks: {
+                                    color: '#64748b',
+                                    callback: (val) => formatValue(val, panelMarket.unit)
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+        
+        // Load dashboard
+        async function loadDashboard() {
+            try {
+                const response = await fetch('data/latest.json');
+                if (!response.ok) throw new Error('Failed to load');
+                
+                const data = await response.json();
+                allMarkets = data.markets;
+                
+                // Group by category
+                const categories = {};
+                allMarkets.forEach(m => {
+                    if (!categories[m.category]) categories[m.category] = [];
+                    categories[m.category].push(m);
+                });
+                
+                // Render
+                let html = '';
+                for (const [category, markets] of Object.entries(categories)) {
+                    const icon = categoryIcons[category] || '📊';
+                    html += `
+                        <div class="category">
+                            <h2><span class="category-icon">${icon}</span> ${category} Markets</h2>
+                            <div class="markets-grid">
+                                ${markets.map(m => renderMarketCard(m)).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                document.getElementById('dashboard-content').innerHTML = html;
+                document.getElementById('last-updated').textContent = new Date(data.exported_at).toLocaleString();
+                
+            } catch (error) {
+                console.error(error);
+                document.getElementById('dashboard-content').innerHTML = '<div style="text-align: center; padding: 60px; color: #64748b;">Error loading data</div>';
+            }
         }
         
         // Load on page load

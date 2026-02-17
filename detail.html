@@ -6,6 +6,7 @@
     <title>Market Detail - OddOdd</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+    <script src="chart-utils.js"></script>
     <style>
         * {
             margin: 0;
@@ -89,24 +90,159 @@
             margin-top: 5px;
         }
         
-        .change-display.positive {
-            color: #4ade80;
+        .change-display.positive { color: #4ade80; }
+        .change-display.negative { color: #f87171; }
+        .change-display.neutral { color: #94a3b8; }
+        
+        /* Chart Controls */
+        .chart-controls {
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: center;
         }
         
-        .change-display.negative {
-            color: #f87171;
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
-        .change-display.neutral {
+        .control-label {
+            font-size: 0.85rem;
             color: #94a3b8;
+            font-weight: 500;
         }
         
+        .timeframe-toggle {
+            display: flex;
+            gap: 4px;
+            background: rgba(15, 23, 42, 0.5);
+            padding: 4px;
+            border-radius: 8px;
+        }
+        
+        .timeframe-btn {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+        
+        .timeframe-btn:hover { color: #e2e8f0; }
+        .timeframe-btn.active {
+            background: rgba(96, 165, 250, 0.2);
+            color: #60a5fa;
+        }
+        
+        .range-presets {
+            display: flex;
+            gap: 4px;
+        }
+        
+        .range-btn {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #94a3b8;
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: all 0.2s;
+        }
+        
+        .range-btn:hover { color: #e2e8f0; border-color: rgba(255,255,255,0.2); }
+        .range-btn.active {
+            background: rgba(96, 165, 250, 0.2);
+            color: #60a5fa;
+            border-color: rgba(96, 165, 250, 0.3);
+        }
+        
+        .date-inputs {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .date-input {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #e2e8f0;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-family: inherit;
+        }
+        
+        .date-input:focus {
+            outline: none;
+            border-color: rgba(96, 165, 250, 0.5);
+        }
+        
+        select {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #e2e8f0;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-family: inherit;
+            cursor: pointer;
+        }
+        
+        select:focus {
+            outline: none;
+            border-color: rgba(96, 165, 250, 0.5);
+        }
+        
+        .chart-legend {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            margin-left: auto;
+        }
+        
+        /* Chart Section */
         .chart-section {
             background: rgba(30, 41, 59, 0.8);
             border-radius: 16px;
             padding: 24px;
             border: 1px solid rgba(255,255,255,0.1);
             margin-bottom: 30px;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 400px;
+        }
+        
+        .fallback-notice {
+            background: rgba(251, 191, 36, 0.1);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            color: #fbbf24;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            margin-bottom: 16px;
+            display: none;
+        }
+        
+        .fallback-notice.visible { display: block; }
+        
+        /* Data Table */
+        .data-table-section {
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid rgba(255,255,255,0.1);
         }
         
         .section-header {
@@ -121,89 +257,6 @@
         .section-title {
             font-size: 1.2rem;
             color: #e2e8f0;
-        }
-        
-        .timeframe-toggle {
-            display: flex;
-            gap: 8px;
-            background: rgba(15, 23, 42, 0.5);
-            padding: 4px;
-            border-radius: 8px;
-        }
-        
-        .timeframe-btn {
-            background: transparent;
-            border: none;
-            color: #94a3b8;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            transition: all 0.2s;
-        }
-        
-        .timeframe-btn:hover {
-            color: #e2e8f0;
-        }
-        
-        .timeframe-btn.active {
-            background: rgba(96, 165, 250, 0.2);
-            color: #60a5fa;
-        }
-        
-        .chart-container {
-            position: relative;
-            height: 400px;
-        }
-        
-        .prediction-markets {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-        
-        .pm-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 16px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: all 0.2s;
-        }
-        
-        .pm-button:hover {
-            transform: translateY(-2px);
-        }
-        
-        .pm-kalshi {
-            background: rgba(74, 222, 128, 0.15);
-            color: #4ade80;
-            border: 1px solid rgba(74, 222, 128, 0.3);
-        }
-        
-        .pm-kalshi:hover {
-            background: rgba(74, 222, 128, 0.25);
-        }
-        
-        .pm-polymarket {
-            background: rgba(96, 165, 250, 0.15);
-            color: #60a5fa;
-            border: 1px solid rgba(96, 165, 250, 0.3);
-        }
-        
-        .pm-polymarket:hover {
-            background: rgba(96, 165, 250, 0.25);
-        }
-        
-        .data-table-section {
-            background: rgba(30, 41, 59, 0.8);
-            border-radius: 16px;
-            padding: 24px;
-            border: 1px solid rgba(255,255,255,0.1);
         }
         
         .table-container {
@@ -230,56 +283,60 @@
             letter-spacing: 0.5px;
         }
         
-        td {
-            color: #e2e8f0;
-        }
-        
-        tr:hover {
-            background: rgba(96, 165, 250, 0.05);
-        }
+        td { color: #e2e8f0; }
+        tr:hover { background: rgba(96, 165, 250, 0.05); }
         
         .cell-value {
             font-family: 'SF Mono', Monaco, monospace;
             font-weight: 600;
         }
         
-        .cell-change {
-            text-align: right;
+        .cell-change { text-align: right; }
+        .cell-change.positive { color: #4ade80; }
+        .cell-change.negative { color: #f87171; }
+        
+        /* Prediction Markets */
+        .prediction-markets {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
         }
         
-        .cell-change.positive {
+        .pm-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .pm-button:hover { transform: translateY(-2px); }
+        
+        .pm-kalshi {
+            background: rgba(74, 222, 128, 0.15);
             color: #4ade80;
+            border: 1px solid rgba(74, 222, 128, 0.3);
         }
+        .pm-kalshi:hover { background: rgba(74, 222, 128, 0.25); }
         
-        .cell-change.negative {
-            color: #f87171;
+        .pm-polymarket {
+            background: rgba(96, 165, 250, 0.15);
+            color: #60a5fa;
+            border: 1px solid rgba(96, 165, 250, 0.3);
         }
-        
-        .loading {
-            text-align: center;
-            padding: 60px;
-            color: #64748b;
-        }
-        
-        .error {
-            text-align: center;
-            padding: 60px;
-            color: #f87171;
-        }
+        .pm-polymarket:hover { background: rgba(96, 165, 250, 0.25); }
         
         @media (max-width: 768px) {
-            .value-display {
-                font-size: 1.8rem;
-            }
-            
-            .chart-container {
-                height: 300px;
-            }
-            
-            .section-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
+            .value-display { font-size: 1.8rem; }
+            .chart-container { height: 300px; }
+            .chart-controls { flex-direction: column; align-items: stretch; }
+            .control-group { justify-content: space-between; }
+            .chart-legend { margin-left: 0; text-align: center; }
         }
     </style>
 </head>
@@ -297,16 +354,56 @@
             </div>
         </header>
         
-        <div class="chart-section">
-            <div class="section-header">
-                <h2 class="section-title">📈 Price Chart</h2>
+        <div id="prediction-markets" class="prediction-markets"></div>
+        
+        <div class="chart-controls">
+            <div class="control-group">
+                <span class="control-label">Frequency</span>
                 <div class="timeframe-toggle">
                     <button class="timeframe-btn active" data-tf="daily">Daily</button>
                     <button class="timeframe-btn" data-tf="weekly">Weekly</button>
                     <button class="timeframe-btn" data-tf="monthly">Monthly</button>
                 </div>
             </div>
-            <div id="prediction-markets" class="prediction-markets"></div>
+            
+            <div class="control-group">
+                <span class="control-label">Range</span>
+                <div class="range-presets">
+                    <button class="range-btn" data-range="7D">7D</button>
+                    <button class="range-btn active" data-range="30D">30D</button>
+                    <button class="range-btn" data-range="90D">90D</button>
+                    <button class="range-btn" data-range="1Y">1Y</button>
+                    <button class="range-btn" data-range="MAX">MAX</button>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <span class="control-label">From</span>
+                <div class="date-inputs">
+                    <input type="date" class="date-input" id="date-start">
+                    <span style="color: #64748b;">to</span>
+                    <input type="date" class="date-input" id="date-end">
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <span class="control-label">Normalize</span>
+                <select id="normalize-select">
+                    <option value="raw">Raw</option>
+                    <option value="index100">Start = 100</option>
+                    <option value="pct">% Change</option>
+                    <option value="minmax">Min-Max (0-100)</option>
+                </select>
+            </div>
+            
+            <div class="chart-legend" id="chart-legend"></div>
+        </div>
+        
+        <div class="fallback-notice" id="fallback-notice">
+            Showing daily data. Weekly/monthly data not available for this market.
+        </div>
+        
+        <div class="chart-section">
             <div class="chart-container">
                 <canvas id="priceChart"></canvas>
             </div>
@@ -315,11 +412,6 @@
         <div class="data-table-section">
             <div class="section-header">
                 <h2 class="section-title">📊 Historical Data</h2>
-                <div class="timeframe-toggle">
-                    <button class="timeframe-btn active" data-table-tf="daily">Daily</button>
-                    <button class="timeframe-btn" data-table-tf="weekly">Weekly</button>
-                    <button class="timeframe-btn" data-table-tf="monthly">Monthly</button>
-                </div>
             </div>
             <div class="table-container">
                 <table id="data-table">
@@ -346,199 +438,42 @@
         
         let marketData = null;
         let chartInstance = null;
-        let allHistory = [];
+        let fullSeries = [];
         
-        // Prediction market mappings - verified working URLs
-        const predictionMarkets = {
-            'jobless_claims': {
-                kalshi: [
-                    { name: 'Jobless Claims', url: 'https://kalshi.com/markets' }
-                ],
-                polymarket: null
-            },
-            'mortgage_30y': {
-                kalshi: [
-                    { name: 'Economic Indicators', url: 'https://kalshi.com/markets' }
-                ],
-                polymarket: null
-            },
-            'hdd_cdd': {
-                kalshi: [
-                    { name: 'Weather Markets', url: 'https://kalshi.com/markets' }
-                ],
-                polymarket: null
-            },
-            'nfl_stats': {
-                kalshi: [
-                    { name: 'NFL Markets', url: 'https://kalshi.com/markets' }
-                ],
-                polymarket: [
-                    { name: 'NFL', url: 'https://polymarket.com/sports/nfl' }
-                ]
-            },
-            'box_office': {
-                kalshi: null,
-                polymarket: [
-                    { name: 'Box Office', url: 'https://polymarket.com/entertainment/box-office' }
-                ]
-            },
-            'cpi_core': {
-                kalshi: [
-                    { name: 'CPI Markets', url: 'https://kalshi.com/markets' }
-                ],
-                polymarket: [
-                    { name: 'CPI', url: 'https://polymarket.com/economics' }
-                ]
-            },
-            'nonfarm_payrolls': {
-                kalshi: [
-                    { name: 'NFP Markets', url: 'https://kalshi.com/markets' }
-                ],
-                polymarket: [
-                    { name: 'Nonfarm Payrolls', url: 'https://polymarket.com/economics' }
-                ]
-            },
-            'fed_funds': {
-                kalshi: [
-                    { name: 'Fed Rate Markets', url: 'https://kalshi.com/markets' }
-                ],
-                polymarket: [
-                    { name: 'Fed Rate', url: 'https://polymarket.com/economics' }
-                ]
-            },
-            'sp500': {
-                kalshi: [
-                    { name: 'S&P 500 Markets', url: 'https://kalshi.com/markets' }
-                ],
-                polymarket: [
-                    { name: 'S&P 500', url: 'https://polymarket.com/finance' }
-                ]
-            },
-            'treasury_10y': {
-                kalshi: [
-                    { name: 'Treasury Markets', url: 'https://kalshi.com/markets' }
-                ],
-                polymarket: [
-                    { name: 'Treasury Yield', url: 'https://polymarket.com/finance' }
-                ]
-            },
-            'consumer_sentiment': {
-                kalshi: [
-                    { name: 'Consumer Sentiment', url: 'https://kalshi.com/markets' }
-                ],
-                polymarket: null
-            },
-            'vix': {
-                kalshi: [
-                    { name: 'VIX Markets', url: 'https://kalshi.com/markets' }
-                ],
-                polymarket: [
-                    { name: 'VIX', url: 'https://polymarket.com/finance' }
-                ]
-            },
-            'dow_jones': {
-                kalshi: [
-                    { name: 'Dow Jones Markets', url: 'https://kalshi.com/markets' }
-                ],
-                polymarket: [
-                    { name: 'Dow Jones', url: 'https://polymarket.com/finance' }
-                ]
-            },
-            'nasdaq': {
-                kalshi: [
-                    { name: 'NASDAQ Markets', url: 'https://kalshi.com/markets' }
-                ],
-                polymarket: [
-                    { name: 'NASDAQ', url: 'https://polymarket.com/finance' }
-                ]
-            },
-            'bitcoin': {
-                kalshi: [
-                    { name: 'Bitcoin Markets', url: 'https://kalshi.com/markets' }
-                ],
-                polymarket: [
-                    { name: 'Bitcoin', url: 'https://polymarket.com/crypto' }
-                ]
-            },
-            'ethereum': {
-                kalshi: [
-                    { name: 'Ethereum Markets', url: 'https://kalshi.com/markets' }
-                ],
-                polymarket: [
-                    { name: 'Ethereum', url: 'https://polymarket.com/crypto' }
-                ]
-            },
-            'unemployment_rate': {
-                kalshi: [
-                    { name: 'Unemployment Rate', url: 'https://kalshi.com/markets' }
-                ],
-                polymarket: [
-                    { name: 'Unemployment', url: 'https://polymarket.com/economics' }
-                ]
-            },
-            'cpi': {
-                kalshi: [
-                    { name: 'CPI Markets', url: 'https://kalshi.com/markets' }
-                ],
-                polymarket: [
-                    { name: 'CPI', url: 'https://polymarket.com/economics' }
-                ]
-            },
-            'gdp': {
-                kalshi: [
-                    { name: 'GDP Markets', url: 'https://kalshi.com/markets' }
-                ],
-                polymarket: [
-                    { name: 'GDP', url: 'https://polymarket.com/economics' }
-                ]
-            }
+        // Current state
+        let state = {
+            timeframe: 'daily',
+            rangePreset: '30D',
+            startDate: null,
+            endDate: null,
+            normalize: 'raw'
         };
-
-        // Format value based on unit
-        function formatValue(value, unit) {
-            if (value === null || value === undefined) return 'N/A';
-            
-            if (unit.includes('USD') && !unit.includes('USD/')) {
-                return '$' + value.toFixed(2);
-            } else if (unit.includes('USD/')) {
-                return '$' + value.toFixed(2) + unit.replace('USD', '');
-            } else if (unit.includes('percent') || unit.includes('rate') || unit.includes('yield')) {
-                return value.toFixed(2) + '%';
-            } else if (unit.includes('count') || unit.includes('index')) {
-                if (value >= 1000000) {
-                    return (value / 1000000).toFixed(2) + 'M';
-                } else if (value >= 1000) {
-                    return (value / 1000).toFixed(1) + 'K';
-                }
-                return value.toLocaleString();
-            }
-            return value.toFixed(2);
-        }
         
-        // Format change
-        function formatChange(change, percent) {
-            if (change === null || change === undefined) return { text: '−', class: 'neutral' };
-            
-            const sign = change > 0 ? '+' : '';
-            const arrow = change > 0 ? '▲' : change < 0 ? '▼' : '−';
-            const changeClass = change > 0 ? 'positive' : change < 0 ? 'negative' : 'neutral';
-            
-            if (percent !== null && percent !== undefined) {
-                return {
-                    text: `${arrow} ${sign}${percent.toFixed(2)}%`,
-                    class: changeClass
-                };
-            }
-            return {
-                text: `${arrow} ${sign}${change.toFixed(2)}`,
-                class: changeClass
-            };
-        }
+        // Prediction market mappings
+        const predictionMarkets = {
+            'jobless_claims': { kalshi: [{ name: 'Jobless Claims', url: 'https://kalshi.com/markets' }], polymarket: null },
+            'mortgage_30y': { kalshi: [{ name: 'Economic Indicators', url: 'https://kalshi.com/markets' }], polymarket: null },
+            'nfl_stats': { kalshi: [{ name: 'NFL Markets', url: 'https://kalshi.com/markets' }], polymarket: [{ name: 'NFL', url: 'https://polymarket.com/sports/nfl' }] },
+            'box_office': { kalshi: null, polymarket: [{ name: 'Box Office', url: 'https://polymarket.com/entertainment/box-office' }] },
+            'cpi_core': { kalshi: [{ name: 'CPI Markets', url: 'https://kalshi.com/markets' }], polymarket: [{ name: 'CPI', url: 'https://polymarket.com/economics' }] },
+            'nonfarm_payrolls': { kalshi: [{ name: 'NFP Markets', url: 'https://kalshi.com/markets' }], polymarket: [{ name: 'Nonfarm Payrolls', url: 'https://polymarket.com/economics' }] },
+            'fed_funds': { kalshi: [{ name: 'Fed Rate Markets', url: 'https://kalshi.com/markets' }], polymarket: [{ name: 'Fed Rate', url: 'https://polymarket.com/economics' }] },
+            'sp500': { kalshi: [{ name: 'S&P 500 Markets', url: 'https://kalshi.com/markets' }], polymarket: [{ name: 'S&P 500', url: 'https://polymarket.com/finance' }] },
+            'treasury_10y': { kalshi: [{ name: 'Treasury Markets', url: 'https://kalshi.com/markets' }], polymarket: [{ name: 'Treasury Yield', url: 'https://polymarket.com/finance' }] },
+            'consumer_sentiment': { kalshi: [{ name: 'Consumer Sentiment', url: 'https://kalshi.com/markets' }], polymarket: null },
+            'vix': { kalshi: [{ name: 'VIX Markets', url: 'https://kalshi.com/markets' }], polymarket: [{ name: 'VIX', url: 'https://polymarket.com/finance' }] },
+            'dow_jones': { kalshi: [{ name: 'Dow Jones Markets', url: 'https://kalshi.com/markets' }], polymarket: [{ name: 'Dow Jones', url: 'https://polymarket.com/finance' }] },
+            'nasdaq': { kalshi: [{ name: 'NASDAQ Markets', url: 'https://kalshi.com/markets' }], polymarket: [{ name: 'NASDAQ', url: 'https://polymarket.com/finance' }] },
+            'bitcoin': { kalshi: [{ name: 'Bitcoin Markets', url: 'https://kalshi.com/markets' }], polymarket: [{ name: 'Bitcoin', url: 'https://polymarket.com/crypto' }] },
+            'ethereum': { kalshi: [{ name: 'Ethereum Markets', url: 'https://kalshi.com/markets' }], polymarket: [{ name: 'Ethereum', url: 'https://polymarket.com/crypto' }] },
+            'unemployment_rate': { kalshi: [{ name: 'Unemployment Rate', url: 'https://kalshi.com/markets' }], polymarket: [{ name: 'Unemployment', url: 'https://polymarket.com/economics' }] },
+            'cpi': { kalshi: [{ name: 'CPI Markets', url: 'https://kalshi.com/markets' }], polymarket: [{ name: 'CPI', url: 'https://polymarket.com/economics' }] },
+            'gdp': { kalshi: [{ name: 'GDP Markets', url: 'https://kalshi.com/markets' }], polymarket: [{ name: 'GDP', url: 'https://polymarket.com/economics' }] }
+        };
         
         // Aggregate data by timeframe
         function aggregateData(data, timeframe) {
             if (!data || data.length === 0) return [];
-            
             if (timeframe === 'daily') return data;
             
             const aggregated = [];
@@ -546,7 +481,7 @@
             let currentValues = [];
             
             data.forEach(point => {
-                const date = new Date(point.timestamp || point.date);
+                const date = new Date(point.t);
                 let groupKey;
                 
                 if (timeframe === 'weekly') {
@@ -560,131 +495,152 @@
                 if (groupKey !== currentGroup) {
                     if (currentValues.length > 0) {
                         const avgValue = currentValues.reduce((a, b) => a + b, 0) / currentValues.length;
-                        aggregated.push({
-                            date: currentGroup,
-                            value: avgValue,
-                            timestamp: currentGroup
-                        });
+                        aggregated.push({ t: new Date(currentGroup), v: avgValue });
                     }
                     currentGroup = groupKey;
                     currentValues = [];
                 }
                 
-                currentValues.push(parseFloat(point.value));
+                currentValues.push(point.v);
             });
             
             if (currentValues.length > 0) {
                 const avgValue = currentValues.reduce((a, b) => a + b, 0) / currentValues.length;
-                aggregated.push({
-                    date: currentGroup,
-                    value: avgValue,
-                    timestamp: currentGroup
-                });
+                aggregated.push({ t: new Date(currentGroup), v: avgValue });
             }
             
             return aggregated;
         }
         
-        // Create/update chart
-        function updateChart(timeframe) {
+        // Update chart
+        function updateChart() {
+            if (!fullSeries || fullSeries.length === 0) return;
+            
+            // Aggregate by timeframe
+            let series = aggregateData(fullSeries, state.timeframe);
+            
+            // Filter by range
+            series = ChartUtils.filterByRange(series, state.startDate, state.endDate);
+            
+            // Normalize
+            series = ChartUtils.normalize(series, state.normalize);
+            
+            // Update legend
+            const normLabel = {
+                'raw': 'Raw',
+                'index100': 'Start=100',
+                'pct': '% Change',
+                'minmax': 'Min-Max'
+            }[state.normalize];
+            
+            const rangeLabel = state.rangePreset || 'Custom';
+            document.getElementById('chart-legend').textContent = 
+                `${marketData.display_name} (${normLabel}, ${rangeLabel})`;
+            
+            // Prepare Chart.js data
+            const labels = series.map(p => p.t.toISOString().split('T')[0]);
+            const values = series.map(p => p.v);
+            
             const ctx = document.getElementById('priceChart').getContext('2d');
-            const aggregated = aggregateData(allHistory, timeframe);
             
-            const labels = aggregated.map(d => d.date || d.timestamp);
-            const values = aggregated.map(d => d.value);
-            
-            const color = values[values.length - 1] >= values[0] ? '#4ade80' : '#f87171';
+            const color = values.length > 1 && values[values.length - 1] >= values[0] ? '#4ade80' : '#f87171';
             
             if (chartInstance) {
-                chartInstance.destroy();
-            }
-            
-            chartInstance = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: marketData.display_name,
-                        data: values,
-                        borderColor: color,
-                        backgroundColor: color + '20',
-                        fill: true,
-                        tension: 0.4,
-                        pointRadius: timeframe === 'daily' ? 2 : 4,
-                        pointHoverRadius: 6
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    interaction: {
-                        intersect: false,
-                        mode: 'index'
+                chartInstance.data.labels = labels;
+                chartInstance.data.datasets[0].data = values;
+                chartInstance.data.datasets[0].borderColor = color;
+                chartInstance.data.datasets[0].backgroundColor = color + '20';
+                chartInstance.update('none');
+            } else {
+                chartInstance = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: marketData.display_name,
+                            data: values,
+                            borderColor: color,
+                            backgroundColor: color + '20',
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 0,
+                            pointHoverRadius: 6,
+                            borderWidth: 2
+                        }]
                     },
-                    plugins: {
-                        legend: {
-                            display: false
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        interaction: {
+                            intersect: false,
+                            mode: 'index'
                         },
-                        tooltip: {
-                            backgroundColor: '#1e293b',
-                            titleColor: '#e2e8f0',
-                            bodyColor: '#e2e8f0',
-                            borderColor: 'rgba(255,255,255,0.1)',
-                            borderWidth: 1,
-                            callbacks: {
-                                label: function(context) {
-                                    return formatValue(context.parsed.y, marketData.unit);
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                backgroundColor: '#1e293b',
+                                titleColor: '#e2e8f0',
+                                bodyColor: '#e2e8f0',
+                                borderColor: 'rgba(255,255,255,0.1)',
+                                borderWidth: 1,
+                                callbacks: {
+                                    label: function(context) {
+                                        return ChartUtils.formatValue(context.parsed.y, marketData.unit);
+                                    }
                                 }
                             }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            grid: {
-                                color: 'rgba(255,255,255,0.05)'
-                            },
-                            ticks: {
-                                color: '#64748b',
-                                maxTicksLimit: timeframe === 'daily' ? 10 : 8
-                            }
                         },
-                        y: {
-                            grid: {
-                                color: 'rgba(255,255,255,0.05)'
+                        scales: {
+                            x: {
+                                grid: { color: 'rgba(255,255,255,0.05)' },
+                                ticks: { color: '#64748b', maxTicksLimit: 8 }
                             },
-                            ticks: {
-                                color: '#64748b',
-                                callback: function(value) {
-                                    return formatValue(value, marketData.unit);
+                            y: {
+                                grid: { color: 'rgba(255,255,255,0.05)' },
+                                ticks: {
+                                    color: '#64748b',
+                                    callback: function(value) {
+                                        return ChartUtils.formatValue(value, marketData.unit);
+                                    }
                                 }
                             }
                         }
                     }
-                }
-            });
+                });
+            }
+            
+            // Update table
+            updateTable(series);
         }
         
         // Update table
-        function updateTable(timeframe) {
+        function updateTable(series) {
             const tbody = document.getElementById('table-body');
-            const aggregated = aggregateData(allHistory, timeframe);
             
-            if (aggregated.length === 0) {
+            if (!series || series.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="4" class="loading">No data available</td></tr>';
                 return;
             }
             
-            // Reverse to show newest first
-            const reversed = [...aggregated].reverse();
+            const reversed = [...series].reverse();
             
             let html = '';
             reversed.forEach((row, index) => {
                 const prevRow = reversed[index + 1];
-                const change = prevRow ? row.value - prevRow.value : null;
-                const changePercent = prevRow ? ((row.value - prevRow.value) / prevRow.value * 100) : null;
-                const changeInfo = formatChange(change, changePercent);
+                const change = prevRow ? row.v - prevRow.v : null;
+                const changePercent = prevRow ? ((row.v - prevRow.v) / prevRow.v * 100) : null;
                 
-                const dateStr = new Date(row.date || row.timestamp).toLocaleDateString('en-US', {
+                let changeText = '-';
+                let changeClass = 'neutral';
+                let changePctText = '-';
+                
+                if (change !== null) {
+                    changeText = (change > 0 ? '+' : '') + ChartUtils.formatValue(change, marketData.unit);
+                    changeClass = change > 0 ? 'positive' : change < 0 ? 'negative' : 'neutral';
+                    changePctText = (changePercent > 0 ? '+' : '') + changePercent.toFixed(2) + '%';
+                }
+                
+                const dateStr = row.t.toLocaleDateString('en-US', {
                     year: 'numeric',
                     month: 'short',
                     day: 'numeric'
@@ -693,9 +649,9 @@
                 html += `
                     <tr>
                         <td>${dateStr}</td>
-                        <td class="cell-value">${formatValue(row.value, marketData.unit)}</td>
-                        <td class="cell-change ${changeInfo.class}">${change ? formatValue(change, marketData.unit) : '-'}</td>
-                        <td class="cell-change ${changeInfo.class}">${changeInfo.text}</td>
+                        <td class="cell-value">${ChartUtils.formatValue(row.v, marketData.unit)}</td>
+                        <td class="cell-change ${changeClass}">${changeText}</td>
+                        <td class="cell-change ${changeClass}">${changePctText}</td>
                     </tr>
                 `;
             });
@@ -703,116 +659,99 @@
             tbody.innerHTML = html;
         }
         
+        // Set range from preset
+        function setRangePreset(preset) {
+            state.rangePreset = preset;
+            
+            if (preset === 'MAX') {
+                state.startDate = null;
+                state.endDate = null;
+            } else {
+                const days = ChartUtils.RANGE_PRESETS[preset];
+                if (days && fullSeries.length > 0) {
+                    const end = fullSeries[fullSeries.length - 1].t;
+                    const start = new Date(end);
+                    start.setDate(start.getDate() - days);
+                    state.startDate = start.toISOString().split('T')[0];
+                    state.endDate = end.toISOString().split('T')[0];
+                }
+            }
+            
+            // Update inputs
+            document.getElementById('date-start').value = state.startDate || '';
+            document.getElementById('date-end').value = state.endDate || '';
+            
+            // Update buttons
+            document.querySelectorAll('.range-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.range === preset);
+            });
+            
+            updateChart();
+        }
+        
         // Load market data
         async function loadMarketData() {
             try {
-                console.log('Loading market data for:', marketName);
                 const response = await fetch('data/latest.json');
-                console.log('Response status:', response.status);
                 if (!response.ok) throw new Error('Failed to load data');
                 
                 const data = await response.json();
-                console.log('Data loaded, markets:', data.markets.length);
                 marketData = data.markets.find(m => m.name === marketName);
                 
                 if (!marketData) {
-                    console.error('Market not found:', marketName);
                     document.getElementById('market-name').textContent = 'Market not found';
                     return;
                 }
                 
-                console.log('Found market:', marketData.name);
-                
                 // Update header
                 document.getElementById('market-name').textContent = marketData.display_name;
                 document.getElementById('market-meta').textContent = `${marketData.category} • ${marketData.data_source}`;
-                document.getElementById('current-value').textContent = formatValue(marketData.latest_value, marketData.unit);
+                document.getElementById('current-value').textContent = ChartUtils.formatValue(marketData.latest_value, marketData.unit);
                 
-                const changeInfo = formatChange(marketData.change_absolute, marketData.change_percent);
+                const change = marketData.change_absolute;
+                const changeClass = change > 0 ? 'positive' : change < 0 ? 'negative' : 'neutral';
+                const changeText = change > 0 ? '▲ +' : change < 0 ? '▼ ' : '− ';
                 const changeEl = document.getElementById('current-change');
-                changeEl.textContent = changeInfo.text;
-                changeEl.className = `change-display ${changeInfo.class}`;
+                changeEl.textContent = changeText + ChartUtils.formatValue(Math.abs(change), marketData.unit) + 
+                    ' (' + (marketData.change_percent > 0 ? '+' : '') + marketData.change_percent.toFixed(2) + '%)';
+                changeEl.className = `change-display ${changeClass}`;
                 
-                // Prepare history data
-                allHistory = marketData.history || [];
+                // Parse full series
+                fullSeries = ChartUtils.parseSeries(marketData.history);
                 
-                // If we have very limited history, fetch more or generate mock
-                if (allHistory.length < 5) {
-                    allHistory = generateMockHistory(marketData.latest_value, marketData.unit);
+                // Set initial date inputs
+                if (fullSeries.length > 0) {
+                    const end = fullSeries[fullSeries.length - 1].t;
+                    const start = new Date(end);
+                    start.setDate(start.getDate() - 30);
+                    document.getElementById('date-end').value = end.toISOString().split('T')[0];
+                    document.getElementById('date-start').value = start.toISOString().split('T')[0];
                 }
                 
-                // Initial render - use 'weekly' as default for weekly data, 'daily' for daily
-                const isWeeklyData = marketData.name === 'jobless_claims' || 
-                                     marketData.name === 'nonfarm_payrolls' ||
-                                     marketData.unit === 'count' && allHistory.length < 30;
-                const defaultTimeframe = isWeeklyData ? 'weekly' : 'daily';
-                
-                // Set active button
-                document.querySelectorAll('[data-tf]').forEach(btn => {
-                    btn.classList.toggle('active', btn.dataset.tf === defaultTimeframe);
-                });
-                document.querySelectorAll('[data-table-tf]').forEach(btn => {
-                    btn.classList.toggle('active', btn.dataset.tableTf === defaultTimeframe);
-                });
-                
-                // Render prediction market links if available
-                const pmContainer = document.getElementById('prediction-markets');
+                // Render prediction markets
                 const pm = predictionMarkets[marketData.name];
-                console.log('Market:', marketData.name, 'PM data:', pm);
-                if (pm && pmContainer) {
+                if (pm) {
                     let pmHtml = '';
-                    
-                    // Handle Kalshi markets (array)
-                    if (pm.kalshi && pm.kalshi.length > 0) {
+                    if (pm.kalshi) {
                         pm.kalshi.forEach(m => {
-                            console.log('Kalshi URL:', m.url);
                             pmHtml += `<a href="${m.url}" target="_blank" class="pm-button pm-kalshi">🟢 ${m.name}</a>`;
                         });
                     }
-                    
-                    // Handle Polymarket markets (array)
-                    if (pm.polymarket && pm.polymarket.length > 0) {
+                    if (pm.polymarket) {
                         pm.polymarket.forEach(m => {
-                            console.log('Polymarket URL:', m.url);
                             pmHtml += `<a href="${m.url}" target="_blank" class="pm-button pm-polymarket">🔵 ${m.name}</a>`;
                         });
                     }
-                    
-                    pmContainer.innerHTML = pmHtml;
+                    document.getElementById('prediction-markets').innerHTML = pmHtml;
                 }
                 
-                updateChart(defaultTimeframe);
-                updateTable(defaultTimeframe);
+                // Initial chart
+                setRangePreset('30D');
                 
             } catch (error) {
-                document.getElementById('market-name').textContent = 'Error loading data';
                 console.error(error);
+                document.getElementById('market-name').textContent = 'Error loading data';
             }
-        }
-        
-        // Generate mock history for demo purposes
-        function generateMockHistory(currentValue, unit) {
-            const history = [];
-            let value = currentValue;
-            const days = 90;
-            
-            for (let i = days; i >= 0; i--) {
-                const date = new Date();
-                date.setDate(date.getDate() - i);
-                
-                // Random walk
-                const volatility = unit.includes('percent') ? 0.05 : value * 0.02;
-                const change = (Math.random() - 0.5) * volatility;
-                value = value - change; // Work backwards
-                
-                history.push({
-                    date: date.toISOString().split('T')[0],
-                    timestamp: date.toISOString(),
-                    value: Math.max(0, value)
-                });
-            }
-            
-            return history;
         }
         
         // Event listeners
@@ -820,16 +759,34 @@
             btn.addEventListener('click', () => {
                 document.querySelectorAll('[data-tf]').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-                updateChart(btn.dataset.tf);
+                state.timeframe = btn.dataset.tf;
+                updateChart();
             });
         });
         
-        document.querySelectorAll('[data-table-tf]').forEach(btn => {
+        document.querySelectorAll('[data-range]').forEach(btn => {
             btn.addEventListener('click', () => {
-                document.querySelectorAll('[data-table-tf]').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                updateTable(btn.dataset.tableTf);
+                setRangePreset(btn.dataset.range);
             });
+        });
+        
+        document.getElementById('date-start').addEventListener('change', ChartUtils.debounce((e) => {
+            state.startDate = e.target.value || null;
+            state.rangePreset = null;
+            document.querySelectorAll('.range-btn').forEach(b => b.classList.remove('active'));
+            updateChart();
+        }, 300));
+        
+        document.getElementById('date-end').addEventListener('change', ChartUtils.debounce((e) => {
+            state.endDate = e.target.value || null;
+            state.rangePreset = null;
+            document.querySelectorAll('.range-btn').forEach(b => b.classList.remove('active'));
+            updateChart();
+        }, 300));
+        
+        document.getElementById('normalize-select').addEventListener('change', (e) => {
+            state.normalize = e.target.value;
+            updateChart();
         });
         
         // Load data
