@@ -542,14 +542,27 @@
                 // Prepare history data
                 allHistory = marketData.history || [];
                 
-                // If we have limited history, generate some mock data for demo
-                if (allHistory.length < 30) {
+                // If we have very limited history, fetch more or generate mock
+                if (allHistory.length < 5) {
                     allHistory = generateMockHistory(marketData.latest_value, marketData.unit);
                 }
                 
-                // Initial render
-                updateChart('daily');
-                updateTable('daily');
+                // Initial render - use 'weekly' as default for weekly data, 'daily' for daily
+                const isWeeklyData = marketData.name === 'jobless_claims' || 
+                                     marketData.name === 'nonfarm_payrolls' ||
+                                     marketData.unit === 'count' && allHistory.length < 30;
+                const defaultTimeframe = isWeeklyData ? 'weekly' : 'daily';
+                
+                // Set active button
+                document.querySelectorAll('[data-tf]').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.tf === defaultTimeframe);
+                });
+                document.querySelectorAll('[data-table-tf]').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.tableTf === defaultTimeframe);
+                });
+                
+                updateChart(defaultTimeframe);
+                updateTable(defaultTimeframe);
                 
             } catch (error) {
                 document.getElementById('market-name').textContent = 'Error loading data';
