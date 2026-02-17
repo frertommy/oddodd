@@ -378,8 +378,9 @@
                     <span class="control-label">Range</span>
                     <div class="range-presets">
                         <button class="range-btn" data-range="7D" onclick="setPanelRange('7D')">7D</button>
-                        <button class="range-btn active" data-range="30D" onclick="setPanelRange('30D')">30D</button>
+                        <button class="range-btn" data-range="30D" onclick="setPanelRange('30D')">30D</button>
                         <button class="range-btn" data-range="90D" onclick="setPanelRange('90D')">90D</button>
+                        <button class="range-btn active" data-range="6M" onclick="setPanelRange('6M')">6M</button>
                         <button class="range-btn" data-range="1Y" onclick="setPanelRange('1Y')">1Y</button>
                         <button class="range-btn" data-range="MAX" onclick="setPanelRange('MAX')">MAX</button>
                     </div>
@@ -475,7 +476,45 @@
         let panelChart = null;
         let panelSeries = [];
         let panelMarket = null;
-        let panelState = { range: '30D', normalize: 'raw' };
+        let panelState = { range: '6M', normalize: 'raw' };
+        
+        // Aggregate data to weekly
+        function aggregateToWeekly(data) {
+            if (!data || data.length === 0) return [];
+            
+            const weekly = [];
+            let currentWeek = null;
+            let weekValues = [];
+            let weekStart = null;
+            
+            data.forEach(point => {
+                const date = new Date(point.t);
+                // Get week start (Sunday)
+                const weekStartDate = new Date(date);
+                weekStartDate.setDate(date.getDate() - date.getDay());
+                const weekKey = weekStartDate.toISOString().split('T')[0];
+                
+                if (weekKey !== currentWeek) {
+                    if (weekValues.length > 0) {
+                        const avgValue = weekValues.reduce((a, b) => a + b, 0) / weekValues.length;
+                        weekly.push({ t: weekStart, v: avgValue });
+                    }
+                    currentWeek = weekKey;
+                    weekStart = weekStartDate;
+                    weekValues = [];
+                }
+                
+                weekValues.push(point.v);
+            });
+            
+            // Don't forget the last week
+            if (weekValues.length > 0) {
+                const avgValue = weekValues.reduce((a, b) => a + b, 0) / weekValues.length;
+                weekly.push({ t: weekStart, v: avgValue });
+            }
+            
+            return weekly;
+        }
         
         // Format value
         function formatValue(value, unit) {
@@ -585,6 +624,9 @@
                 const range = ChartUtils.getPresetRange(panelState.range, series);
                 series = ChartUtils.filterByRange(series, range.start, range.end);
             }
+            
+            // Aggregate to weekly by default for cleaner charts
+            series = aggregateToWeekly(series);
             
             // Apply normalization
             series = ChartUtils.normalize(series, panelState.normalize);

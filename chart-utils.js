@@ -77,6 +77,7 @@ const RANGE_PRESETS = {
     '7D': 7,
     '30D': 30,
     '90D': 90,
+    '6M': 180,
     '1Y': 365,
     'MAX': null
 };
