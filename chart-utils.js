@@ -40,6 +40,111 @@ function filterByRange(series, start, end) {
 }
 
 /**
+ * Calculate percentile for YES% band
+ */
+function calculatePercentile(sortedValues, p) {
+    if (!sortedValues || sortedValues.length === 0) return 0;
+    const index = (p / 100) * (sortedValues.length - 1);
+    const lower = Math.floor(index);
+    const upper = Math.ceil(index);
+    const weight = index - lower;
+    if (upper >= sortedValues.length) return sortedValues[lower];
+    return sortedValues[lower] * (1 - weight) + sortedValues[upper] * weight;
+}
+
+/**
+ * Compute YES% band bounds using p5/p95 with 50% padding
+ * bandType: '6M', '1Y', '2Y', 'MAX'
+ * Returns: { band, p5, p95, lo, hi, windowStart, windowEnd, windowPoints }
+ */
+function computeYesBand(series, bandType, toDate) {
+    if (!series || series.length === 0) return null;
+    
+    const end = toDate ? new Date(toDate) : series[series.length - 1].t;
+    let start;
+    
+    switch(bandType) {
+        case '1Y':
+            start = new Date(end);
+            start.setFullYear(start.getFullYear() - 1);
+            break;
+        case '2Y':
+            start = new Date(end);
+            start.setFullYear(start.getFullYear() - 2);
+            break;
+        case 'MAX':
+            start = series[0].t;
+            break;
+        case '6M':
+        default:
+            start = new Date(end);
+            start.setMonth(start.getMonth() - 6);
+            break;
+    }
+    
+    // Get window data
+    const windowData = series.filter(p => p.t >= start && p.t <= end);
+    
+    // Fallback if not enough data
+    const minPoints = { '6M': 30, '1Y': 60, '2Y': 100, 'MAX': 10 };
+    let actualBand = bandType;
+    
+    if (windowData.length < (minPoints[bandType] || 10)) {
+        // Try shorter bands
+        if (bandType === '2Y' && series.length >= minPoints['1Y']) {
+            actualBand = '1Y';
+            start = new Date(end);
+            start.setFullYear(start.getFullYear() - 1);
+        } else if ((bandType === '2Y' || bandType === '1Y') && series.length >= minPoints['6M']) {
+            actualBand = '6M';
+            start = new Date(end);
+            start.setMonth(start.getMonth() - 6);
+        } else {
+            // Use all available data
+            actualBand = 'all';
+            start = series[0].t;
+        }
+    }
+    
+    const finalWindow = series.filter(p => p.t >= start && p.t <= end);
+    if (finalWindow.length < 5) return null;
+    
+    const values = finalWindow.map(p => p.v).sort((a, b) => a - b);
+    const a = calculatePercentile(values, 5);  // p5
+    const b = calculatePercentile(values, 95); // p95
+    const r = b - a;
+    const lo = a - 0.5 * r;
+    const hi = b + 0.5 * r;
+    
+    return {
+        band: actualBand,
+        requestedBand: bandType,
+        p5: a,
+        p95: b,
+        lo: lo,
+        hi: hi,
+        windowStart: start,
+        windowEnd: end,
+        windowPoints: finalWindow.length
+    };
+}
+
+/**
+ * Convert value to YES% using band bounds
+ * s = clamp((x - lo) / (hi - lo), 0, 1)
+ * p = clamp(s, 0.02, 0.98)
+ * YES% = 100 * p
+ */
+function valueToYesPercent(value, band) {
+    if (!band || band.hi === band.lo) return 50;
+    const s = (value - band.lo) / (band.hi - band.lo);
+    const clamped = Math.max(0, Math.min(1, s));
+    // Clamp to 2-98%
+    const p = Math.max(0.02, Math.min(0.98, clamped));
+    return 100 * p;
+}
+
+/**
  * Compute 6-month trailing band bounds (L, U) based on "to" date
  * Returns: { L, U, min6, max6, r, source: '6m'|'full' }
  */
@@ -230,6 +335,8 @@ if (typeof window !== 'undefined') {
         filterByRange,
         normalize,
         computeBandBounds,
+        computeYesBand,
+        valueToYesPercent,
         formatBandInfo,
         clamp,
         getPresetRange,
