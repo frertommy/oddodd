@@ -446,6 +446,13 @@
     </div>
     
     <script>
+        // Global error handler
+        window.onerror = function(msg, url, line, col, error) {
+            console.error('Global error:', msg, 'at line', line, 'col', col);
+            document.getElementById('market-name').textContent = 'JS Error: ' + msg + ' (line ' + line + ')';
+            return false;
+        };
+        
         // Get market from URL
         const urlParams = new URLSearchParams(window.location.search);
         const marketName = urlParams.get('market');
