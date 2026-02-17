@@ -222,6 +222,55 @@
         
         .band-info:empty { display: none; }
         
+        /* YES% Chart Section */
+        .yes-section {
+            margin-top: 20px;
+        }
+        
+        .yes-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px 16px;
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 8px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        
+        .yes-band-toggle {
+            display: flex;
+            gap: 4px;
+            background: rgba(30, 41, 59, 0.8);
+            padding: 4px;
+            border-radius: 8px;
+        }
+        
+        .yes-band-btn {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            padding: 6px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .yes-band-btn:hover { color: #e2e8f0; }
+        .yes-band-btn.active {
+            background: rgba(96, 165, 250, 0.2);
+            color: #60a5fa;
+        }
+        
+        .yes-band-info {
+            font-size: 0.8rem;
+            color: #64748b;
+            font-family: 'SF Mono', Monaco, monospace;
+            margin-left: auto;
+        }
+        
         /* Chart Section */
         .chart-section {
             background: rgba(30, 41, 59, 0.8);
@@ -424,6 +473,22 @@
             </div>
         </div>
         
+        <!-- YES% Chart Section -->
+        <div class="chart-section yes-section">
+            <div class="yes-controls">
+                <span class="control-label">YES% Band</span>
+                <div class="yes-band-toggle">
+                    <button class="yes-band-btn active" data-band="6M">6M</button>
+                    <button class="yes-band-btn" data-band="1Y">1Y</button>
+                    <button class="yes-band-btn" data-band="2Y">2Y</button>
+                </div>
+                <div class="yes-band-info" id="yes-band-info">Band=6M, p5/p95, pad=50%, clamp=2-98%</div>
+            </div>
+            <div class="chart-container">
+                <canvas id="yesChart"></canvas>
+            </div>
+        </div>
+        
         <div class="data-table-section">
             <div class="section-header">
                 <h2 class="section-title">📊 Historical Data</h2>
@@ -472,6 +537,8 @@
         };
         
         let currentBandInfo = null;
+        let yesChartInstance = null;
+        let yesBandState = '6M'; // 6M, 1Y, or 2Y
         
         // Prediction market mappings
         const predictionMarkets = {
@@ -684,6 +751,9 @@
             
             // Update table
             updateTable(series);
+            
+            // Update YES% chart
+            updateYesChart();
             } catch (e) {
                 console.error('Error in updateChart:', e);
             }
@@ -744,6 +814,201 @@
             });
             
             tbody.innerHTML = html;
+        }
+        
+        // Calculate percentile for YES% band
+        function calculatePercentile(sortedValues, p) {
+            if (!sortedValues || sortedValues.length === 0) return 0;
+            const index = (p / 100) * (sortedValues.length - 1);
+            const lower = Math.floor(index);
+            const upper = Math.ceil(index);
+            const weight = index - lower;
+            if (upper >= sortedValues.length) return sortedValues[lower];
+            return sortedValues[lower] * (1 - weight) + sortedValues[upper] * weight;
+        }
+        
+        // Compute YES% band bounds
+        function computeYesBand(series, bandType, toDate) {
+            if (!series || series.length === 0) return null;
+            
+            const end = toDate ? new Date(toDate) : series[series.length - 1].t;
+            let start;
+            
+            switch(bandType) {
+                case '1Y':
+                    start = new Date(end);
+                    start.setFullYear(start.getFullYear() - 1);
+                    break;
+                case '2Y':
+                    start = new Date(end);
+                    start.setFullYear(start.getFullYear() - 2);
+                    break;
+                case '6M':
+                default:
+                    start = new Date(end);
+                    start.setMonth(start.getMonth() - 6);
+                    break;
+            }
+            
+            // Get window data
+            const windowData = series.filter(p => p.t >= start && p.t <= end);
+            
+            // Fallback if not enough data
+            const minPoints = { '6M': 30, '1Y': 60, '2Y': 100 };
+            let actualBand = bandType;
+            
+            if (windowData.length < minPoints[bandType]) {
+                // Try shorter bands
+                if (bandType === '2Y' && series.length >= minPoints['1Y']) {
+                    actualBand = '1Y';
+                    start = new Date(end);
+                    start.setFullYear(start.getFullYear() - 1);
+                } else if ((bandType === '2Y' || bandType === '1Y') && series.length >= minPoints['6M']) {
+                    actualBand = '6M';
+                    start = new Date(end);
+                    start.setMonth(start.getMonth() - 6);
+                } else {
+                    // Use all available data
+                    actualBand = 'all';
+                    start = series[0].t;
+                }
+            }
+            
+            const finalWindow = series.filter(p => p.t >= start && p.t <= end);
+            if (finalWindow.length < 5) return null;
+            
+            const values = finalWindow.map(p => p.v).sort((a, b) => a - b);
+            const a = calculatePercentile(values, 5);  // p5
+            const b = calculatePercentile(values, 95); // p95
+            const r = b - a;
+            const lo = a - 0.5 * r;
+            const hi = b + 0.5 * r;
+            
+            return {
+                band: actualBand,
+                requestedBand: bandType,
+                p5: a,
+                p95: b,
+                lo: lo,
+                hi: hi,
+                windowStart: start,
+                windowEnd: end,
+                windowPoints: finalWindow.length
+            };
+        }
+        
+        // Convert value to YES%
+        function valueToYesPercent(value, band) {
+            if (!band || band.hi === band.lo) return 50;
+            const s = (value - band.lo) / (band.hi - band.lo);
+            const clamped = Math.max(0, Math.min(1, s));
+            // Clamp to 2-98%
+            return 2 + 96 * clamped;
+        }
+        
+        // Update YES% chart
+        function updateYesChart() {
+            if (!fullSeries || fullSeries.length === 0) return;
+            
+            // Use same filtered series as main chart
+            let series = aggregateData(fullSeries, state.timeframe);
+            series = ChartUtils.filterByRange(series, state.startDate, state.endDate);
+            
+            if (series.length === 0) return;
+            
+            const toDate = state.endDate || series[series.length - 1].t;
+            const band = computeYesBand(fullSeries, yesBandState, toDate);
+            
+            if (!band) return;
+            
+            // Update band info text
+            const bandInfoEl = document.getElementById('yes-band-info');
+            const fallbackText = band.band !== band.requestedBand ? ` (fallback: ${band.band})` : '';
+            bandInfoEl.textContent = `Band=${band.requestedBand}${fallbackText}, p5=${band.p5.toFixed(2)}, p95=${band.p95.toFixed(2)}, pad=50%, lo=${band.lo.toFixed(2)}, hi=${band.hi.toFixed(2)}, clamp=2-98%`;
+            
+            // Convert to YES%
+            const yesData = series.map(p => ({
+                t: p.t,
+                v: valueToYesPercent(p.v, band)
+            }));
+            
+            const labels = yesData.map(p => p.t.toISOString().split('T')[0]);
+            const values = yesData.map(p => p.v);
+            
+            const ctx = document.getElementById('yesChart').getContext('2d');
+            
+            if (yesChartInstance) {
+                yesChartInstance.data.labels = labels;
+                yesChartInstance.data.datasets[0].data = values;
+                yesChartInstance.update('none');
+            } else {
+                yesChartInstance = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'YES%',
+                            data: values,
+                            borderColor: '#4ade80',
+                            backgroundColor: 'rgba(74, 222, 128, 0.2)',
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 0,
+                            pointHoverRadius: 6,
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        interaction: {
+                            intersect: false,
+                            mode: 'index'
+                        },
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                backgroundColor: '#1e293b',
+                                titleColor: '#e2e8f0',
+                                bodyColor: '#e2e8f0',
+                                borderColor: 'rgba(255,255,255,0.1)',
+                                borderWidth: 1,
+                                callbacks: {
+                                    label: function(context) {
+                                        return 'YES%: ' + context.parsed.y.toFixed(1) + '%';
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: { color: 'rgba(255,255,255,0.05)' },
+                                ticks: { color: '#64748b', maxTicksLimit: 8 }
+                            },
+                            y: {
+                                min: 0,
+                                max: 100,
+                                grid: { color: 'rgba(255,255,255,0.05)' },
+                                ticks: {
+                                    color: '#64748b',
+                                    callback: function(value) {
+                                        return value + '%';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+        
+        // Set YES% band
+        function setYesBand(band) {
+            yesBandState = band;
+            document.querySelectorAll('.yes-band-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.band === band);
+            });
+            updateYesChart();
         }
         
         // Set range from preset
@@ -880,6 +1145,13 @@
         document.getElementById('normalize-select').addEventListener('change', (e) => {
             state.normalize = e.target.value;
             updateChart();
+        });
+        
+        // YES% band button listeners
+        document.querySelectorAll('.yes-band-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                setYesBand(btn.dataset.band);
+            });
         });
         
         // Load data
