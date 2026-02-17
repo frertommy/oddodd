@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Detail - OddOdd</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .back-btn {
+            background: rgba(96, 165, 250, 0.2);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            color: #60a5fa;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .back-btn:hover {
+            background: rgba(96, 165, 250, 0.3);
+        }
+        
+        .market-header {
+            flex: 1;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .market-meta {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+        
+        .current-value {
+            text-align: right;
+        }
+        
+        .value-display {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #f8fafc;
+            font-family: 'SF Mono', Monaco, monospace;
+        }
+        
+        .change-display {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+        
+        .change-display.positive {
+            color: #4ade80;
+        }
+        
+        .change-display.negative {
+            color: #f87171;
+        }
+        
+        .change-display.neutral {
+            color: #94a3b8;
+        }
+        
+        .chart-section {
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .section-title {
+            font-size: 1.2rem;
+            color: #e2e8f0;
+        }
+        
+        .timeframe-toggle {
+            display: flex;
+            gap: 8px;
+            background: rgba(15, 23, 42, 0.5);
+            padding: 4px;
+            border-radius: 8px;
+        }
+        
+        .timeframe-btn {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+        
+        .timeframe-btn:hover {
+            color: #e2e8f0;
+        }
+        
+        .timeframe-btn.active {
+            background: rgba(96, 165, 250, 0.2);
+            color: #60a5fa;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 400px;
+        }
+        
+        .data-table-section {
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        th {
+            color: #94a3b8;
+            font-weight: 500;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        td {
+            color: #e2e8f0;
+        }
+        
+        tr:hover {
+            background: rgba(96, 165, 250, 0.05);
+        }
+        
+        .cell-value {
+            font-family: 'SF Mono', Monaco, monospace;
+            font-weight: 600;
+        }
+        
+        .cell-change {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .cell-change.positive {
+            color: #4ade80;
+        }
+        
+        .cell-change.negative {
+            color: #f87171;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 60px;
+            color: #64748b;
+        }
+        
+        .error {
+            text-align: center;
+            padding: 60px;
+            color: #f87171;
+        }
+        
+        @media (max-width: 768px) {
+            .value-display {
+                font-size: 1.8rem;
+            }
+            
+            .chart-container {
+                height: 300px;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html" class="back-btn">← Back</a>
+            <div class="market-header">
+                <h1 id="market-name">Loading...</h1>
+                <div class="market-meta" id="market-meta"></div>
+            </div>
+            <div class="current-value">
+                <div class="value-display" id="current-value">-</div>
+                <div class="change-display" id="current-change">-</div>
+            </div>
+        </header>
+        
+        <div class="chart-section">
+            <div class="section-header">
+                <h2 class="section-title">📈 Price Chart</h2>
+                <div class="timeframe-toggle">
+                    <button class="timeframe-btn active" data-tf="daily">Daily</button>
+                    <button class="timeframe-btn" data-tf="weekly">Weekly</button>
+                    <button class="timeframe-btn" data-tf="monthly">Monthly</button>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="priceChart"></canvas>
+            </div>
+        </div>
+        
+        <div class="data-table-section">
+            <div class="section-header">
+                <h2 class="section-title">📊 Historical Data</h2>
+                <div class="timeframe-toggle">
+                    <button class="timeframe-btn active" data-table-tf="daily">Daily</button>
+                    <button class="timeframe-btn" data-table-tf="weekly">Weekly</button>
+                    <button class="timeframe-btn" data-table-tf="monthly">Monthly</button>
+                </div>
+            </div>
+            <div class="table-container">
+                <table id="data-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Value</th>
+                            <th>Change</th>
+                            <th>Change %</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        <tr><td colspan="4" class="loading">Loading data...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Get market from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const marketName = urlParams.get('market');
+        
+        let marketData = null;
+        let chartInstance = null;
+        let allHistory = [];
+        
+        // Format value based on unit
+        function formatValue(value, unit) {
+            if (value === null || value === undefined) return 'N/A';
+            
+            if (unit.includes('USD') && !unit.includes('USD/')) {
+                return '$' + value.toFixed(2);
+            } else if (unit.includes('USD/')) {
+                return '$' + value.toFixed(2) + unit.replace('USD', '');
+            } else if (unit.includes('percent') || unit.includes('rate') || unit.includes('yield')) {
+                return value.toFixed(2) + '%';
+            } else if (unit.includes('count') || unit.includes('index')) {
+                if (value >= 1000000) {
+                    return (value / 1000000).toFixed(2) + 'M';
+                } else if (value >= 1000) {
+                    return (value / 1000).toFixed(1) + 'K';
+                }
+                return value.toLocaleString();
+            }
+            return value.toFixed(2);
+        }
+        
+        // Format change
+        function formatChange(change, percent) {
+            if (change === null || change === undefined) return { text: '−', class: 'neutral' };
+            
+            const sign = change > 0 ? '+' : '';
+            const arrow = change > 0 ? '▲' : change < 0 ? '▼' : '−';
+            const changeClass = change > 0 ? 'positive' : change < 0 ? 'negative' : 'neutral';
+            
+            if (percent !== null && percent !== undefined) {
+                return {
+                    text: `${arrow} ${sign}${percent.toFixed(2)}%`,
+                    class: changeClass
+                };
+            }
+            return {
+                text: `${arrow} ${sign}${change.toFixed(2)}`,
+                class: changeClass
+            };
+        }
+        
+        // Aggregate data by timeframe
+        function aggregateData(data, timeframe) {
+            if (!data || data.length === 0) return [];
+            
+            if (timeframe === 'daily') return data;
+            
+            const aggregated = [];
+            let currentGroup = null;
+            let currentValues = [];
+            
+            data.forEach(point => {
+                const date = new Date(point.timestamp || point.date);
+                let groupKey;
+                
+                if (timeframe === 'weekly') {
+                    const weekStart = new Date(date);
+                    weekStart.setDate(date.getDate() - date.getDay());
+                    groupKey = weekStart.toISOString().split('T')[0];
+                } else if (timeframe === 'monthly') {
+                    groupKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+                }
+                
+                if (groupKey !== currentGroup) {
+                    if (currentValues.length > 0) {
+                        const avgValue = currentValues.reduce((a, b) => a + b, 0) / currentValues.length;
+                        aggregated.push({
+                            date: currentGroup,
+                            value: avgValue,
+                            timestamp: currentGroup
+                        });
+                    }
+                    currentGroup = groupKey;
+                    currentValues = [];
+                }
+                
+                currentValues.push(parseFloat(point.value));
+            });
+            
+            if (currentValues.length > 0) {
+                const avgValue = currentValues.reduce((a, b) => a + b, 0) / currentValues.length;
+                aggregated.push({
+                    date: currentGroup,
+                    value: avgValue,
+                    timestamp: currentGroup
+                });
+            }
+            
+            return aggregated;
+        }
+        
+        // Create/update chart
+        function updateChart(timeframe) {
+            const ctx = document.getElementById('priceChart').getContext('2d');
+            const aggregated = aggregateData(allHistory, timeframe);
+            
+            const labels = aggregated.map(d => d.date || d.timestamp);
+            const values = aggregated.map(d => d.value);
+            
+            const color = values[values.length - 1] >= values[0] ? '#4ade80' : '#f87171';
+            
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+            
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: marketData.display_name,
+                        data: values,
+                        borderColor: color,
+                        backgroundColor: color + '20',
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: timeframe === 'daily' ? 2 : 4,
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: '#1e293b',
+                            titleColor: '#e2e8f0',
+                            bodyColor: '#e2e8f0',
+                            borderColor: 'rgba(255,255,255,0.1)',
+                            borderWidth: 1,
+                            callbacks: {
+                                label: function(context) {
+                                    return formatValue(context.parsed.y, marketData.unit);
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                color: 'rgba(255,255,255,0.05)'
+                            },
+                            ticks: {
+                                color: '#64748b',
+                                maxTicksLimit: timeframe === 'daily' ? 10 : 8
+                            }
+                        },
+                        y: {
+                            grid: {
+                                color: 'rgba(255,255,255,0.05)'
+                            },
+                            ticks: {
+                                color: '#64748b',
+                                callback: function(value) {
+                                    return formatValue(value, marketData.unit);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Update table
+        function updateTable(timeframe) {
+            const tbody = document.getElementById('table-body');
+            const aggregated = aggregateData(allHistory, timeframe);
+            
+            if (aggregated.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="loading">No data available</td></tr>';
+                return;
+            }
+            
+            // Reverse to show newest first
+            const reversed = [...aggregated].reverse();
+            
+            let html = '';
+            reversed.forEach((row, index) => {
+                const prevRow = reversed[index + 1];
+                const change = prevRow ? row.value - prevRow.value : null;
+                const changePercent = prevRow ? ((row.value - prevRow.value) / prevRow.value * 100) : null;
+                const changeInfo = formatChange(change, changePercent);
+                
+                const dateStr = new Date(row.date || row.timestamp).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                });
+                
+                html += `
+                    <tr>
+                        <td>${dateStr}</td>
+                        <td class="cell-value">${formatValue(row.value, marketData.unit)}</td>
+                        <td class="cell-change ${changeInfo.class}">${change ? formatValue(change, marketData.unit) : '-'}</td>
+                        <td class="cell-change ${changeInfo.class}">${changeInfo.text}</td>
+                    </tr>
+                `;
+            });
+            
+            tbody.innerHTML = html;
+        }
+        
+        // Load market data
+        async function loadMarketData() {
+            try {
+                const response = await fetch('data/latest.json');
+                if (!response.ok) throw new Error('Failed to load data');
+                
+                const data = await response.json();
+                marketData = data.markets.find(m => m.name === marketName);
+                
+                if (!marketData) {
+                    document.getElementById('market-name').textContent = 'Market not found';
+                    return;
+                }
+                
+                // Update header
+                document.getElementById('market-name').textContent = marketData.display_name;
+                document.getElementById('market-meta').textContent = `${marketData.category} • ${marketData.data_source}`;
+                document.getElementById('current-value').textContent = formatValue(marketData.latest_value, marketData.unit);
+                
+                const changeInfo = formatChange(marketData.change_absolute, marketData.change_percent);
+                const changeEl = document.getElementById('current-change');
+                changeEl.textContent = changeInfo.text;
+                changeEl.className = `change-display ${changeInfo.class}`;
+                
+                // Prepare history data
+                allHistory = marketData.history || [];
+                
+                // If we have limited history, generate some mock data for demo
+                if (allHistory.length < 30) {
+                    allHistory = generateMockHistory(marketData.latest_value, marketData.unit);
+                }
+                
+                // Initial render
+                updateChart('daily');
+                updateTable('daily');
+                
+            } catch (error) {
+                document.getElementById('market-name').textContent = 'Error loading data';
+                console.error(error);
+            }
+        }
+        
+        // Generate mock history for demo purposes
+        function generateMockHistory(currentValue, unit) {
+            const history = [];
+            let value = currentValue;
+            const days = 90;
+            
+            for (let i = days; i >= 0; i--) {
+                const date = new Date();
+                date.setDate(date.getDate() - i);
+                
+                // Random walk
+                const volatility = unit.includes('percent') ? 0.05 : value * 0.02;
+                const change = (Math.random() - 0.5) * volatility;
+                value = value - change; // Work backwards
+                
+                history.push({
+                    date: date.toISOString().split('T')[0],
+                    timestamp: date.toISOString(),
+                    value: Math.max(0, value)
+                });
+            }
+            
+            return history;
+        }
+        
+        // Event listeners
+        document.querySelectorAll('[data-tf]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('[data-tf]').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                updateChart(btn.dataset.tf);
+            });
+        });
+        
+        document.querySelectorAll('[data-table-tf]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('[data-table-tf]').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                updateTable(btn.dataset.tableTf);
+            });
+        });
+        
+        // Load data
+        loadMarketData();
+    </script>
+</body>
+</html>

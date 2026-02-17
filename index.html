@@ -482,7 +482,7 @@
             const sparkline = market.history && market.history.length > 1 ? createSparkline(market.history) : '';
             
             return `
-                <div class="market-card">
+                <div class="market-card" onclick="window.location.href='detail.html?market=${market.name}'">
                     <div class="market-header">
                         <span class="market-name">${market.display_name}</span>
                         <span class="market-unit">${market.unit}</span>
