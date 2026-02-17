@@ -271,6 +271,32 @@
             margin-left: auto;
         }
         
+        .yes-range-toggle {
+            display: flex;
+            gap: 4px;
+            background: rgba(30, 41, 59, 0.8);
+            padding: 4px;
+            border-radius: 8px;
+        }
+        
+        .yes-range-btn {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .yes-range-btn:hover { color: #e2e8f0; }
+        .yes-range-btn.active {
+            background: rgba(167, 139, 250, 0.2);
+            color: #a78bfa;
+        }
+        
         /* Chart Section */
         .chart-section {
             background: rgba(30, 41, 59, 0.8);
@@ -482,6 +508,13 @@
                     <button class="yes-band-btn" data-band="1Y">1Y</button>
                     <button class="yes-band-btn" data-band="2Y">2Y</button>
                 </div>
+                <span class="control-label">Range</span>
+                <div class="yes-range-toggle">
+                    <button class="yes-range-btn" data-range="1M">1M</button>
+                    <button class="yes-range-btn active" data-range="6M">6M</button>
+                    <button class="yes-range-btn" data-range="1Y">1Y</button>
+                    <button class="yes-range-btn" data-range="2Y">2Y</button>
+                </div>
                 <div class="yes-band-info" id="yes-band-info">Band=6M, p5/p95, pad=50%, clamp=2-98%</div>
             </div>
             <div class="chart-container">
@@ -539,6 +572,7 @@
         let currentBandInfo = null;
         let yesChartInstance = null;
         let yesBandState = '6M'; // 6M, 1Y, or 2Y
+        let yesRangeState = '6M'; // 1M, 6M, 1Y, or 2Y
         
         // Prediction market mappings
         const predictionMarkets = {
@@ -914,13 +948,36 @@
                 return;
             }
             
-            // Use same filtered series as main chart
+            // Aggregate by timeframe
             let series = aggregateData(fullSeries, state.timeframe);
-            series = ChartUtils.filterByRange(series, state.startDate, state.endDate);
+            
+            // Apply YES% specific range filter
+            const toDate = series.length > 0 ? series[series.length - 1].t : null;
+            let startDate = null;
+            if (toDate) {
+                startDate = new Date(toDate);
+                switch(yesRangeState) {
+                    case '1M':
+                        startDate.setMonth(startDate.getMonth() - 1);
+                        break;
+                    case '1Y':
+                        startDate.setFullYear(startDate.getFullYear() - 1);
+                        break;
+                    case '2Y':
+                        startDate.setFullYear(startDate.getFullYear() - 2);
+                        break;
+                    case '6M':
+                    default:
+                        startDate.setMonth(startDate.getMonth() - 6);
+                        break;
+                }
+            }
+            
+            series = ChartUtils.filterByRange(series, startDate, toDate);
             
             if (series.length === 0) return;
             
-            const toDate = state.endDate || series[series.length - 1].t;
+            // Compute band using fullSeries for band calculation (trailing window)
             const band = computeYesBand(fullSeries, yesBandState, toDate);
             
             if (!band) return;
@@ -1011,6 +1068,15 @@
             yesBandState = band;
             document.querySelectorAll('.yes-band-btn').forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.band === band);
+            });
+            updateYesChart();
+        }
+        
+        // Set YES% range
+        function setYesRange(range) {
+            yesRangeState = range;
+            document.querySelectorAll('.yes-range-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.range === range);
             });
             updateYesChart();
         }
@@ -1155,6 +1221,13 @@
         document.querySelectorAll('.yes-band-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 setYesBand(btn.dataset.band);
+            });
+        });
+        
+        // YES% range button listeners
+        document.querySelectorAll('.yes-range-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                setYesRange(btn.dataset.range);
             });
         });
         
