@@ -1,0 +1,233 @@
+name: Update Market Data
+
+on:
+  schedule:
+    # Run every 3 hours
+    - cron: '0 */3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+        
+    - name: Install dependencies
+      run: |
+        pip install requests pandas matplotlib
+        
+    - name: Fetch market data
+      run: |
+        python << 'EOF'
+        import requests
+        import json
+        import os
+        from datetime import datetime
+        
+        # FRED API key (free tier)
+        FRED_API_KEY = os.getenv('FRED_API_KEY', 'demo')
+        
+        # Market definitions
+        markets = [
+            # Commodities
+            {"name": "brent_crude", "display_name": "Brent Crude Oil", "category": "commodity", "unit": "USD/bbl", "data_source": "fred", "fred_series": "DCOILBRENTEU"},
+            {"name": "wti_crude", "display_name": "WTI Crude Oil", "category": "commodity", "unit": "USD/bbl", "data_source": "eia", "fred_series": "DCOILWTICO"},
+            {"name": "natural_gas", "display_name": "Natural Gas Spot", "category": "commodity", "unit": "USD/mmbtu", "data_source": "eia", "fred_series": "DHHNGSP"},
+            {"name": "gasoline", "display_name": "US Gasoline Price", "category": "commodity", "unit": "USD/gallon", "data_source": "fred", "fred_series": "GASREGW"},
+            
+            # Financial
+            {"name": "sp500", "display_name": "S&P 500", "category": "financial", "unit": "index", "data_source": "fred", "fred_series": "SP500"},
+            {"name": "dow_jones", "display_name": "Dow Jones Industrial", "category": "financial", "unit": "index", "data_source": "fred", "fred_series": "DJIA"},
+            {"name": "nasdaq", "display_name": "NASDAQ Composite", "category": "financial", "unit": "index", "data_source": "fred", "fred_series": "NASDAQCOM"},
+            {"name": "vix", "display_name": "VIX Volatility Index", "category": "financial", "unit": "index", "data_source": "fred", "fred_series": "VIXCLS"},
+            {"name": "treasury_10y", "display_name": "10-Year Treasury Yield", "category": "financial", "unit": "percent", "data_source": "fred", "fred_series": "DGS10"},
+            {"name": "treasury_2y", "display_name": "2-Year Treasury Yield", "category": "financial", "unit": "percent", "data_source": "fred", "fred_series": "DGS2"},
+            {"name": "fed_funds", "display_name": "Fed Funds Rate", "category": "financial", "unit": "percent", "data_source": "fred", "fred_series": "DFF"},
+            {"name": "mortgage_30y", "display_name": "30-Year Mortgage Rate", "category": "financial", "unit": "percent", "data_source": "fred", "fred_series": "MORTGAGE30US"},
+            {"name": "dollar_index", "display_name": "US Dollar Index", "category": "financial", "unit": "index", "data_source": "fred", "fred_series": "DTWEXBGS"},
+            
+            # Economic
+            {"name": "cpi", "display_name": "Consumer Price Index", "category": "economic", "unit": "index", "data_source": "fred", "fred_series": "CPIAUCSL"},
+            {"name": "ppi", "display_name": "Producer Price Index", "category": "economic", "unit": "index", "data_source": "fred", "fred_series": "PPIACO"},
+            {"name": "unemployment_rate", "display_name": "Unemployment Rate", "category": "economic", "unit": "percent", "data_source": "fred", "fred_series": "UNRATE"},
+            {"name": "gdp", "display_name": "Gross Domestic Product", "category": "economic", "unit": "USD billions", "data_source": "fred", "fred_series": "GDP"},
+            {"name": "consumer_sentiment", "display_name": "Consumer Sentiment", "category": "economic", "unit": "index", "data_source": "fred", "fred_series": "UMCSENT"},
+            
+            # Government
+            {"name": "jobless_claims", "display_name": "Weekly Jobless Claims", "category": "government", "unit": "count", "data_source": "fred", "fred_series": "ICSA"},
+            {"name": "nonfarm_payrolls", "display_name": "Nonfarm Payrolls", "category": "government", "unit": "count", "data_source": "fred", "fred_series": "PAYEMS"},
+        ]
+        
+        def fetch_fred_data(series_id, api_key):
+            """Fetch latest data from FRED API"""
+            url = f"https://api.stlouisfed.org/fred/series/observations"
+            params = {
+                'series_id': series_id,
+                'api_key': api_key,
+                'file_type': 'json',
+                'sort_order': 'desc',
+                'limit': 30
+            }
+            try:
+                response = requests.get(url, params=params, timeout=30)
+                data = response.json()
+                if 'observations' in data and len(data['observations']) > 0:
+                    return data['observations']
+            except Exception as e:
+                print(f"Error fetching {series_id}: {e}")
+            return []
+        
+        # Collect data for all markets
+        results = []
+        markets_with_data = 0
+        
+        for market in markets:
+            if 'fred_series' in market:
+                observations = fetch_fred_data(market['fred_series'], FRED_API_KEY)
+                
+                if observations:
+                    latest = observations[0]
+                    previous = observations[1] if len(observations) > 1 else None
+                    
+                    try:
+                        latest_value = float(latest['value'])
+                        previous_value = float(previous['value']) if previous else None
+                        
+                        change_absolute = latest_value - previous_value if previous_value else None
+                        change_percent = ((latest_value - previous_value) / previous_value * 100) if previous_value else None
+                        
+                        history = [{'value': float(obs['value']), 'timestamp': obs['date']} 
+                                  for obs in observations[:10] if obs['value'] != '.']
+                        
+                        results.append({
+                            'name': market['name'],
+                            'display_name': market['display_name'],
+                            'category': market['category'],
+                            'unit': market['unit'],
+                            'data_source': market['data_source'],
+                            'latest_value': latest_value,
+                            'latest_timestamp': latest['date'],
+                            'previous_value': previous_value,
+                            'change_percent': change_percent,
+                            'change_absolute': change_absolute,
+                            'history': history
+                        })
+                        markets_with_data += 1
+                    except (ValueError, TypeError):
+                        pass
+        
+        # Create output
+        output = {
+            'markets': results,
+            'exported_at': datetime.now().isoformat(),
+            'total_markets': len(markets),
+            'markets_with_data': markets_with_data
+        }
+        
+        # Save to file
+        os.makedirs('data', exist_ok=True)
+        with open('data/latest.json', 'w') as f:
+            json.dump(output, f, indent=2)
+        
+        print(f"Updated {markets_with_data} markets")
+        EOF
+        
+    - name: Generate charts
+      run: |
+        python << 'EOF'
+        import matplotlib
+        matplotlib.use('Agg')
+        import matplotlib.pyplot as plt
+        import json
+        import os
+        from datetime import datetime, timedelta
+        import requests
+        
+        FRED_API_KEY = os.getenv('FRED_API_KEY', 'demo')
+        
+        def fetch_fred_series(series_id, days=365):
+            url = f"https://api.stlouisfed.org/fred/series/observations"
+            params = {
+                'series_id': series_id,
+                'api_key': FRED_API_KEY,
+                'file_type': 'json',
+                'sort_order': 'desc',
+                'limit': days
+            }
+            try:
+                response = requests.get(url, params=params, timeout=30)
+                data = response.json()
+                if 'observations' in data:
+                    points = []
+                    for obs in data['observations']:
+                        try:
+                            val = float(obs['value'])
+                            points.append((datetime.strptime(obs['date'], '%Y-%m-%d'), val))
+                        except:
+                            pass
+                    return list(reversed(points))
+            except Exception as e:
+                print(f"Error: {e}")
+            return []
+        
+        def create_chart(data, title, filename, color='#60a5fa'):
+            if not data:
+                return
+            
+            fig, ax = plt.subplots(figsize=(10, 5))
+            dates, values = zip(*data)
+            
+            ax.plot(dates, values, color=color, linewidth=2)
+            ax.fill_between(dates, values, alpha=0.3, color=color)
+            
+            ax.set_title(title, fontsize=14, color='white', pad=15)
+            ax.set_facecolor('#1e293b')
+            fig.patch.set_facecolor('#0f172a')
+            ax.tick_params(colors='#94a3b8')
+            ax.spines['bottom'].set_color('#334155')
+            ax.spines['top'].set_visible(False)
+            ax.spines['right'].set_visible(False)
+            ax.spines['left'].set_color('#334155')
+            ax.grid(True, alpha=0.2, color='#334155')
+            
+            plt.tight_layout()
+            os.makedirs('charts', exist_ok=True)
+            plt.savefig(f'charts/{filename}', dpi=100, bbox_inches='tight', facecolor='#0f172a')
+            plt.close()
+            print(f"Created {filename}")
+        
+        # Generate charts
+        charts_to_generate = [
+            ('SP500', 'S&P 500', 'sp500', '#60a5fa'),
+            ('DGS10', '10-Year Treasury Yield', 'treasury_10y', '#a78bfa'),
+            ('MORTGAGE30US', '30-Year Mortgage Rate', 'mortgage_30y', '#f472b6'),
+            ('DFF', 'Fed Funds Rate', 'fed_funds', '#4ade80'),
+        ]
+        
+        days_map = {'30d': 30, '90d': 90, '180d': 180, '365d': 365, '1825d': 1825, '3650d': 3650}
+        
+        for series_id, title, filename_base, color in charts_to_generate:
+            for suffix, days in days_map.items():
+                data = fetch_fred_series(series_id, days)
+                if data:
+                    create_chart(data, f'{title} - {suffix.replace("d", " days")}', f'{filename_base}_{suffix}.png', color)
+        
+        print("Charts generated successfully")
+        EOF
+        
+    - name: Commit and push changes
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git add data/latest.json charts/
+        git diff --cached --quiet || (git commit -m "Update market data - $(date -u '+%Y-%m-%d %H:%M UTC')" && git push)
