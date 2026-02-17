@@ -1,0 +1,558 @@
+{
+  "markets": [
+    {
+      "name": "brent_crude",
+      "display_name": "Brent Crude Oil",
+      "category": "commodity",
+      "unit": "USD/bbl",
+      "data_source": "fred",
+      "latest_value": 71.19,
+      "latest_timestamp": "2026-02-09T00:00:00",
+      "previous_value": null,
+      "change_percent": null,
+      "change_absolute": null,
+      "history": [
+        {
+          "value": 71.19,
+          "timestamp": "2026-02-09T00:00:00"
+        }
+      ]
+    },
+    {
+      "name": "diesel",
+      "display_name": "Diesel Fuel Prices",
+      "category": "commodity",
+      "unit": "USD/gallon",
+      "data_source": "eia",
+      "latest_value": 3.688,
+      "latest_timestamp": "2026-02-09T00:00:00",
+      "previous_value": null,
+      "change_percent": null,
+      "change_absolute": null,
+      "history": [
+        {
+          "value": 3.688,
+          "timestamp": "2026-02-09T00:00:00"
+        }
+      ]
+    },
+    {
+      "name": "gasoline",
+      "display_name": "US Gasoline Price",
+      "category": "commodity",
+      "unit": "USD/gallon",
+      "data_source": "fred",
+      "latest_value": 2.902,
+      "latest_timestamp": "2026-02-09T00:00:00",
+      "previous_value": null,
+      "change_percent": null,
+      "change_absolute": null,
+      "history": [
+        {
+          "value": 2.902,
+          "timestamp": "2026-02-09T00:00:00"
+        }
+      ]
+    },
+    {
+      "name": "gold",
+      "display_name": "Gold Price",
+      "category": "commodity",
+      "unit": "USD/oz",
+      "data_source": "yahoo",
+      "latest_value": null,
+      "latest_timestamp": null,
+      "previous_value": null,
+      "change_percent": null,
+      "change_absolute": null,
+      "history": []
+    },
+    {
+      "name": "natural_gas",
+      "display_name": "Natural Gas Spot",
+      "category": "commodity",
+      "unit": "USD/mmbtu",
+      "data_source": "eia",
+      "latest_value": 3.25,
+      "latest_timestamp": "2026-02-09T00:00:00",
+      "previous_value": null,
+      "change_percent": null,
+      "change_absolute": null,
+      "history": [
+        {
+          "value": 3.25,
+          "timestamp": "2026-02-09T00:00:00"
+        }
+      ]
+    },
+    {
+      "name": "silver",
+      "display_name": "Silver Price",
+      "category": "commodity",
+      "unit": "USD/oz",
+      "data_source": "yahoo",
+      "latest_value": null,
+      "latest_timestamp": null,
+      "previous_value": null,
+      "change_percent": null,
+      "change_absolute": null,
+      "history": []
+    },
+    {
+      "name": "steel_price",
+      "display_name": "Steel Price Index",
+      "category": "commodity",
+      "unit": "index",
+      "data_source": "scraping",
+      "latest_value": null,
+      "latest_timestamp": null,
+      "previous_value": null,
+      "change_percent": null,
+      "change_absolute": null,
+      "history": []
+    },
+    {
+      "name": "wti_crude",
+      "display_name": "WTI Crude Oil",
+      "category": "commodity",
+      "unit": "USD/bbl",
+      "data_source": "eia",
+      "latest_value": 64.53,
+      "latest_timestamp": "2026-02-09T00:00:00",
+      "previous_value": null,
+      "change_percent": null,
+      "change_absolute": null,
+      "history": [
+        {
+          "value": 64.53,
+          "timestamp": "2026-02-09T00:00:00"
+        }
+      ]
+    },
+    {
+      "name": "bitcoin",
+      "display_name": "Bitcoin",
+      "category": "crypto",
+      "unit": "USD",
+      "data_source": "yahoo",
+      "latest_value": null,
+      "latest_timestamp": null,
+      "previous_value": null,
+      "change_percent": null,
+      "change_absolute": null,
+      "history": []
+    },
+    {
+      "name": "ethereum",
+      "display_name": "Ethereum",
+      "category": "crypto",
+      "unit": "USD",
+      "data_source": "yahoo",
+      "latest_value": null,
+      "latest_timestamp": null,
+      "previous_value": null,
+      "change_percent": null,
+      "change_absolute": null,
+      "history": []
+    },
+    {
+      "name": "consumer_sentiment",
+      "display_name": "Consumer Sentiment",
+      "category": "economic",
+      "unit": "index",
+      "data_source": "fred",
+      "latest_value": 52.9,
+      "latest_timestamp": "2025-12-01T00:00:00",
+      "previous_value": null,
+      "change_percent": null,
+      "change_absolute": null,
+      "history": []
+    },
+    {
+      "name": "cpi",
+      "display_name": "Consumer Price Index",
+      "category": "economic",
+      "unit": "index",
+      "data_source": "fred",
+      "latest_value": 326.588,
+      "latest_timestamp": "2026-01-01T00:00:00",
+      "previous_value": null,
+      "change_percent": null,
+      "change_absolute": null,
+      "history": []
+    },
+    {
+      "name": "gdp",
+      "display_name": "Gross Domestic Product",
+      "category": "economic",
+      "unit": "USD billions",
+      "data_source": "fred",
+      "latest_value": 31098.027,
+      "latest_timestamp": "2025-07-01T00:00:00",
+      "previous_value": null,
+      "change_percent": null,
+      "change_absolute": null,
+      "history": []
+    },
+    {
+      "name": "ppi",
+      "display_name": "Producer Price Index",
+      "category": "economic",
+      "unit": "index",
+      "data_source": "fred",
+      "latest_value": 260.686,
+      "latest_timestamp": "2025-12-01T00:00:00",
+      "previous_value": null,
+      "change_percent": null,
+      "change_absolute": null,
+      "history": []
+    },
+    {
+      "name": "unemployment_rate",
+      "display_name": "Unemployment Rate",
+      "category": "economic",
+      "unit": "percent",
+      "data_source": "fred",
+      "latest_value": 4.3,
+      "latest_timestamp": "2026-01-01T00:00:00",
+      "previous_value": null,
+      "change_percent": null,
+      "change_absolute": null,
+      "history": []
+    },
+    {
+      "name": "box_office",
+      "display_name": "Box Office",
+      "category": "entertainment",
+      "unit": "USD",
+      "data_source": "scraping",
+      "latest_value": null,
+      "latest_timestamp": null,
+      "previous_value": null,
+      "change_percent": null,
+      "change_absolute": null,
+      "history": []
+    },
+    {
+      "name": "nfl_stats",
+      "display_name": "NFL Player Stats",
+      "category": "entertainment",
+      "unit": "various",
+      "data_source": "scraping",
+      "latest_value": null,
+      "latest_timestamp": null,
+      "previous_value": null,
+      "change_percent": null,
+      "change_absolute": null,
+      "history": []
+    },
+    {
+      "name": "spotify_listeners",
+      "display_name": "Spotify Monthly Listeners",
+      "category": "entertainment",
+      "unit": "count",
+      "data_source": "scraping",
+      "latest_value": null,
+      "latest_timestamp": null,
+      "previous_value": null,
+      "change_percent": null,
+      "change_absolute": null,
+      "history": []
+    },
+    {
+      "name": "twitch_viewers",
+      "display_name": "Twitch Peak Viewers",
+      "category": "entertainment",
+      "unit": "count",
+      "data_source": "scraping",
+      "latest_value": null,
+      "latest_timestamp": null,
+      "previous_value": null,
+      "change_percent": null,
+      "change_absolute": null,
+      "history": []
+    },
+    {
+      "name": "dollar_index",
+      "display_name": "US Dollar Index",
+      "category": "financial",
+      "unit": "index",
+      "data_source": "fred",
+      "latest_value": 118.2407,
+      "latest_timestamp": "2026-02-06T00:00:00",
+      "previous_value": null,
+      "change_percent": null,
+      "change_absolute": null,
+      "history": [
+        {
+          "value": 118.2407,
+          "timestamp": "2026-02-06T00:00:00"
+        }
+      ]
+    },
+    {
+      "name": "dow_jones",
+      "display_name": "Dow Jones Industrial",
+      "category": "financial",
+      "unit": "index",
+      "data_source": "fred",
+      "latest_value": 49500.93,
+      "latest_timestamp": "2026-02-13T00:00:00",
+      "previous_value": null,
+      "change_percent": null,
+      "change_absolute": null,
+      "history": [
+        {
+          "value": 49500.93,
+          "timestamp": "2026-02-13T00:00:00"
+        }
+      ]
+    },
+    {
+      "name": "dow_jones_yahoo",
+      "display_name": "Dow Jones (Yahoo)",
+      "category": "financial",
+      "unit": "index",
+      "data_source": "yahoo",
+      "latest_value": null,
+      "latest_timestamp": null,
+      "previous_value": null,
+      "change_percent": null,
+      "change_absolute": null,
+      "history": []
+    },
+    {
+      "name": "fed_funds",
+      "display_name": "Fed Funds Rate",
+      "category": "financial",
+      "unit": "percent",
+      "data_source": "fred",
+      "latest_value": 3.64,
+      "latest_timestamp": "2026-01-01T00:00:00",
+      "previous_value": null,
+      "change_percent": null,
+      "change_absolute": null,
+      "history": []
+    },
+    {
+      "name": "mortgage_30y",
+      "display_name": "30-Year Mortgage Rate",
+      "category": "financial",
+      "unit": "percent",
+      "data_source": "fred",
+      "latest_value": 6.09,
+      "latest_timestamp": "2026-02-12T00:00:00",
+      "previous_value": null,
+      "change_percent": null,
+      "change_absolute": null,
+      "history": [
+        {
+          "value": 6.09,
+          "timestamp": "2026-02-12T00:00:00"
+        }
+      ]
+    },
+    {
+      "name": "nasdaq",
+      "display_name": "NASDAQ Composite",
+      "category": "financial",
+      "unit": "index",
+      "data_source": "fred",
+      "latest_value": 22546.67,
+      "latest_timestamp": "2026-02-13T00:00:00",
+      "previous_value": null,
+      "change_percent": null,
+      "change_absolute": null,
+      "history": [
+        {
+          "value": 22546.67,
+          "timestamp": "2026-02-13T00:00:00"
+        }
+      ]
+    },
+    {
+      "name": "nasdaq_yahoo",
+      "display_name": "NASDAQ (Yahoo)",
+      "category": "financial",
+      "unit": "index",
+      "data_source": "yahoo",
+      "latest_value": null,
+      "latest_timestamp": null,
+      "previous_value": null,
+      "change_percent": null,
+      "change_absolute": null,
+      "history": []
+    },
+    {
+      "name": "russell_2000",
+      "display_name": "Russell 2000",
+      "category": "financial",
+      "unit": "index",
+      "data_source": "yahoo",
+      "latest_value": null,
+      "latest_timestamp": null,
+      "previous_value": null,
+      "change_percent": null,
+      "change_absolute": null,
+      "history": []
+    },
+    {
+      "name": "sp500",
+      "display_name": "S&P 500",
+      "category": "financial",
+      "unit": "index",
+      "data_source": "yahoo",
+      "latest_value": 6836.17,
+      "latest_timestamp": "2026-02-13T00:00:00",
+      "previous_value": null,
+      "change_percent": null,
+      "change_absolute": null,
+      "history": [
+        {
+          "value": 6836.17,
+          "timestamp": "2026-02-13T00:00:00"
+        }
+      ]
+    },
+    {
+      "name": "sp500_yahoo",
+      "display_name": "S&P 500 (Yahoo)",
+      "category": "financial",
+      "unit": "index",
+      "data_source": "yahoo",
+      "latest_value": null,
+      "latest_timestamp": null,
+      "previous_value": null,
+      "change_percent": null,
+      "change_absolute": null,
+      "history": []
+    },
+    {
+      "name": "treasury_10y",
+      "display_name": "10-Year Treasury Yield",
+      "category": "financial",
+      "unit": "percent",
+      "data_source": "fred",
+      "latest_value": 4.09,
+      "latest_timestamp": "2026-02-12T00:00:00",
+      "previous_value": null,
+      "change_percent": null,
+      "change_absolute": null,
+      "history": [
+        {
+          "value": 4.09,
+          "timestamp": "2026-02-12T00:00:00"
+        }
+      ]
+    },
+    {
+      "name": "treasury_2y",
+      "display_name": "2-Year Treasury Yield",
+      "category": "financial",
+      "unit": "percent",
+      "data_source": "fred",
+      "latest_value": 3.47,
+      "latest_timestamp": "2026-02-12T00:00:00",
+      "previous_value": null,
+      "change_percent": null,
+      "change_absolute": null,
+      "history": [
+        {
+          "value": 3.47,
+          "timestamp": "2026-02-12T00:00:00"
+        }
+      ]
+    },
+    {
+      "name": "vix",
+      "display_name": "VIX Volatility Index",
+      "category": "financial",
+      "unit": "index",
+      "data_source": "fred",
+      "latest_value": 20.82,
+      "latest_timestamp": "2026-02-12T00:00:00",
+      "previous_value": null,
+      "change_percent": null,
+      "change_absolute": null,
+      "history": [
+        {
+          "value": 20.82,
+          "timestamp": "2026-02-12T00:00:00"
+        }
+      ]
+    },
+    {
+      "name": "cpi_core",
+      "display_name": "CPI Core MoM",
+      "category": "government",
+      "unit": "percent",
+      "data_source": "bls",
+      "latest_value": 332.793,
+      "latest_timestamp": "2026-01-01T00:00:00",
+      "previous_value": null,
+      "change_percent": null,
+      "change_absolute": null,
+      "history": []
+    },
+    {
+      "name": "jobless_claims",
+      "display_name": "Weekly Jobless Claims",
+      "category": "government",
+      "unit": "count",
+      "data_source": "dol",
+      "latest_value": 227000.0,
+      "latest_timestamp": "2026-02-07T00:00:00",
+      "previous_value": null,
+      "change_percent": null,
+      "change_absolute": null,
+      "history": [
+        {
+          "value": 227000.0,
+          "timestamp": "2026-02-07T00:00:00"
+        }
+      ]
+    },
+    {
+      "name": "nonfarm_payrolls",
+      "display_name": "Nonfarm Payrolls",
+      "category": "government",
+      "unit": "count",
+      "data_source": "bls",
+      "latest_value": 158627.0,
+      "latest_timestamp": "2026-01-01T00:00:00",
+      "previous_value": null,
+      "change_percent": null,
+      "change_absolute": null,
+      "history": []
+    },
+    {
+      "name": "tsa_throughput",
+      "display_name": "TSA Checkpoint Throughput",
+      "category": "government",
+      "unit": "count",
+      "data_source": "tsa",
+      "latest_value": null,
+      "latest_timestamp": null,
+      "previous_value": null,
+      "change_percent": null,
+      "change_absolute": null,
+      "history": []
+    },
+    {
+      "name": "hdd_cdd",
+      "display_name": "HDD/CDD Degree Days",
+      "category": "weather",
+      "unit": "degree_days",
+      "data_source": "noaa",
+      "latest_value": null,
+      "latest_timestamp": null,
+      "previous_value": null,
+      "change_percent": null,
+      "change_absolute": null,
+      "history": []
+    }
+  ],
+  "exported_at": "2026-02-17T00:57:20.171077",
+  "total_markets": 37,
+  "markets_with_data": 22
+}

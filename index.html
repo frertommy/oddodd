@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OddOdd - Market Data Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #60a5fa, #a78bfa, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #94a3b8;
+            font-size: 1.1rem;
+        }
+        
+        .last-updated {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+        
+        .category {
+            margin-bottom: 40px;
+        }
+        
+        .category h2 {
+            font-size: 1.5rem;
+            color: #60a5fa;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(96, 165, 250, 0.3);
+            text-transform: capitalize;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .category-icon {
+            font-size: 1.3rem;
+        }
+        
+        .markets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .market-card {
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+        }
+        
+        .market-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(96, 165, 250, 0.5);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        .market-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        
+        .market-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #f1f5f9;
+        }
+        
+        .market-unit {
+            font-size: 0.75rem;
+            color: #64748b;
+            background: rgba(51, 65, 85, 0.5);
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+        
+        .market-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #f8fafc;
+            margin-bottom: 8px;
+            font-family: 'SF Mono', Monaco, monospace;
+        }
+        
+        .market-change {
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .market-change.positive {
+            color: #4ade80;
+        }
+        
+        .market-change.negative {
+            color: #f87171;
+        }
+        
+        .market-change.neutral {
+            color: #94a3b8;
+        }
+        
+        .sparkline {
+            height: 40px;
+            margin-top: 15px;
+            opacity: 0.7;
+        }
+        
+        .market-time {
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-top: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #4ade80;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .no-data {
+            color: #64748b;
+            font-style: italic;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 40px;
+            color: #64748b;
+        }
+        
+        .stats-summary {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #60a5fa;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+        
+        .charts-section {
+            margin-top: 50px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .charts-section h2 {
+            font-size: 1.8rem;
+            color: #a78bfa;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+        }
+        
+        .chart-card {
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        .chart-card h3 {
+            color: #94a3b8;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .chart-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 60px;
+            color: #64748b;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .markets-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .chart-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 OddOdd Market Dashboard</h1>
+            <p class="subtitle">Real-time tracking of 30+ financial markets</p>
+            <p class="last-updated">Last updated: <span id="last-updated">Loading...</span></p>
+        </header>
+        
+        <div class="stats-summary">
+            <div class="stat-item">
+                <div class="stat-number" id="total-markets">-</div>
+                <div class="stat-label">Markets Tracked</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="data-sources">-</div>
+                <div class="stat-label">Data Sources</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="markets-with-data">-</div>
+                <div class="stat-label">Active Markets</div>
+            </div>
+        </div>
+        
+        <div id="dashboard-content">
+            <div class="loading">Loading market data...</div>
+        </div>
+        
+        <div class="charts-section">
+            <h2>📈 Historical Charts</h2>
+            <div class="chart-grid">
+                <div class="chart-card">
+                    <h3>S&P 500 - 30 Days</h3>
+                    <img src="charts/sp500_30d.png" alt="S&P 500 30 Day Chart" onerror="this.style.display='none'">
+                </div>
+                <div class="chart-card">
+                    <h3>S&P 500 - 90 Days</h3>
+                    <img src="charts/sp500_90d.png" alt="S&P 500 90 Day Chart" onerror="this.style.display='none'">
+                </div>
+                <div class="chart-card">
+                    <h3>S&P 500 - 1 Year</h3>
+                    <img src="charts/sp500_365d.png" alt="S&P 500 1 Year Chart" onerror="this.style.display='none'">
+                </div>
+                <div class="chart-card">
+                    <h3>10-Year Treasury - 30 Days</h3>
+                    <img src="charts/treasury_10y_30d.png" alt="Treasury 10Y 30 Day Chart" onerror="this.style.display='none'">
+                </div>
+                <div class="chart-card">
+                    <h3>10-Year Treasury - 1 Year</h3>
+                    <img src="charts/treasury_10y_365d.png" alt="Treasury 10Y 1 Year Chart" onerror="this.style.display='none'">
+                </div>
+                <div class="chart-card">
+                    <h3>30-Year Mortgage - 30 Days</h3>
+                    <img src="charts/mortgage_30y_30d.png" alt="Mortgage 30Y 30 Day Chart" onerror="this.style.display='none'">
+                </div>
+                <div class="chart-card">
+                    <h3>30-Year Mortgage - 1 Year</h3>
+                    <img src="charts/mortgage_30y_365d.png" alt="Mortgage 30Y 1 Year Chart" onerror="this.style.display='none'">
+                </div>
+                <div class="chart-card">
+                    <h3>Fed Funds Rate - 30 Days</h3>
+                    <img src="charts/fed_funds_30d.png" alt="Fed Funds 30 Day Chart" onerror="this.style.display='none'">
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Data sourced from FRED, Yahoo Finance, EIA, and public APIs</p>
+            <p style="margin-top: 10px; font-size: 0.85rem;">Built with OpenClaw • <a href="https://github.com/frertommy/oddodd" style="color: #60a5fa;">View on GitHub</a></p>
+        </footer>
+    </div>
+    
+    <script>
+        // Category icons
+        const categoryIcons = {
+            'commodity': '⛽',
+            'financial': '💹',
+            'economic': '📈',
+            'government': '🏛️',
+            'entertainment': '🎬',
+            'weather': '🌡️',
+            'crypto': '₿'
+        };
+        
+        // Format value based on unit
+        function formatValue(value, unit) {
+            if (value === null || value === undefined) return 'N/A';
+            
+            if (unit.includes('USD') && !unit.includes('USD/')) {
+                return '$' + value.toFixed(2);
+            } else if (unit.includes('USD/')) {
+                return '$' + value.toFixed(2) + unit.replace('USD', '');
+            } else if (unit.includes('percent') || unit.includes('rate') || unit.includes('yield')) {
+                return value.toFixed(2) + '%';
+            } else if (unit.includes('count') || unit.includes('index')) {
+                if (value >= 1000000) {
+                    return (value / 1000000).toFixed(2) + 'M';
+                } else if (value >= 1000) {
+                    return (value / 1000).toFixed(1) + 'K';
+                }
+                return value.toLocaleString();
+            }
+            return value.toFixed(2);
+        }
+        
+        // Format change
+        function formatChange(change, percent) {
+            if (change === null || change === undefined) return { text: '−', class: 'neutral' };
+            
+            const sign = change > 0 ? '+' : '';
+            const arrow = change > 0 ? '▲' : change < 0 ? '▼' : '−';
+            const changeClass = change > 0 ? 'positive' : change < 0 ? 'negative' : 'neutral';
+            
+            if (percent !== null && percent !== undefined) {
+                return {
+                    text: `${arrow} ${sign}${percent.toFixed(2)}%`,
+                    class: changeClass
+                };
+            }
+            return {
+                text: `${arrow} ${sign}${change.toFixed(2)}`,
+                class: changeClass
+            };
+        }
+        
+        // Create sparkline SVG
+        function createSparkline(data) {
+            if (!data || data.length < 2) return '';
+            
+            const width = 200;
+            const height = 40;
+            const padding = 2;
+            
+            const values = data.map(d => d.value);
+            const min = Math.min(...values);
+            const max = Math.max(...values);
+            const range = max - min || 1;
+            
+            const points = data.map((d, i) => {
+                const x = (i / (data.length - 1)) * width;
+                const y = height - ((d.value - min) / range) * (height - 2 * padding) - padding;
+                return `${x},${y}`;
+            }).join(' ');
+            
+            const color = values[values.length - 1] >= values[0] ? '#4ade80' : '#f87171';
+            
+            return `
+                <svg class="sparkline" viewBox="0 0 ${width} ${height}">
+                    <polyline fill="none" stroke="${color}" stroke-width="2" points="${points}"></polyline>
+                </svg>
+            `;
+        }
+        
+        // Load and render data
+        async function loadDashboard() {
+            try {
+                const response = await fetch('data/latest.json');
+                
+                if (!response.ok) {
+                    showPlaceholder();
+                    return;
+                }
+                
+                const data = await response.json();
+                renderDashboard(data);
+            } catch (error) {
+                showPlaceholder();
+            }
+        }
+        
+        function showPlaceholder() {
+            document.getElementById('dashboard-content').innerHTML = `
+                <div style="text-align: center; padding: 60px; color: #64748b;">
+                    <p style="font-size: 1.2rem; margin-bottom: 20px;">🚀 Dashboard is being set up</p>
+                    <p>Data will appear here once collection begins.</p>
+                </div>
+            `;
+        }
+        
+        function renderDashboard(data) {
+            // Group by category
+            const categories = {};
+            data.markets.forEach(market => {
+                if (!categories[market.category]) {
+                    categories[market.category] = [];
+                }
+                categories[market.category].push(market);
+            });
+            
+            // Render
+            let html = '';
+            for (const [category, markets] of Object.entries(categories)) {
+                const icon = categoryIcons[category] || '📊';
+                html += `
+                    <div class="category">
+                        <h2><span class="category-icon">${icon}</span> ${category} Markets</h2>
+                        <div class="markets-grid">
+                            ${markets.map(m => renderMarketCard(m)).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            document.getElementById('dashboard-content').innerHTML = html;
+            document.getElementById('last-updated').textContent = new Date(data.exported_at).toLocaleString();
+            document.getElementById('total-markets').textContent = data.total_markets;
+            document.getElementById('data-sources').textContent = new Set(data.markets.map(m => m.data_source)).size;
+            document.getElementById('markets-with-data').textContent = data.markets_with_data;
+        }
+        
+        function renderMarketCard(market) {
+            const change = formatChange(market.change_absolute, market.change_percent);
+            const sparkline = market.history && market.history.length > 1 ? createSparkline(market.history) : '';
+            
+            return `
+                <div class="market-card">
+                    <div class="market-header">
+                        <span class="market-name">${market.display_name}</span>
+                        <span class="market-unit">${market.unit}</span>
+                    </div>
+                    
+                    <div class="market-value">${formatValue(market.latest_value, market.unit)}</div>
+                    
+                    <div class="market-change ${change.class}">
+                        ${change.text}
+                    </div>
+                    
+                    ${sparkline}
+                    
+                    <div class="market-time">
+                        <span class="status-dot"></span>
+                        ${market.latest_timestamp ? new Date(market.latest_timestamp).toLocaleDateString() : 'No data'}
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Load on page load
+        loadDashboard();
+    </script>
+</body>
+</html>
