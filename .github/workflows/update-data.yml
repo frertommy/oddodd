@@ -80,9 +80,13 @@ jobs:
             }
             try:
                 response = requests.get(url, params=params, timeout=30)
+                print(f"Fetching {series_id}: status {response.status_code}")
                 data = response.json()
                 if 'observations' in data and len(data['observations']) > 0:
+                    print(f"  Got {len(data['observations'])} observations")
                     return data['observations']
+                elif 'error_message' in data:
+                    print(f"  API Error: {data['error_message']}")
             except Exception as e:
                 print(f"Error fetching {series_id}: {e}")
             return []
