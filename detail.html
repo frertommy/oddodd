@@ -156,6 +156,49 @@
             height: 400px;
         }
         
+        .prediction-markets {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .pm-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .pm-button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .pm-kalshi {
+            background: rgba(74, 222, 128, 0.15);
+            color: #4ade80;
+            border: 1px solid rgba(74, 222, 128, 0.3);
+        }
+        
+        .pm-kalshi:hover {
+            background: rgba(74, 222, 128, 0.25);
+        }
+        
+        .pm-polymarket {
+            background: rgba(96, 165, 250, 0.15);
+            color: #60a5fa;
+            border: 1px solid rgba(96, 165, 250, 0.3);
+        }
+        
+        .pm-polymarket:hover {
+            background: rgba(96, 165, 250, 0.25);
+        }
+        
         .data-table-section {
             background: rgba(30, 41, 59, 0.8);
             border-radius: 16px;
@@ -265,6 +308,7 @@
                     <button class="timeframe-btn" data-tf="monthly">Monthly</button>
                 </div>
             </div>
+            <div id="prediction-markets" class="prediction-markets"></div>
             <div class="chart-container">
                 <canvas id="priceChart"></canvas>
             </div>
@@ -305,6 +349,54 @@
         let marketData = null;
         let chartInstance = null;
         let allHistory = [];
+        
+        // Prediction market mappings
+        const predictionMarkets = {
+            'jobless_claims': {
+                kalshi: { name: 'Weekly Jobless Claims', url: 'https://kalshi.com/markets/jobless-claims' },
+                polymarket: null
+            },
+            'mortgage_30y': {
+                kalshi: { name: 'Mortgage Rates', url: 'https://kalshi.com/markets/mortgage-rates' },
+                polymarket: null
+            },
+            'hdd_cdd': {
+                kalshi: { name: 'HDD/CDD Weather', url: 'https://kalshi.com/markets/weather-degree-days' },
+                polymarket: null
+            },
+            'nfl_stats': {
+                kalshi: { name: 'NFL Player Stats', url: 'https://kalshi.com/markets/nfl' },
+                polymarket: { name: 'NFL Markets', url: 'https://polymarket.com/sports/nfl' }
+            },
+            'box_office': {
+                kalshi: null,
+                polymarket: { name: 'Box Office', url: 'https://polymarket.com/entertainment/box-office' }
+            },
+            'cpi_core': {
+                kalshi: { name: 'CPI Core MoM', url: 'https://kalshi.com/markets/cpi-core' },
+                polymarket: { name: 'CPI Markets', url: 'https://polymarket.com/economics/cpi' }
+            },
+            'nonfarm_payrolls': {
+                kalshi: { name: 'Nonfarm Payrolls', url: 'https://kalshi.com/markets/nonfarm-payrolls' },
+                polymarket: { name: 'NFP Markets', url: 'https://polymarket.com/economics/nonfarm-payrolls' }
+            },
+            'fed_funds': {
+                kalshi: { name: 'Fed Funds Rate', url: 'https://kalshi.com/markets/fed-funds' },
+                polymarket: { name: 'Fed Rate Markets', url: 'https://polymarket.com/economics/fed-rate' }
+            },
+            'sp500': {
+                kalshi: { name: 'S&P 500 Weekly Close', url: 'https://kalshi.com/markets/sp500-weekly' },
+                polymarket: { name: 'S&P 500 Markets', url: 'https://polymarket.com/finance/sp500' }
+            },
+            'treasury_10y': {
+                kalshi: { name: '10-Year Treasury', url: 'https://kalshi.com/markets/treasury-yield' },
+                polymarket: { name: 'Treasury Markets', url: 'https://polymarket.com/finance/treasury-yield' }
+            },
+            'consumer_sentiment': {
+                kalshi: { name: 'Consumer Sentiment', url: 'https://kalshi.com/markets/consumer-sentiment' },
+                polymarket: null
+            }
+        };
         
         // Format value based on unit
         function formatValue(value, unit) {
@@ -560,6 +652,20 @@
                 document.querySelectorAll('[data-table-tf]').forEach(btn => {
                     btn.classList.toggle('active', btn.dataset.tableTf === defaultTimeframe);
                 });
+                
+                // Render prediction market links if available
+                const pmContainer = document.getElementById('prediction-markets');
+                const pm = predictionMarkets[marketData.name];
+                if (pm && pmContainer) {
+                    let pmHtml = '';
+                    if (pm.kalshi) {
+                        pmHtml += `<a href="${pm.kalshi.url}" target="_blank" class="pm-button pm-kalshi">🟢 ${pm.kalshi.name}</a>`;
+                    }
+                    if (pm.polymarket) {
+                        pmHtml += `<a href="${pm.polymarket.url}" target="_blank" class="pm-button pm-polymarket">🔵 ${pm.polymarket.name}</a>`;
+                    }
+                    pmContainer.innerHTML = pmHtml;
+                }
                 
                 updateChart(defaultTimeframe);
                 updateTable(defaultTimeframe);

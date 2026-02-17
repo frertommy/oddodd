@@ -116,6 +116,34 @@
             border-radius: 20px;
         }
         
+        .market-badges {
+            display: flex;
+            gap: 6px;
+            margin-top: 8px;
+        }
+        
+        .badge {
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .badge-kalshi {
+            background: rgba(74, 222, 128, 0.2);
+            color: #4ade80;
+            border: 1px solid rgba(74, 222, 128, 0.3);
+        }
+        
+        .badge-polymarket {
+            background: rgba(96, 165, 250, 0.2);
+            color: #60a5fa;
+            border: 1px solid rgba(96, 165, 250, 0.3);
+        }
+        
         .market-value {
             font-size: 2.2rem;
             font-weight: 700;
@@ -392,6 +420,54 @@
             };
         }
         
+        // Prediction market mappings
+        const predictionMarkets = {
+            'jobless_claims': {
+                kalshi: { name: 'Weekly Jobless Claims', url: 'https://kalshi.com/markets/jobless-claims' },
+                polymarket: null
+            },
+            'mortgage_30y': {
+                kalshi: { name: 'Mortgage Rates', url: 'https://kalshi.com/markets/mortgage-rates' },
+                polymarket: null
+            },
+            'hdd_cdd': {
+                kalshi: { name: 'HDD/CDD Weather', url: 'https://kalshi.com/markets/weather-degree-days' },
+                polymarket: null
+            },
+            'nfl_stats': {
+                kalshi: { name: 'NFL Player Stats', url: 'https://kalshi.com/markets/nfl' },
+                polymarket: { name: 'NFL Markets', url: 'https://polymarket.com/sports/nfl' }
+            },
+            'box_office': {
+                kalshi: null,
+                polymarket: { name: 'Box Office', url: 'https://polymarket.com/entertainment/box-office' }
+            },
+            'cpi_core': {
+                kalshi: { name: 'CPI Core MoM', url: 'https://kalshi.com/markets/cpi-core' },
+                polymarket: { name: 'CPI Markets', url: 'https://polymarket.com/economics/cpi' }
+            },
+            'nonfarm_payrolls': {
+                kalshi: { name: 'Nonfarm Payrolls', url: 'https://kalshi.com/markets/nonfarm-payrolls' },
+                polymarket: { name: 'NFP Markets', url: 'https://polymarket.com/economics/nonfarm-payrolls' }
+            },
+            'fed_funds': {
+                kalshi: { name: 'Fed Funds Rate', url: 'https://kalshi.com/markets/fed-funds' },
+                polymarket: { name: 'Fed Rate Markets', url: 'https://polymarket.com/economics/fed-rate' }
+            },
+            'sp500': {
+                kalshi: { name: 'S&P 500 Weekly Close', url: 'https://kalshi.com/markets/sp500-weekly' },
+                polymarket: { name: 'S&P 500 Markets', url: 'https://polymarket.com/finance/sp500' }
+            },
+            'treasury_10y': {
+                kalshi: { name: '10-Year Treasury', url: 'https://kalshi.com/markets/treasury-yield' },
+                polymarket: { name: 'Treasury Markets', url: 'https://polymarket.com/finance/treasury-yield' }
+            },
+            'consumer_sentiment': {
+                kalshi: { name: 'Consumer Sentiment', url: 'https://kalshi.com/markets/consumer-sentiment' },
+                polymarket: null
+            }
+        };
+
         // Create sparkline SVG
         function createSparkline(data) {
             if (!data || data.length < 2) return '';
@@ -481,6 +557,20 @@
             const change = formatChange(market.change_absolute, market.change_percent);
             const sparkline = market.history && market.history.length > 1 ? createSparkline(market.history) : '';
             
+            // Check for prediction markets
+            const pm = predictionMarkets[market.name];
+            let badgesHtml = '';
+            if (pm) {
+                badgesHtml = '<div class="market-badges">';
+                if (pm.kalshi) {
+                    badgesHtml += `<span class="badge badge-kalshi">🟢 Kalshi</span>`;
+                }
+                if (pm.polymarket) {
+                    badgesHtml += `<span class="badge badge-polymarket">🔵 Polymarket</span>`;
+                }
+                badgesHtml += '</div>';
+            }
+            
             return `
                 <div class="market-card" onclick="window.location.href='detail.html?market=${market.name}'">
                     <div class="market-header">
@@ -494,6 +584,7 @@
                         ${change.text}
                     </div>
                     
+                    ${badgesHtml}
                     ${sparkline}
                     
                     <div class="market-time">
