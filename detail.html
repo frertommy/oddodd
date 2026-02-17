@@ -530,19 +530,38 @@
         
         // Update chart
         function updateChart() {
-            if (!fullSeries || fullSeries.length === 0) return;
+            console.log('updateChart called, fullSeries length:', fullSeries ? fullSeries.length : 0);
             
-            // Aggregate by timeframe
-            let series = aggregateData(fullSeries, state.timeframe);
+            if (!fullSeries || fullSeries.length === 0) {
+                console.log('No data available');
+                return;
+            }
             
-            // Filter by range
-            series = ChartUtils.filterByRange(series, state.startDate, state.endDate);
+            try {
+                // Aggregate by timeframe
+                let series = aggregateData(fullSeries, state.timeframe);
+                console.log('After aggregation:', series.length);
+                
+                // Filter by range
+                series = ChartUtils.filterByRange(series, state.startDate, state.endDate);
+                console.log('After filter:', series.length);
+                
+                if (series.length === 0) {
+                    console.log('No data after filtering');
+                    return;
+                }
             
             // Determine "to" date for band calculation (use end of visible range or last data point)
             const toDate = state.endDate || (series.length > 0 ? series[series.length - 1].t : null);
             
             // Normalize
-            const normResult = ChartUtils.normalize(series, state.normalize, fullSeries, toDate);
+            let normResult;
+            try {
+                normResult = ChartUtils.normalize(series, state.normalize, fullSeries, toDate);
+            } catch (e) {
+                console.error('Error normalizing:', e);
+                normResult = { series: series, bandInfo: null };
+            }
             series = normResult.series;
             currentBandInfo = normResult.bandInfo;
             
