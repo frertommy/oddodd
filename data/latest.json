@@ -9928,12 +9928,16 @@
       "category": "financial",
       "unit": "index",
       "data_source": "fred",
-      "latest_value": 17.93,
-      "latest_timestamp": "2026-02-25",
-      "previous_value": 19.55,
-      "change_percent": -8.286445012787729,
-      "change_absolute": -1.620000000000001,
+      "latest_value": 18.63,
+      "latest_timestamp": "2026-02-26",
+      "previous_value": 17.93,
+      "change_percent": 3.9040713887339615,
+      "change_absolute": 0.6999999999999993,
       "history": [
+        {
+          "value": 18.63,
+          "timestamp": "2026-02-26"
+        },
         {
           "value": 17.93,
           "timestamp": "2026-02-25"
@@ -11369,10 +11373,6 @@
         {
           "value": 19.21,
           "timestamp": "2024-10-04"
-        },
-        {
-          "value": 20.49,
-          "timestamp": "2024-10-03"
         }
       ]
     },
@@ -19998,26 +19998,30 @@
       "category": "economic",
       "unit": "index",
       "data_source": "fred",
-      "latest_value": 260.686,
-      "latest_timestamp": "2025-12-01",
-      "previous_value": 261.358,
-      "change_percent": -0.25711858829652257,
-      "change_absolute": -0.6720000000000255,
+      "latest_value": 261.524,
+      "latest_timestamp": "2026-01-01",
+      "previous_value": 260.817,
+      "change_percent": 0.2710712875311017,
+      "change_absolute": 0.7069999999999936,
       "history": [
         {
-          "value": 260.686,
+          "value": 261.524,
+          "timestamp": "2026-01-01"
+        },
+        {
+          "value": 260.817,
           "timestamp": "2025-12-01"
         },
         {
-          "value": 261.358,
+          "value": 261.473,
           "timestamp": "2025-11-01"
         },
         {
-          "value": 260.724,
+          "value": 260.599,
           "timestamp": "2025-10-01"
         },
         {
-          "value": 262.094,
+          "value": 262.054,
           "timestamp": "2025-09-01"
         },
         {
@@ -21459,10 +21463,6 @@
         {
           "value": 125.2,
           "timestamp": "1995-09-01"
-        },
-        {
-          "value": 125.1,
-          "timestamp": "1995-08-01"
         }
       ]
     },
@@ -28637,7 +28637,7 @@
       ]
     }
   ],
-  "exported_at": "2026-02-27T14:10:59.195744",
+  "exported_at": "2026-02-27T17:01:10.075120",
   "total_markets": 20,
   "markets_with_data": 20
 }
