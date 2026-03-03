@@ -4224,12 +4224,16 @@
       "category": "commodity",
       "unit": "USD/gallon",
       "data_source": "fred",
-      "latest_value": 2.937,
-      "latest_timestamp": "2026-02-23",
-      "previous_value": 2.924,
-      "change_percent": 0.44459644322845077,
-      "change_absolute": 0.0129999999999999,
+      "latest_value": 3.015,
+      "latest_timestamp": "2026-03-02",
+      "previous_value": 2.937,
+      "change_percent": 2.6557711950970475,
+      "change_absolute": 0.07800000000000029,
       "history": [
+        {
+          "value": 3.015,
+          "timestamp": "2026-03-02"
+        },
         {
           "value": 2.937,
           "timestamp": "2026-02-23"
@@ -5685,10 +5689,6 @@
         {
           "value": 2.471,
           "timestamp": "2019-03-11"
-        },
-        {
-          "value": 2.422,
-          "timestamp": "2019-03-04"
         }
       ]
     },
@@ -9928,12 +9928,16 @@
       "category": "financial",
       "unit": "index",
       "data_source": "fred",
-      "latest_value": 19.86,
-      "latest_timestamp": "2026-02-27",
-      "previous_value": 18.63,
-      "change_percent": 6.6022544283413875,
-      "change_absolute": 1.2300000000000004,
+      "latest_value": 21.44,
+      "latest_timestamp": "2026-03-02",
+      "previous_value": 19.86,
+      "change_percent": 7.955689828801621,
+      "change_absolute": 1.5800000000000018,
       "history": [
+        {
+          "value": 21.44,
+          "timestamp": "2026-03-02"
+        },
         {
           "value": 19.86,
           "timestamp": "2026-02-27"
@@ -11369,10 +11373,6 @@
         {
           "value": 21.42,
           "timestamp": "2024-10-08"
-        },
-        {
-          "value": 22.64,
-          "timestamp": "2024-10-07"
         }
       ]
     },
@@ -28637,7 +28637,7 @@
       ]
     }
   ],
-  "exported_at": "2026-03-03T13:12:49.364585",
+  "exported_at": "2026-03-03T15:53:37.846348",
   "total_markets": 20,
   "markets_with_data": 20
 }
