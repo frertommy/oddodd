@@ -6,12 +6,32 @@
       "category": "commodity",
       "unit": "USD/bbl",
       "data_source": "fred",
-      "latest_value": 77.24,
-      "latest_timestamp": "2026-03-02",
-      "previous_value": 71.32,
-      "change_percent": 8.300616937745376,
-      "change_absolute": 5.920000000000002,
+      "latest_value": 94.35,
+      "latest_timestamp": "2026-03-09",
+      "previous_value": 95.74,
+      "change_percent": -1.4518487570503453,
+      "change_absolute": -1.3900000000000006,
       "history": [
+        {
+          "value": 94.35,
+          "timestamp": "2026-03-09"
+        },
+        {
+          "value": 95.74,
+          "timestamp": "2026-03-06"
+        },
+        {
+          "value": 88.59,
+          "timestamp": "2026-03-05"
+        },
+        {
+          "value": 81.56,
+          "timestamp": "2026-03-04"
+        },
+        {
+          "value": 83.28,
+          "timestamp": "2026-03-03"
+        },
         {
           "value": 77.24,
           "timestamp": "2026-03-02"
@@ -1407,26 +1427,6 @@
         {
           "value": 73.68,
           "timestamp": "2024-10-15"
-        },
-        {
-          "value": 78.47,
-          "timestamp": "2024-10-14"
-        },
-        {
-          "value": 80.27,
-          "timestamp": "2024-10-11"
-        },
-        {
-          "value": 79.45,
-          "timestamp": "2024-10-10"
-        },
-        {
-          "value": 77.06,
-          "timestamp": "2024-10-09"
-        },
-        {
-          "value": 78.19,
-          "timestamp": "2024-10-08"
         }
       ]
     },
@@ -1436,12 +1436,32 @@
       "category": "commodity",
       "unit": "USD/bbl",
       "data_source": "eia",
-      "latest_value": 71.13,
-      "latest_timestamp": "2026-03-02",
-      "previous_value": 66.96,
-      "change_percent": 6.227598566308247,
-      "change_absolute": 4.170000000000002,
+      "latest_value": 94.65,
+      "latest_timestamp": "2026-03-09",
+      "previous_value": 90.77,
+      "change_percent": 4.274540046270805,
+      "change_absolute": 3.8800000000000097,
       "history": [
+        {
+          "value": 94.65,
+          "timestamp": "2026-03-09"
+        },
+        {
+          "value": 90.77,
+          "timestamp": "2026-03-06"
+        },
+        {
+          "value": 80.88,
+          "timestamp": "2026-03-05"
+        },
+        {
+          "value": 74.58,
+          "timestamp": "2026-03-04"
+        },
+        {
+          "value": 74.48,
+          "timestamp": "2026-03-03"
+        },
         {
           "value": 71.13,
           "timestamp": "2026-03-02"
@@ -2805,22 +2825,6 @@
         {
           "value": 71.22,
           "timestamp": "2024-10-15"
-        },
-        {
-          "value": 76.11,
-          "timestamp": "2024-10-11"
-        },
-        {
-          "value": 76.46,
-          "timestamp": "2024-10-10"
-        },
-        {
-          "value": 73.85,
-          "timestamp": "2024-10-09"
-        },
-        {
-          "value": 74.26,
-          "timestamp": "2024-10-08"
         }
       ]
     },
@@ -2830,12 +2834,32 @@
       "category": "commodity",
       "unit": "USD/mmbtu",
       "data_source": "eia",
-      "latest_value": 2.99,
-      "latest_timestamp": "2026-03-02",
-      "previous_value": 2.99,
-      "change_percent": 0.0,
-      "change_absolute": 0.0,
+      "latest_value": 3.25,
+      "latest_timestamp": "2026-03-09",
+      "previous_value": 3.1,
+      "change_percent": 4.838709677419352,
+      "change_absolute": 0.1499999999999999,
       "history": [
+        {
+          "value": 3.25,
+          "timestamp": "2026-03-09"
+        },
+        {
+          "value": 3.1,
+          "timestamp": "2026-03-06"
+        },
+        {
+          "value": 2.9,
+          "timestamp": "2026-03-05"
+        },
+        {
+          "value": 2.87,
+          "timestamp": "2026-03-04"
+        },
+        {
+          "value": 3.1,
+          "timestamp": "2026-03-03"
+        },
         {
           "value": 2.99,
           "timestamp": "2026-03-02"
@@ -4199,22 +4223,6 @@
         {
           "value": 2.37,
           "timestamp": "2024-10-15"
-        },
-        {
-          "value": 2.31,
-          "timestamp": "2024-10-11"
-        },
-        {
-          "value": 2.26,
-          "timestamp": "2024-10-10"
-        },
-        {
-          "value": 2.43,
-          "timestamp": "2024-10-09"
-        },
-        {
-          "value": 2.51,
-          "timestamp": "2024-10-08"
         }
       ]
     },
@@ -28645,7 +28653,7 @@
       ]
     }
   ],
-  "exported_at": "2026-03-11T15:55:40.882289",
+  "exported_at": "2026-03-11T19:02:01.045482",
   "total_markets": 20,
   "markets_with_data": 20
 }
