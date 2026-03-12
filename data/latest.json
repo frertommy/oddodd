@@ -25711,13 +25711,17 @@
       "unit": "count",
       "data_source": "fred",
       "latest_value": 213000.0,
-      "latest_timestamp": "2026-02-28",
-      "previous_value": 213000.0,
-      "change_percent": 0.0,
-      "change_absolute": 0.0,
+      "latest_timestamp": "2026-03-07",
+      "previous_value": 214000.0,
+      "change_percent": -0.46728971962616817,
+      "change_absolute": -1000.0,
       "history": [
         {
           "value": 213000.0,
+          "timestamp": "2026-03-07"
+        },
+        {
+          "value": 214000.0,
           "timestamp": "2026-02-28"
         },
         {
@@ -27171,10 +27175,6 @@
         {
           "value": 212000.0,
           "timestamp": "2019-03-16"
-        },
-        {
-          "value": 218000.0,
-          "timestamp": "2019-03-09"
         }
       ]
     },
@@ -28653,7 +28653,7 @@
       ]
     }
   ],
-  "exported_at": "2026-03-12T09:53:11.000483",
+  "exported_at": "2026-03-12T13:16:31.205848",
   "total_markets": 20,
   "markets_with_data": 20
 }
