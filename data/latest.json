@@ -21492,12 +21492,16 @@
       "category": "economic",
       "unit": "percent",
       "data_source": "fred",
-      "latest_value": 4.4,
-      "latest_timestamp": "2026-02-01",
-      "previous_value": 4.3,
-      "change_percent": 2.32558139534885,
-      "change_absolute": 0.10000000000000053,
+      "latest_value": 4.3,
+      "latest_timestamp": "2026-03-01",
+      "previous_value": 4.4,
+      "change_percent": -2.2727272727272845,
+      "change_absolute": -0.10000000000000053,
       "history": [
+        {
+          "value": 4.3,
+          "timestamp": "2026-03-01"
+        },
         {
           "value": 4.4,
           "timestamp": "2026-02-01"
@@ -22949,10 +22953,6 @@
         {
           "value": 5.6,
           "timestamp": "1995-11-01"
-        },
-        {
-          "value": 5.5,
-          "timestamp": "1995-10-01"
         }
       ]
     },
@@ -27188,18 +27188,22 @@
       "category": "government",
       "unit": "count",
       "data_source": "fred",
-      "latest_value": 158466.0,
-      "latest_timestamp": "2026-02-01",
-      "previous_value": 158558.0,
-      "change_percent": -0.05802293167169112,
-      "change_absolute": -92.0,
+      "latest_value": 158637.0,
+      "latest_timestamp": "2026-03-01",
+      "previous_value": 158459.0,
+      "change_percent": 0.11233189657892577,
+      "change_absolute": 178.0,
       "history": [
         {
-          "value": 158466.0,
+          "value": 158637.0,
+          "timestamp": "2026-03-01"
+        },
+        {
+          "value": 158459.0,
           "timestamp": "2026-02-01"
         },
         {
-          "value": 158558.0,
+          "value": 158592.0,
           "timestamp": "2026-01-01"
         },
         {
@@ -28649,15 +28653,11 @@
         {
           "value": 118165.0,
           "timestamp": "1995-11-01"
-        },
-        {
-          "value": 118026.0,
-          "timestamp": "1995-10-01"
         }
       ]
     }
   ],
-  "exported_at": "2026-04-03T13:18:00.484055",
+  "exported_at": "2026-04-03T15:44:39.819919",
   "total_markets": 20,
   "markets_with_data": 20
 }
