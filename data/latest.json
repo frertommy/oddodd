@@ -24236,12 +24236,16 @@
       "category": "economic",
       "unit": "index",
       "data_source": "fred",
-      "latest_value": 56.6,
-      "latest_timestamp": "2026-02-01",
-      "previous_value": 56.4,
-      "change_percent": 0.35460992907801925,
-      "change_absolute": 0.20000000000000284,
+      "latest_value": 53.3,
+      "latest_timestamp": "2026-03-01",
+      "previous_value": 56.6,
+      "change_percent": -5.830388692579513,
+      "change_absolute": -3.3000000000000043,
       "history": [
+        {
+          "value": 53.3,
+          "timestamp": "2026-03-01"
+        },
         {
           "value": 56.6,
           "timestamp": "2026-02-01"
@@ -25697,10 +25701,6 @@
         {
           "value": 88.2,
           "timestamp": "1995-11-01"
-        },
-        {
-          "value": 90.2,
-          "timestamp": "1995-10-01"
         }
       ]
     },
@@ -28653,7 +28653,7 @@
       ]
     }
   ],
-  "exported_at": "2026-04-24T13:52:39.409033",
+  "exported_at": "2026-04-24T16:08:39.792866",
   "total_markets": 20,
   "markets_with_data": 20
 }
