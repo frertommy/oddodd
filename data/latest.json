@@ -5698,12 +5698,16 @@
       "category": "financial",
       "unit": "index",
       "data_source": "fred",
-      "latest_value": 7353.61,
-      "latest_timestamp": "2026-05-19",
-      "previous_value": 7403.05,
-      "change_percent": -0.6678328526755933,
-      "change_absolute": -49.44000000000051,
+      "latest_value": 7432.97,
+      "latest_timestamp": "2026-05-20",
+      "previous_value": 7353.61,
+      "change_percent": 1.0791978361648304,
+      "change_absolute": 79.36000000000058,
       "history": [
+        {
+          "value": 7432.97,
+          "timestamp": "2026-05-20"
+        },
         {
           "value": 7353.61,
           "timestamp": "2026-05-19"
@@ -7108,12 +7112,16 @@
       "category": "financial",
       "unit": "index",
       "data_source": "fred",
-      "latest_value": 49363.88,
-      "latest_timestamp": "2026-05-19",
-      "previous_value": 49686.12,
-      "change_percent": -0.6485513459292157,
-      "change_absolute": -322.24000000000524,
+      "latest_value": 50009.35,
+      "latest_timestamp": "2026-05-20",
+      "previous_value": 49363.88,
+      "change_percent": 1.3075754985224037,
+      "change_absolute": 645.4700000000012,
       "history": [
+        {
+          "value": 50009.35,
+          "timestamp": "2026-05-20"
+        },
         {
           "value": 49363.88,
           "timestamp": "2026-05-19"
@@ -8518,12 +8526,16 @@
       "category": "financial",
       "unit": "index",
       "data_source": "fred",
-      "latest_value": 25870.71,
-      "latest_timestamp": "2026-05-19",
-      "previous_value": 26090.73,
-      "change_percent": -0.8432880183881419,
-      "change_absolute": -220.02000000000044,
+      "latest_value": 26270.36,
+      "latest_timestamp": "2026-05-20",
+      "previous_value": 25870.71,
+      "change_percent": 1.544797185697654,
+      "change_absolute": 399.65000000000146,
       "history": [
+        {
+          "value": 26270.36,
+          "timestamp": "2026-05-20"
+        },
         {
           "value": 25870.71,
           "timestamp": "2026-05-19"
@@ -28673,7 +28685,7 @@
       ]
     }
   ],
-  "exported_at": "2026-05-20T22:26:08.829337",
+  "exported_at": "2026-05-21T04:18:09.912339",
   "total_markets": 20,
   "markets_with_data": 20
 }
