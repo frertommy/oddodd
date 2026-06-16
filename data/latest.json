@@ -11442,12 +11442,16 @@
       "category": "financial",
       "unit": "percent",
       "data_source": "fred",
-      "latest_value": 4.48,
-      "latest_timestamp": "2026-06-12",
-      "previous_value": 4.45,
-      "change_percent": 0.674157303370792,
-      "change_absolute": 0.03000000000000025,
+      "latest_value": 4.47,
+      "latest_timestamp": "2026-06-15",
+      "previous_value": 4.48,
+      "change_percent": -0.22321428571430074,
+      "change_absolute": -0.010000000000000675,
       "history": [
+        {
+          "value": 4.47,
+          "timestamp": "2026-06-15"
+        },
         {
           "value": 4.48,
           "timestamp": "2026-06-12"
@@ -12856,12 +12860,16 @@
       "category": "financial",
       "unit": "percent",
       "data_source": "fred",
-      "latest_value": 4.09,
-      "latest_timestamp": "2026-06-12",
-      "previous_value": 4.05,
-      "change_percent": 0.9876543209876552,
-      "change_absolute": 0.040000000000000036,
+      "latest_value": 4.07,
+      "latest_timestamp": "2026-06-15",
+      "previous_value": 4.09,
+      "change_percent": -0.48899755501221454,
+      "change_absolute": -0.019999999999999574,
       "history": [
+        {
+          "value": 4.07,
+          "timestamp": "2026-06-15"
+        },
         {
           "value": 4.09,
           "timestamp": "2026-06-12"
@@ -14270,12 +14278,24 @@
       "category": "financial",
       "unit": "percent",
       "data_source": "fred",
-      "latest_value": 3.62,
-      "latest_timestamp": "2026-06-12",
+      "latest_value": 3.63,
+      "latest_timestamp": "2026-06-15",
       "previous_value": 3.62,
-      "change_percent": 0.0,
-      "change_absolute": 0.0,
+      "change_percent": 0.276243093922646,
+      "change_absolute": 0.009999999999999787,
       "history": [
+        {
+          "value": 3.63,
+          "timestamp": "2026-06-15"
+        },
+        {
+          "value": 3.62,
+          "timestamp": "2026-06-14"
+        },
+        {
+          "value": 3.62,
+          "timestamp": "2026-06-13"
+        },
         {
           "value": 3.62,
           "timestamp": "2026-06-12"
@@ -15723,18 +15743,6 @@
         {
           "value": 4.33,
           "timestamp": "2025-06-16"
-        },
-        {
-          "value": 4.33,
-          "timestamp": "2025-06-15"
-        },
-        {
-          "value": 4.33,
-          "timestamp": "2025-06-14"
-        },
-        {
-          "value": 4.33,
-          "timestamp": "2025-06-13"
         }
       ]
     },
@@ -28749,7 +28757,7 @@
       ]
     }
   ],
-  "exported_at": "2026-06-16T17:07:14.601307",
+  "exported_at": "2026-06-16T21:10:26.294250",
   "total_markets": 20,
   "markets_with_data": 20
 }
