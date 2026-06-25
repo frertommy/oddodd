@@ -7160,12 +7160,16 @@
       "category": "financial",
       "unit": "index",
       "data_source": "fred",
-      "latest_value": 19.49,
-      "latest_timestamp": "2026-06-23",
-      "previous_value": 17.28,
-      "change_percent": 12.789351851851835,
-      "change_absolute": 2.2099999999999973,
+      "latest_value": 18.63,
+      "latest_timestamp": "2026-06-24",
+      "previous_value": 19.49,
+      "change_percent": -4.412519240636221,
+      "change_absolute": -0.8599999999999994,
       "history": [
+        {
+          "value": 18.63,
+          "timestamp": "2026-06-24"
+        },
         {
           "value": 19.49,
           "timestamp": "2026-06-23"
@@ -8605,10 +8609,6 @@
         {
           "value": 15.84,
           "timestamp": "2025-01-30"
-        },
-        {
-          "value": 16.56,
-          "timestamp": "2025-01-29"
         }
       ]
     },
@@ -20230,14 +20230,14 @@
       "category": "economic",
       "unit": "USD billions",
       "data_source": "fred",
-      "latest_value": 31819.464,
+      "latest_value": 31865.721,
       "latest_timestamp": "2026-01-01",
       "previous_value": 31422.526,
-      "change_percent": 1.2632275330124583,
-      "change_absolute": 396.9379999999983,
+      "change_percent": 1.410437213099926,
+      "change_absolute": 443.1949999999997,
       "history": [
         {
-          "value": 31819.464,
+          "value": 31865.721,
           "timestamp": "2026-01-01"
         },
         {
@@ -22986,14 +22986,18 @@
       "category": "government",
       "unit": "count",
       "data_source": "fred",
-      "latest_value": 226000.0,
-      "latest_timestamp": "2026-06-13",
-      "previous_value": 230000.0,
-      "change_percent": -1.7391304347826086,
-      "change_absolute": -4000.0,
+      "latest_value": 215000.0,
+      "latest_timestamp": "2026-06-20",
+      "previous_value": 227000.0,
+      "change_percent": -5.286343612334802,
+      "change_absolute": -12000.0,
       "history": [
         {
-          "value": 226000.0,
+          "value": 215000.0,
+          "timestamp": "2026-06-20"
+        },
+        {
+          "value": 227000.0,
           "timestamp": "2026-06-13"
         },
         {
@@ -24447,10 +24451,6 @@
         {
           "value": 226000.0,
           "timestamp": "2019-06-29"
-        },
-        {
-          "value": 234000.0,
-          "timestamp": "2019-06-22"
         }
       ]
     },
@@ -25929,7 +25929,7 @@
       ]
     }
   ],
-  "exported_at": "2026-06-25T09:33:39.741445",
+  "exported_at": "2026-06-25T14:43:51.722275",
   "total_markets": 20,
   "markets_with_data": 18
 }
