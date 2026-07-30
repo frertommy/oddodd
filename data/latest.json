@@ -23038,12 +23038,16 @@
       "category": "economic",
       "unit": "USD billions",
       "data_source": "fred",
-      "latest_value": 31865.721,
-      "latest_timestamp": "2026-01-01",
-      "previous_value": 31422.526,
-      "change_percent": 1.410437213099926,
-      "change_absolute": 443.1949999999997,
+      "latest_value": 32475.21,
+      "latest_timestamp": "2026-04-01",
+      "previous_value": 31865.721,
+      "change_percent": 1.9126791450913592,
+      "change_absolute": 609.4889999999978,
       "history": [
+        {
+          "value": 32475.21,
+          "timestamp": "2026-04-01"
+        },
         {
           "value": 31865.721,
           "timestamp": "2026-01-01"
@@ -28737,7 +28741,7 @@
       ]
     }
   ],
-  "exported_at": "2026-07-30T14:18:12.264886",
+  "exported_at": "2026-07-30T16:40:09.545646",
   "total_markets": 20,
   "markets_with_data": 20
 }
