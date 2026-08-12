@@ -6,12 +6,36 @@
       "category": "commodity",
       "unit": "USD/bbl",
       "data_source": "fred",
-      "latest_value": 88.9,
-      "latest_timestamp": "2026-08-03",
-      "previous_value": 96.95,
-      "change_percent": -8.303249097472921,
-      "change_absolute": -8.049999999999997,
+      "latest_value": 93.26,
+      "latest_timestamp": "2026-08-11",
+      "previous_value": 92.74,
+      "change_percent": 0.5607073538926141,
+      "change_absolute": 0.5200000000000102,
       "history": [
+        {
+          "value": 93.26,
+          "timestamp": "2026-08-11"
+        },
+        {
+          "value": 92.74,
+          "timestamp": "2026-08-10"
+        },
+        {
+          "value": 87.62,
+          "timestamp": "2026-08-07"
+        },
+        {
+          "value": 89.65,
+          "timestamp": "2026-08-06"
+        },
+        {
+          "value": 86.65,
+          "timestamp": "2026-08-05"
+        },
+        {
+          "value": 86.47,
+          "timestamp": "2026-08-04"
+        },
         {
           "value": 88.9,
           "timestamp": "2026-08-03"
@@ -1399,30 +1423,6 @@
         {
           "value": 71.94,
           "timestamp": "2025-03-19"
-        },
-        {
-          "value": 71.93,
-          "timestamp": "2025-03-18"
-        },
-        {
-          "value": 71.93,
-          "timestamp": "2025-03-17"
-        },
-        {
-          "value": 71.94,
-          "timestamp": "2025-03-14"
-        },
-        {
-          "value": 70.82,
-          "timestamp": "2025-03-13"
-        },
-        {
-          "value": 72.36,
-          "timestamp": "2025-03-12"
-        },
-        {
-          "value": 71.51,
-          "timestamp": "2025-03-11"
         }
       ]
     },
@@ -1432,12 +1432,36 @@
       "category": "commodity",
       "unit": "USD/bbl",
       "data_source": "eia",
-      "latest_value": 81.96,
-      "latest_timestamp": "2026-08-03",
-      "previous_value": 86.16,
-      "change_percent": -4.874651810584962,
-      "change_absolute": -4.200000000000003,
+      "latest_value": 84.77,
+      "latest_timestamp": "2026-08-11",
+      "previous_value": 83.76,
+      "change_percent": 1.2058261700095403,
+      "change_absolute": 1.009999999999991,
       "history": [
+        {
+          "value": 84.77,
+          "timestamp": "2026-08-11"
+        },
+        {
+          "value": 83.76,
+          "timestamp": "2026-08-10"
+        },
+        {
+          "value": 79.77,
+          "timestamp": "2026-08-07"
+        },
+        {
+          "value": 78.88,
+          "timestamp": "2026-08-06"
+        },
+        {
+          "value": 76.78,
+          "timestamp": "2026-08-05"
+        },
+        {
+          "value": 77.33,
+          "timestamp": "2026-08-04"
+        },
         {
           "value": 81.96,
           "timestamp": "2026-08-03"
@@ -2809,30 +2833,6 @@
         {
           "value": 67.4,
           "timestamp": "2025-03-19"
-        },
-        {
-          "value": 67.49,
-          "timestamp": "2025-03-18"
-        },
-        {
-          "value": 67.84,
-          "timestamp": "2025-03-17"
-        },
-        {
-          "value": 67.43,
-          "timestamp": "2025-03-14"
-        },
-        {
-          "value": 66.82,
-          "timestamp": "2025-03-13"
-        },
-        {
-          "value": 67.65,
-          "timestamp": "2025-03-12"
-        },
-        {
-          "value": 66.52,
-          "timestamp": "2025-03-11"
         }
       ]
     },
@@ -2842,12 +2842,36 @@
       "category": "commodity",
       "unit": "USD/mmbtu",
       "data_source": "eia",
-      "latest_value": 2.81,
-      "latest_timestamp": "2026-08-03",
-      "previous_value": 2.59,
-      "change_percent": 8.494208494208502,
-      "change_absolute": 0.2200000000000002,
+      "latest_value": 2.79,
+      "latest_timestamp": "2026-08-11",
+      "previous_value": 2.72,
+      "change_percent": 2.5735294117647,
+      "change_absolute": 0.06999999999999984,
       "history": [
+        {
+          "value": 2.79,
+          "timestamp": "2026-08-11"
+        },
+        {
+          "value": 2.72,
+          "timestamp": "2026-08-10"
+        },
+        {
+          "value": 2.56,
+          "timestamp": "2026-08-07"
+        },
+        {
+          "value": 2.6,
+          "timestamp": "2026-08-06"
+        },
+        {
+          "value": 2.6,
+          "timestamp": "2026-08-05"
+        },
+        {
+          "value": 2.74,
+          "timestamp": "2026-08-04"
+        },
         {
           "value": 2.81,
           "timestamp": "2026-08-03"
@@ -4211,30 +4235,6 @@
         {
           "value": 4.21,
           "timestamp": "2025-03-19"
-        },
-        {
-          "value": 4.17,
-          "timestamp": "2025-03-18"
-        },
-        {
-          "value": 4.15,
-          "timestamp": "2025-03-17"
-        },
-        {
-          "value": 3.89,
-          "timestamp": "2025-03-14"
-        },
-        {
-          "value": 3.89,
-          "timestamp": "2025-03-13"
-        },
-        {
-          "value": 4.18,
-          "timestamp": "2025-03-12"
-        },
-        {
-          "value": 4.57,
-          "timestamp": "2025-03-11"
         }
       ]
     },
@@ -28741,7 +28741,7 @@
       ]
     }
   ],
-  "exported_at": "2026-08-12T16:03:31.548407",
+  "exported_at": "2026-08-12T19:09:11.410577",
   "total_markets": 20,
   "markets_with_data": 20
 }
