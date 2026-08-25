@@ -5718,12 +5718,16 @@
       "category": "financial",
       "unit": "index",
       "data_source": "fred",
-      "latest_value": 7674.37,
-      "latest_timestamp": "2026-08-21",
-      "previous_value": 7641.16,
-      "change_percent": 0.43461987446932193,
-      "change_absolute": 33.210000000000036,
+      "latest_value": 7652.86,
+      "latest_timestamp": "2026-08-24",
+      "previous_value": 7674.37,
+      "change_percent": -0.2802835933112453,
+      "change_absolute": -21.51000000000022,
       "history": [
+        {
+          "value": 7652.86,
+          "timestamp": "2026-08-24"
+        },
         {
           "value": 7674.37,
           "timestamp": "2026-08-21"
@@ -7123,10 +7127,6 @@
         {
           "value": 5633.07,
           "timestamp": "2025-04-01"
-        },
-        {
-          "value": 5611.85,
-          "timestamp": "2025-03-31"
         }
       ]
     },
@@ -7136,12 +7136,16 @@
       "category": "financial",
       "unit": "index",
       "data_source": "fred",
-      "latest_value": 53277.01,
-      "latest_timestamp": "2026-08-21",
-      "previous_value": 52759.21,
-      "change_percent": 0.9814400177713104,
-      "change_absolute": 517.8000000000029,
+      "latest_value": 53417.16,
+      "latest_timestamp": "2026-08-24",
+      "previous_value": 53277.01,
+      "change_percent": 0.26305905680518005,
+      "change_absolute": 140.15000000000146,
       "history": [
+        {
+          "value": 53417.16,
+          "timestamp": "2026-08-24"
+        },
         {
           "value": 53277.01,
           "timestamp": "2026-08-21"
@@ -8541,10 +8545,6 @@
         {
           "value": 41989.96,
           "timestamp": "2025-04-01"
-        },
-        {
-          "value": 42001.76,
-          "timestamp": "2025-03-31"
         }
       ]
     },
@@ -28741,7 +28741,7 @@
       ]
     }
   ],
-  "exported_at": "2026-08-24T21:34:47.470594",
+  "exported_at": "2026-08-25T01:37:56.202687",
   "total_markets": 20,
   "markets_with_data": 20
 }
