@@ -11443,11 +11443,15 @@
       "unit": "percent",
       "data_source": "fred",
       "latest_value": 4.96,
-      "latest_timestamp": "2026-09-21",
-      "previous_value": 5.01,
-      "change_percent": -0.9980039920159646,
-      "change_absolute": -0.04999999999999982,
+      "latest_timestamp": "2026-09-22",
+      "previous_value": 4.96,
+      "change_percent": 0.0,
+      "change_absolute": 0.0,
       "history": [
+        {
+          "value": 4.96,
+          "timestamp": "2026-09-22"
+        },
         {
           "value": 4.96,
           "timestamp": "2026-09-21"
@@ -12843,10 +12847,6 @@
         {
           "value": 4.17,
           "timestamp": "2025-04-30"
-        },
-        {
-          "value": 4.19,
-          "timestamp": "2025-04-29"
         }
       ]
     },
@@ -12856,12 +12856,16 @@
       "category": "financial",
       "unit": "percent",
       "data_source": "fred",
-      "latest_value": 4.76,
-      "latest_timestamp": "2026-09-21",
+      "latest_value": 4.71,
+      "latest_timestamp": "2026-09-22",
       "previous_value": 4.76,
-      "change_percent": 0.0,
-      "change_absolute": 0.0,
+      "change_percent": -1.0504201680672232,
+      "change_absolute": -0.04999999999999982,
       "history": [
+        {
+          "value": 4.71,
+          "timestamp": "2026-09-22"
+        },
         {
           "value": 4.76,
           "timestamp": "2026-09-21"
@@ -14257,10 +14261,6 @@
         {
           "value": 3.6,
           "timestamp": "2025-04-30"
-        },
-        {
-          "value": 3.65,
-          "timestamp": "2025-04-29"
         }
       ]
     },
@@ -14271,11 +14271,15 @@
       "unit": "percent",
       "data_source": "fred",
       "latest_value": 3.88,
-      "latest_timestamp": "2026-09-21",
+      "latest_timestamp": "2026-09-22",
       "previous_value": 3.88,
       "change_percent": 0.0,
       "change_absolute": 0.0,
       "history": [
+        {
+          "value": 3.88,
+          "timestamp": "2026-09-22"
+        },
         {
           "value": 3.88,
           "timestamp": "2026-09-21"
@@ -15731,10 +15735,6 @@
         {
           "value": 4.09,
           "timestamp": "2025-09-23"
-        },
-        {
-          "value": 4.09,
-          "timestamp": "2025-09-22"
         }
       ]
     },
@@ -28749,7 +28749,7 @@
       ]
     }
   ],
-  "exported_at": "2026-09-23T18:22:40.562221",
+  "exported_at": "2026-09-23T21:16:08.906776",
   "total_markets": 20,
   "markets_with_data": 20
 }
