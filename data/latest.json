@@ -25806,18 +25806,22 @@
       "category": "government",
       "unit": "count",
       "data_source": "fred",
-      "latest_value": 196000.0,
-      "latest_timestamp": "2026-09-12",
-      "previous_value": 206000.0,
-      "change_percent": -4.854368932038835,
-      "change_absolute": -10000.0,
+      "latest_value": 197000.0,
+      "latest_timestamp": "2026-09-19",
+      "previous_value": 198000.0,
+      "change_percent": -0.5050505050505051,
+      "change_absolute": -1000.0,
       "history": [
         {
-          "value": 196000.0,
+          "value": 197000.0,
+          "timestamp": "2026-09-19"
+        },
+        {
+          "value": 198000.0,
           "timestamp": "2026-09-12"
         },
         {
-          "value": 206000.0,
+          "value": 207000.0,
           "timestamp": "2026-09-05"
         },
         {
@@ -27267,10 +27271,6 @@
         {
           "value": 215000.0,
           "timestamp": "2019-09-28"
-        },
-        {
-          "value": 211000.0,
-          "timestamp": "2019-09-21"
         }
       ]
     },
@@ -28749,7 +28749,7 @@
       ]
     }
   ],
-  "exported_at": "2026-09-24T12:26:50.520985",
+  "exported_at": "2026-09-24T15:17:53.588762",
   "total_markets": 20,
   "markets_with_data": 20
 }
