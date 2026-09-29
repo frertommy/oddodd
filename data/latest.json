@@ -4248,12 +4248,16 @@
       "category": "commodity",
       "unit": "USD/gallon",
       "data_source": "fred",
-      "latest_value": 4.478,
-      "latest_timestamp": "2026-09-21",
-      "previous_value": 4.319,
-      "change_percent": 3.681407733271586,
-      "change_absolute": 0.1589999999999998,
+      "latest_value": 4.465,
+      "latest_timestamp": "2026-09-28",
+      "previous_value": 4.478,
+      "change_percent": -0.2903081732916458,
+      "change_absolute": -0.0129999999999999,
       "history": [
+        {
+          "value": 4.465,
+          "timestamp": "2026-09-28"
+        },
         {
           "value": 4.478,
           "timestamp": "2026-09-21"
@@ -5709,10 +5713,6 @@
         {
           "value": 2.645,
           "timestamp": "2019-10-07"
-        },
-        {
-          "value": 2.642,
-          "timestamp": "2019-09-30"
         }
       ]
     },
@@ -28749,7 +28749,7 @@
       ]
     }
   ],
-  "exported_at": "2026-09-29T12:29:25.854662",
+  "exported_at": "2026-09-29T15:18:26.104588",
   "total_markets": 20,
   "markets_with_data": 20
 }
