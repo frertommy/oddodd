@@ -9980,12 +9980,16 @@
       "category": "financial",
       "unit": "index",
       "data_source": "fred",
-      "latest_value": 16.07,
-      "latest_timestamp": "2026-09-28",
-      "previous_value": 14.87,
-      "change_percent": 8.06993947545394,
-      "change_absolute": 1.200000000000001,
+      "latest_value": 16.04,
+      "latest_timestamp": "2026-09-29",
+      "previous_value": 16.07,
+      "change_percent": -0.18668326073429456,
+      "change_absolute": -0.030000000000001137,
       "history": [
+        {
+          "value": 16.04,
+          "timestamp": "2026-09-29"
+        },
         {
           "value": 16.07,
           "timestamp": "2026-09-28"
@@ -11429,10 +11433,6 @@
         {
           "value": 23.55,
           "timestamp": "2025-05-07"
-        },
-        {
-          "value": 24.76,
-          "timestamp": "2025-05-06"
         }
       ]
     },
@@ -23046,98 +23046,98 @@
       "category": "economic",
       "unit": "USD billions",
       "data_source": "fred",
-      "latest_value": 32486.066,
+      "latest_value": 32563.03,
       "latest_timestamp": "2026-04-01",
-      "previous_value": 31865.721,
-      "change_percent": 1.9467471016896103,
-      "change_absolute": 620.3449999999975,
+      "previous_value": 31906.274,
+      "change_percent": 2.058391399760428,
+      "change_absolute": 656.7559999999976,
       "history": [
         {
-          "value": 32486.066,
+          "value": 32563.03,
           "timestamp": "2026-04-01"
         },
         {
-          "value": 31865.721,
+          "value": 31906.274,
           "timestamp": "2026-01-01"
         },
         {
-          "value": 31422.526,
+          "value": 31462.523,
           "timestamp": "2025-10-01"
         },
         {
-          "value": 31098.027,
+          "value": 31180.493,
           "timestamp": "2025-07-01"
         },
         {
-          "value": 30485.729,
+          "value": 30630.174,
           "timestamp": "2025-04-01"
         },
         {
-          "value": 30042.113,
+          "value": 30171.979,
           "timestamp": "2025-01-01"
         },
         {
-          "value": 29825.182,
+          "value": 29929.552,
           "timestamp": "2024-10-01"
         },
         {
-          "value": 29511.664,
+          "value": 29568.256,
           "timestamp": "2024-07-01"
         },
         {
-          "value": 29147.044,
+          "value": 29232.964,
           "timestamp": "2024-04-01"
         },
         {
-          "value": 28708.161,
+          "value": 28793.191,
           "timestamp": "2024-01-01"
         },
         {
-          "value": 28424.722,
+          "value": 28464.306,
           "timestamp": "2023-10-01"
         },
         {
-          "value": 28074.846,
+          "value": 28064.032,
           "timestamp": "2023-07-01"
         },
         {
-          "value": 27530.055,
+          "value": 27533.925,
           "timestamp": "2023-04-01"
         },
         {
-          "value": 27216.445,
+          "value": 27241.282,
           "timestamp": "2023-01-01"
         },
         {
-          "value": 26770.514,
+          "value": 26774.117,
           "timestamp": "2022-10-01"
         },
         {
-          "value": 26336.304,
+          "value": 26335.374,
           "timestamp": "2022-07-01"
         },
         {
-          "value": 25861.292,
+          "value": 25869.353,
           "timestamp": "2022-04-01"
         },
         {
-          "value": 25250.347,
+          "value": 25259.992,
           "timestamp": "2022-01-01"
         },
         {
-          "value": 24813.6,
+          "value": 24823.19,
           "timestamp": "2021-10-01"
         },
         {
-          "value": 23982.379,
+          "value": 23998.844,
           "timestamp": "2021-07-01"
         },
         {
-          "value": 23425.91,
+          "value": 23456.708,
           "timestamp": "2021-04-01"
         },
         {
-          "value": 22680.693,
+          "value": 22704.65,
           "timestamp": "2021-01-01"
         },
         {
@@ -28749,7 +28749,7 @@
       ]
     }
   ],
-  "exported_at": "2026-09-30T12:32:25.966379",
+  "exported_at": "2026-09-30T15:19:43.002319",
   "total_markets": 20,
   "markets_with_data": 20
 }
