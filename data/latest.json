@@ -5738,12 +5738,16 @@
       "category": "financial",
       "unit": "index",
       "data_source": "fred",
-      "latest_value": 7568.92,
-      "latest_timestamp": "2026-11-03",
-      "previous_value": 7541.4,
-      "change_percent": 0.3649189805606444,
-      "change_absolute": 27.520000000000437,
+      "latest_value": 7688.62,
+      "latest_timestamp": "2026-11-04",
+      "previous_value": 7568.92,
+      "change_percent": 1.5814673691887327,
+      "change_absolute": 119.69999999999982,
       "history": [
+        {
+          "value": 7688.62,
+          "timestamp": "2026-11-04"
+        },
         {
           "value": 7568.92,
           "timestamp": "2026-11-03"
@@ -7147,10 +7151,6 @@
         {
           "value": 6045.26,
           "timestamp": "2025-06-12"
-        },
-        {
-          "value": 6022.24,
-          "timestamp": "2025-06-11"
         }
       ]
     },
@@ -28781,7 +28781,7 @@
       ]
     }
   ],
-  "exported_at": "2026-11-05T18:14:09.545741",
+  "exported_at": "2026-11-05T21:09:13.324682",
   "total_markets": 20,
   "markets_with_data": 20
 }
