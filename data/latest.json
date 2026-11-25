@@ -10028,12 +10028,16 @@
       "category": "financial",
       "unit": "index",
       "data_source": "fred",
-      "latest_value": 26.62,
-      "latest_timestamp": "2026-11-23",
-      "previous_value": 35.89,
-      "change_percent": -25.828921705210362,
-      "change_absolute": -9.27,
+      "latest_value": 26.36,
+      "latest_timestamp": "2026-11-24",
+      "previous_value": 26.62,
+      "change_percent": -0.9767092411720569,
+      "change_absolute": -0.26000000000000156,
       "history": [
+        {
+          "value": 26.36,
+          "timestamp": "2026-11-24"
+        },
         {
           "value": 26.62,
           "timestamp": "2026-11-23"
@@ -11477,10 +11481,6 @@
         {
           "value": 16.64,
           "timestamp": "2025-07-02"
-        },
-        {
-          "value": 16.83,
-          "timestamp": "2025-07-01"
         }
       ]
     },
@@ -23094,14 +23094,14 @@
       "category": "economic",
       "unit": "USD billions",
       "data_source": "fred",
-      "latest_value": 33010.036,
+      "latest_value": 33056.203,
       "latest_timestamp": "2026-07-01",
       "previous_value": 32563.03,
-      "change_percent": 1.3727408045258727,
-      "change_absolute": 447.0060000000012,
+      "change_percent": 1.5145181514128216,
+      "change_absolute": 493.1730000000025,
       "history": [
         {
-          "value": 33010.036,
+          "value": 33056.203,
           "timestamp": "2026-07-01"
         },
         {
@@ -25858,14 +25858,18 @@
       "category": "government",
       "unit": "count",
       "data_source": "fred",
-      "latest_value": 203000.0,
-      "latest_timestamp": "2026-11-14",
+      "latest_value": 189000.0,
+      "latest_timestamp": "2026-11-21",
       "previous_value": 202000.0,
-      "change_percent": 0.49504950495049505,
-      "change_absolute": 1000.0,
+      "change_percent": -6.435643564356436,
+      "change_absolute": -13000.0,
       "history": [
         {
-          "value": 203000.0,
+          "value": 189000.0,
+          "timestamp": "2026-11-21"
+        },
+        {
+          "value": 202000.0,
           "timestamp": "2026-11-14"
         },
         {
@@ -27319,10 +27323,6 @@
         {
           "value": 231000.0,
           "timestamp": "2019-11-30"
-        },
-        {
-          "value": 221000.0,
-          "timestamp": "2019-11-23"
         }
       ]
     },
@@ -28801,7 +28801,7 @@
       ]
     }
   ],
-  "exported_at": "2026-11-25T12:16:56.223101",
+  "exported_at": "2026-11-25T15:12:08.383822",
   "total_markets": 20,
   "markets_with_data": 20
 }
